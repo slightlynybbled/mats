@@ -1,55 +1,70 @@
 import logging
 from time import sleep
+from random import choice, random
 
 from ate import Test
 from ate import TestSequence
 
 
+# The CommunicationTest class shows the minimum test structure that might be reasonably
+# be implemented.  Only the `execute()` method is implemented.
 class CommunicationTest(Test):
     def __init__(self, loglevel=logging.INFO):
         super().__init__(moniker='communications test', loglevel=loglevel)
 
+    # overriding the execute method
     def execute(self, aborted=False):
-        if aborted:
-            return None
+        # a normal test would set `test_is_passing` based on real conditions, we
+        # are implementing a random value here simply for illustrative purposes
+        passing = choice([True] * 3 + [False])
+
+        if not passing:
+            self.fail()
 
         # should return a (key, value) which are the results of the test
-        self.test_is_passing = False
-        return 'dual comm', False
+        return passing
 
 
-class PumpTest(Test):
+# The PumpFlowTest implements the `setup' and `teardown` methods as well in order to demonstrate what that may look like
+class PumpFlowTest(Test):
     def __init__(self, loglevel=logging.INFO):
-        super().__init__(moniker='pump test', loglevel=loglevel)
+        super().__init__(moniker='pump flow test', loglevel=loglevel)
 
     def setup(self, aborted=False):
-        return None
+        # setting the speed of the pump might be something done in the setup, including
+        # the wait time to speed up the pump, which we will simulate with a 2s sleep
+        sleep(2.0)
 
     def execute(self, aborted=False):
+        # user may abort the test based on the `aborted` or may
+        # continue the test, at the author's discretion
         if aborted:
             return None
 
-        sleep(0.2)  # simulate long-running process
+        # simulate long-running process, such as several flow measurement/averaging cycles
+        sleep(0.1)
+        flow = 5.5 + random()
 
-        # should return a (key, value) which are the results of the test
-        self.test_is_passing = True
-        return 'pump', False
+        # apply conditions, fail the test if outside of those conditions
+        if not 5.6 <= flow <= 6.4:
+            self.fail()
+
+        # should return a (key, value) tuple which are the results of the test
+        return flow
 
     def teardown(self, aborted=False):
-        return None
+        # again, simulating another long-running process...
+        sleep(0.1)
 
 
-logging.basicConfig(level=logging.DEBUG)
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
 
-# create the sequence of test objects
-sequence = [CommunicationTest(), PumpTest()]
-ts = TestSequence(sequence=sequence, auto_run=False, loglevel=logging.DEBUG)
+    # create the sequence of test objects
+    sequence = [CommunicationTest(), PumpFlowTest()]
+    ts = TestSequence(sequence=sequence, auto_run=False, loglevel=logging.DEBUG)
 
-print(ts.test_names)
-
-print(ts['communications test'], ts[sequence[1]])
-
-# start the test as many times as you wish!
-for i in range(3):
-    ts.start()
-    sleep(0.3)
+    # start the test as many times as you wish!
+    for _ in range(3):
+        ts.start()
+        sleep(2.0)
