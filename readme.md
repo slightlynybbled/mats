@@ -73,7 +73,7 @@ if communication is valid or a 'False' if it is not.
             if not passing:
                 self.fail()
     
-            # should return a (key, value) which are the results of the test
+            # should return a value corresponding to the test results
             return passing
 
 A more comprehensive hardware test may be found in the `PumpFlowTest`, which implements the optional
@@ -102,7 +102,7 @@ A more comprehensive hardware test may be found in the `PumpFlowTest`, which imp
             if not 5.6 <= flow <= 6.4:
                 self.fail()
     
-            # should return a (key, value) tuple which are the results of the test
+            # should return a value corresponding to the test results
             return flow
     
         def teardown(self, aborted=False):
