@@ -1,15 +1,17 @@
 import logging
 
 
-
 class Test:
     """
     A test is the most basic unit of an executing test sequence.  Within
     a test, we may have a setup(), execute(), and teardown() method.  Only the
     `execute()` method is required to be overridden.
+
+    :param moniker: a shortcut name for this particular test
+    :param loglevel: the logging level to apply such as `logging.INFO`
     """
 
-    def __init__(self, moniker, loglevel=logging.DEBUG):
+    def __init__(self, moniker, loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -20,6 +22,7 @@ class Test:
     def _setup(self, aborted=False):
         """
         Pre-execution method used for logging and housekeeping.
+
         :return:
         """
         self._logger.info(f'setting up "{self.moniker}"')
@@ -34,6 +37,7 @@ class Test:
     def _execute(self, aborted=False):
         """
         Pre-execution method used for logging and housekeeping.
+
         :return:
         """
         self._logger.info(f'executing test "{self.moniker}"')
@@ -46,6 +50,7 @@ class Test:
     def _teardown(self, aborted=False):
         """
         Pre-execution method used for logging and housekeeping.
+
         :return:
         """
         self._logger.info(f'tearing down "{self.moniker}"')
