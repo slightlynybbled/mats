@@ -12,12 +12,13 @@ Sequence = List[Test]
 
 class TestSequence:
     """
-    The TestSequence will "knit" the sequence together by taking the objects and
-    appropriately passing them through the process.
+    The TestSequence will "knit" the sequence together by taking the test objects and appropriately passing them through the automated testing process.
 
     :param sequence: a list of Tests
+    :param archive_manager: an instance of ``ArchiveManager`` which will contain the path and format-specific information
     :param auto_start: True if test is to be automatically started
     :param auto_run: True if the test is to be continually executed
+    :param callback: function to call on each test sequence completion; callback will be required to accept one parameter, which is the dictionary of values collected over that test iteration
     :param loglevel: the logging level
     """
     def __init__(self, sequence: Sequence, archive_manager: ArchiveManager=None,
@@ -66,10 +67,20 @@ class TestSequence:
 
     @property
     def tests(self):
+        """
+        Returns instances of all tests contained within the ``TestSequence``
+
+        :return: all tests as a list
+        """
         return [test for test in self._sequence]
 
     @property
     def test_names(self):
+        """
+        Returns the names of the tests contained within the ``TestSequence``
+
+        :return: the names of the tests as a list
+        """
         return [test.moniker for test in self._sequence]
 
     @property
@@ -129,25 +140,15 @@ class TestSequence:
         for test in self._sequence:
             self.current_test = test.moniker
 
-            setup_result = test._setup(aborted=self._aborted)
-
-            if setup_result is not None:
-                k, v = setup_result
-                self._test_data[k] = v
+            test._setup(aborted=self._aborted)
 
             test_result = test._execute(aborted=self._aborted)
-
             if test_result is not None:
-                k, v = test_result
-                self._test_data[k] = v
+                self._test_data[test.moniker] = test_result
 
-            teardown_result = test._teardown(aborted=self._aborted)
+            test._teardown(aborted=self._aborted)
 
-            if teardown_result is not None:
-                k, v = teardown_result
-                self._test_data[k] = v
-
-            if not test.test_is_passing:
+            if not test._test_is_passing:
                 self._test_data['pass'] = False
                 self._test_data['failed'].append(test.moniker)
 

@@ -16,7 +16,7 @@ class Test:
         self._logger.setLevel(loglevel)
 
         self.moniker = moniker
-        self.test_is_passing = None
+        self._test_is_passing = None
         self.status = 'waiting'
 
     def _setup(self, aborted=False):
@@ -27,12 +27,11 @@ class Test:
         """
         self._logger.info(f'setting up "{self.moniker}"')
 
-        self.test_is_passing = True
+        self._test_is_passing = True
         self.status = 'running' if not aborted else 'aborted'
 
-        setup_value = self.setup(aborted)
+        self.setup(aborted)
         self.status = 'running' if not aborted else 'aborted'
-        return setup_value
 
     def _execute(self, aborted=False):
         """
@@ -55,29 +54,39 @@ class Test:
         """
         self._logger.info(f'tearing down "{self.moniker}"')
 
-        teardown_value = self.teardown(aborted=aborted)
+        self.teardown(aborted=aborted)
         self.status = 'complete'
 
-        return teardown_value
-
     def reset(self):
+        """
+        Reset the test status
+        :return: None
+        """
         self.status = 'waiting'
+
+    def fail(self):
+        """
+        When called, will cause the test to fail.
+
+        :return: None
+        """
+        self._test_is_passing = False
 
     def setup(self, aborted=False):
         """
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
-        :return: None if no data is to be saved, ('key', 'value') if data is to be saved
+        :return: None
         """
-        return None
+        pass
 
     def execute(self, aborted=False):
         """
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
-        :return: None if no data is to be saved, ('key', 'value') if data is to be saved
+        :return: value to be appended to the sequence dictionary
         """
         raise NotImplementedError
 
@@ -86,6 +95,6 @@ class Test:
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
-        :return: None if no data is to be saved, ('key', 'value') if data is to be saved
+        :return: None
         """
-        return None
+        pass
