@@ -19,6 +19,8 @@ class Test:
         self._test_is_passing = None
         self.status = 'waiting'
 
+        self.saved_data = {}
+
     @property
     def is_passing(self):
         return self._test_is_passing
@@ -67,6 +69,9 @@ class Test:
         :return: None
         """
         self.status = 'waiting'
+
+    def save_dict(self, data: dict):
+        self.saved_data = data.copy()
 
     def fail(self):
         """

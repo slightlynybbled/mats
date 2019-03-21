@@ -152,6 +152,12 @@ class TestSequence:
                 self._test_data['pass'] = False
                 self._test_data['failed'].append(test.moniker)
 
+            # if any data was specifically stored within a test,
+            # then retrieve it and store it within the sequence
+            # test data
+            for k, v in test.saved_data.items():
+                self._test_data[k] = v
+
         if not self._aborted and self._archive_manager is not None:
             self._archive_manager.save(self._test_data)
 
