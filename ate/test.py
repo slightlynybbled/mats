@@ -17,6 +17,7 @@ class Test:
 
         self.moniker = moniker
         self._test_is_passing = None
+        self.value = None
         self.status = 'waiting'
 
         self.saved_data = {}
@@ -34,6 +35,7 @@ class Test:
         self._logger.info(f'setting up "{self.moniker}"')
 
         self._test_is_passing = True
+        self.value = None
         self.status = 'running' if not aborted else 'aborted'
 
         self.setup(aborted)
@@ -47,10 +49,10 @@ class Test:
         """
         self._logger.info(f'executing test "{self.moniker}"')
 
-        executed_value = self.execute(aborted=aborted)
+        self.value = self.execute(aborted=aborted)
         self.status = 'running' if not aborted else 'aborted'
 
-        return executed_value
+        return self.value
 
     def _teardown(self, aborted=False):
         """
