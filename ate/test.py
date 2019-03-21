@@ -19,6 +19,10 @@ class Test:
         self._test_is_passing = None
         self.status = 'waiting'
 
+    @property
+    def is_passing(self):
+        return self._test_is_passing
+
     def _setup(self, aborted=False):
         """
         Pre-execution method used for logging and housekeeping.
