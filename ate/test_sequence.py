@@ -4,6 +4,8 @@ from threading import Thread, active_count
 from typing import List
 
 from ate.test import Test
+from ate.archiving import ArchiveManager
+
 
 Sequence = List[Test]
 
@@ -18,12 +20,15 @@ class TestSequence:
     :param auto_run: True if the test is to be continually executed
     :param loglevel: the logging level
     """
-    def __init__(self, sequence: Sequence, auto_start=False, auto_run=False, loglevel=logging.INFO):
+    def __init__(self, sequence: Sequence, archive_manager: ArchiveManager=None,
+                 auto_start=False, auto_run=False, callback: callable=None, loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
         self._sequence = sequence
+        self._archive_manager = archive_manager
         self._auto_run = auto_run
+        self._callback = callback
 
         self.in_progress = False
         self._aborted = False
@@ -85,14 +90,15 @@ class TestSequence:
 
     def abort(self):
         """
-        Abort the current test sequence
+        Abort the current test sequence.
+
         :return: None
         """
         self._aborted = True
 
     def start(self):
         """
-        Start a test sequence.  Will only work if a test sequence isn't already in progress
+        Start a test sequence.  Will only work if a test sequence isn't already in progress.
         :return: None
         """
         if self.in_progress:
@@ -104,8 +110,9 @@ class TestSequence:
 
     def run_test(self):
         """
-        Runs one instance of the test sequence.  Executes continually if
-        :return:
+        Runs one instance of the test sequence.  Executes continually if the auto_run flag was set on initialization.
+
+        :return: None
         """
         self._logger.info('-' * 80)
         self.in_progress = True
@@ -144,11 +151,19 @@ class TestSequence:
                 self._test_data['pass'] = False
                 self._test_data['failed'].append(test.moniker)
 
+        if not self._aborted and self._archive_manager is not None:
+            self._archive_manager.save(self._test_data)
+
         self.in_progress = False
 
         self._logger.info('test sequence complete')
         self._logger.debug(f'test results: {self._test_data}')
 
+        if self._callback is not None:
+            self._logger.info(f'executing user-supplied callback function "{self._callback}"')
+            self._callback(self._test_data)
+
         if self._auto_run and not self._aborted:
+            self._logger.info('"auto_run" flag is set, looping')
             thread = Thread(target=self.run_test)
             thread.start()
