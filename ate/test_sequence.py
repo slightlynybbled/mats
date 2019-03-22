@@ -140,13 +140,13 @@ class TestSequence:
         for test in self._sequence:
             self.current_test = test.moniker
 
-            test._setup(aborted=self._aborted)
+            test._setup(aborted=self._aborted, is_passing=self._test_data['pass'])
 
-            test_result = test._execute(aborted=self._aborted)
+            test_result = test._execute(aborted=self._aborted, is_passing=self._test_data['pass'])
             if test_result is not None:
                 self._test_data[test.moniker] = test_result
 
-            test._teardown(aborted=self._aborted)
+            test._teardown(aborted=self._aborted, is_passing=self._test_data['pass'])
 
             if not test._test_is_passing:
                 self._test_data['pass'] = False

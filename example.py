@@ -13,7 +13,7 @@ class CommunicationTest(Test):
         super().__init__(moniker='communications test', loglevel=loglevel)
 
     # overriding the execute method
-    def execute(self, aborted=False):
+    def execute(self, aborted=False, is_passing=False):
         # a normal test would set `test_is_passing` based on real conditions, we
         # are implementing a random value here simply for illustrative purposes
         passing = choice([True] * 3 + [False])
@@ -30,12 +30,12 @@ class PumpFlowTest(Test):
     def __init__(self, loglevel=logging.INFO):
         super().__init__(moniker='pump flow test', loglevel=loglevel)
 
-    def setup(self, aborted=False):
+    def setup(self, aborted=False, is_passing=False):
         # setting the speed of the pump might be something done in the setup, including
         # the wait time to speed up the pump, which we will simulate with a 2s sleep
         sleep(2.0)
 
-    def execute(self, aborted=False):
+    def execute(self, aborted=False, is_passing=False):
         # user may abort the test based on the `aborted` or may
         # continue the test, at the author's discretion
         if aborted:
@@ -52,7 +52,7 @@ class PumpFlowTest(Test):
         # should return a (key, value) tuple which are the results of the test
         return flow
 
-    def teardown(self, aborted=False):
+    def teardown(self, aborted=False, is_passing=False):
         # again, simulating another long-running process...
         sleep(0.1)
 

@@ -26,10 +26,12 @@ class Test:
     def is_passing(self):
         return self._test_is_passing
 
-    def _setup(self, aborted=False):
+    def _setup(self, aborted=False, is_passing=False):
         """
         Pre-execution method used for logging and housekeeping.
 
+        :param aborted: True if the test was aborted or False if not
+        :param is_passing: True if the test sequence is passing up to this point, else False
         :return:
         """
         self._logger.info(f'setting up "{self.moniker}"')
@@ -38,31 +40,35 @@ class Test:
         self.value = None
         self.status = 'running' if not aborted else 'aborted'
 
-        self.setup(aborted)
+        self.setup(aborted=aborted, is_passing=is_passing)
         self.status = 'running' if not aborted else 'aborted'
 
-    def _execute(self, aborted=False):
+    def _execute(self, aborted=False, is_passing=False):
         """
         Pre-execution method used for logging and housekeeping.
 
+        :param aborted: True if the test was aborted or False if not
+        :param is_passing: True if the test sequence is passing up to this point, else False
         :return:
         """
         self._logger.info(f'executing test "{self.moniker}"')
 
-        self.value = self.execute(aborted=aborted)
+        self.value = self.execute(aborted=aborted, is_passing=is_passing)
         self.status = 'running' if not aborted else 'aborted'
 
         return self.value
 
-    def _teardown(self, aborted=False):
+    def _teardown(self, aborted=False, is_passing=False):
         """
         Pre-execution method used for logging and housekeeping.
 
+        :param aborted: True if the test was aborted or False if not
+        :param is_passing: True if the test sequence is passing up to this point, else False
         :return:
         """
         self._logger.info(f'tearing down "{self.moniker}"')
 
-        self.teardown(aborted=aborted)
+        self.teardown(aborted=aborted, is_passing=is_passing)
         self.status = 'complete'
 
     def reset(self):
@@ -83,29 +89,32 @@ class Test:
         """
         self._test_is_passing = False
 
-    def setup(self, aborted=False):
+    def setup(self, aborted=False, is_passing=False):
         """
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
+        :param is_passing: True if the test sequence is passing up to this point, else False
         :return: None
         """
         pass
 
-    def execute(self, aborted=False):
+    def execute(self, aborted=False, is_passing=False):
         """
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
+        :param is_passing: True if the test sequence is passing up to this point, else False
         :return: value to be appended to the sequence dictionary
         """
         raise NotImplementedError
 
-    def teardown(self, aborted=False):
+    def teardown(self, aborted=False, is_passing=False):
         """
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
+        :param is_passing: True if the test sequence is passing up to this point, else False
         :return: None
         """
         pass
