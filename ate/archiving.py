@@ -34,12 +34,16 @@ class ArchiveManager:
         for _, value in point.items():
             if isinstance(value, str):
                 data.append(value)
+            elif isinstance(value, int):
+                data.append(f'{value}')
+            elif isinstance(value, float):
+                data.append(f'{value: .03f}')
             else:
                 try:
                     # convert from pint-style values
                     data.append(f'{value.magnitude: .03f}')
                 except AttributeError:
-                    data.append(f'{value: .03f}')
+                    data.append(str(value))
 
         data_string = f'{self._delimiter.join(data)}\n'
 
