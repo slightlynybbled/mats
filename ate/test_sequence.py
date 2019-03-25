@@ -1,6 +1,6 @@
 from datetime import datetime
 import logging
-from threading import Thread, active_count
+from threading import Thread
 from typing import List
 
 from ate.test import Test
