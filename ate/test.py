@@ -8,10 +8,13 @@ class Test:
     `execute()` method is required to be overridden.
 
     :param moniker: a shortcut name for this particular test
+    :param min_value: the minimum value that is to be considered a pass, if defined
+    :param max_value: the maximum value that is to be considered a pass, if defined
+    :param pass_if: the value that must be present in order to pass, if defined
     :param loglevel: the logging level to apply such as `logging.INFO`
     """
 
-    def __init__(self, moniker, max_value=None, min_value=None, pass_if=None, loglevel=logging.INFO):
+    def __init__(self, moniker, min_value=None, max_value=None, pass_if=None, loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
