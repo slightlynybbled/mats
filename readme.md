@@ -47,9 +47,10 @@ which will be retrieved by the `TestSequence` appropriately.
 
  1. Import `Test` and `TestSequence` classes, structure project appropriately.
  2. Subclass the specific `Test` classes, one for each test in the intended sequence.
- 3. (optional) Create any callbacks functions/methods that should be called after each test.
- 4. (optional) Import and implement `ArchiveManager`
- 5. Instantiate the `TestSequence`
+ 3. (optional) Add any pass/fail conditions as `min_value`, `max_value`, and `pass_if` into the test class.
+ 4. (optional) Create any callbacks functions/methods that should be called after each test.
+ 5. (optional) Import and implement `ArchiveManager`
+ 6. Instantiate the `TestSequence`
 
 ## Example
 
@@ -62,16 +63,15 @@ if communication is valid or a 'False' if it is not.
 
     class CommunicationTest(Test):
         def __init__(self, loglevel=logging.INFO):
-            super().__init__(moniker='communications test', loglevel=loglevel)
+            super().__init__(moniker='communications test', 
+                             pass_if=True,
+                             loglevel=loglevel)
     
         # overriding the execute method
         def execute(self, aborted=False):
             # a normal test would set `test_is_passing` based on real conditions, we
             # are implementing a random value here simply for illustrative purposes
             passing = choice([True] * 3 + [False])
-    
-            if not passing:
-                self.fail()
     
             # should return a value corresponding to the test results
             return passing
@@ -81,7 +81,9 @@ A more comprehensive hardware test may be found in the `PumpFlowTest`, which imp
 
     class PumpFlowTest(Test):
         def __init__(self, loglevel=logging.INFO):
-            super().__init__(moniker='pump flow test', loglevel=loglevel)
+            super().__init__(moniker='pump flow test', 
+                             min_value=5.6, max_value=6.4,
+                             loglevel=loglevel)
     
         def setup(self, aborted=False):
             # setting the speed of the pump might be something done in the setup, including
@@ -97,10 +99,6 @@ A more comprehensive hardware test may be found in the `PumpFlowTest`, which imp
             # simulate long-running process, such as several flow measurement/averaging cycles
             sleep(0.1)
             flow = 5.5 + random()
-    
-            # apply conditions, fail the test if outside of those conditions
-            if not 5.6 <= flow <= 6.4:
-                self.fail()
     
             # should return a value corresponding to the test results
             return flow
