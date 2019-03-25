@@ -26,7 +26,7 @@ class Test:
     def is_passing(self):
         return self._test_is_passing
 
-    def _setup(self, aborted=False, is_passing=False):
+    def _setup(self, aborted, is_passing):
         """
         Pre-execution method used for logging and housekeeping.
 
@@ -43,7 +43,7 @@ class Test:
         self.setup(aborted=aborted, is_passing=is_passing)
         self.status = 'running' if not aborted else 'aborted'
 
-    def _execute(self, aborted=False, is_passing=False):
+    def _execute(self, aborted, is_passing):
         """
         Pre-execution method used for logging and housekeeping.
 
@@ -58,7 +58,7 @@ class Test:
 
         return self.value
 
-    def _teardown(self, aborted=False, is_passing=False):
+    def _teardown(self, aborted, is_passing):
         """
         Pre-execution method used for logging and housekeeping.
 
@@ -68,7 +68,7 @@ class Test:
         """
         self._logger.info(f'tearing down "{self.moniker}"')
 
-        self.teardown(aborted=aborted, is_passing=is_passing)
+        self.teardown(aborted, is_passing)
         self.status = 'complete'
 
     def reset(self):
@@ -89,7 +89,7 @@ class Test:
         """
         self._test_is_passing = False
 
-    def setup(self, aborted=False, is_passing=False):
+    def setup(self, aborted, is_passing):
         """
         Abstract method intended to be overridden by subclass
 
@@ -99,7 +99,7 @@ class Test:
         """
         pass
 
-    def execute(self, aborted=False, is_passing=False):
+    def execute(self, aborted, is_passing):
         """
         Abstract method intended to be overridden by subclass
 
@@ -109,7 +109,7 @@ class Test:
         """
         raise NotImplementedError
 
-    def teardown(self, aborted=False, is_passing=False):
+    def teardown(self, aborted, is_passing):
         """
         Abstract method intended to be overridden by subclass
 
