@@ -11,11 +11,13 @@ class Test:
     :param loglevel: the logging level to apply such as `logging.INFO`
     """
 
-    def __init__(self, moniker, loglevel=logging.INFO):
+    def __init__(self, moniker, max_value=None, min_value=None, pass_if=None, loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
         self.moniker = moniker
+        self._max_value, self._min_value, self._pass_if = max_value, min_value, pass_if
+
         self._test_is_passing = None
         self.value = None
         self.status = 'waiting'
@@ -54,6 +56,17 @@ class Test:
         self._logger.info(f'executing test "{self.moniker}"')
 
         self.value = self.execute(aborted=aborted, is_passing=is_passing)
+
+        if self._pass_if is not None:
+            if self.value != self._pass_if:
+                self.fail()
+        elif self._min_value is not None:
+            if self.value < self._min_value:
+                self.fail()
+        elif self._max_value is not None:
+            if self.value > self._max_value:
+                self.fail()
+
         self.status = 'running' if not aborted else 'aborted'
 
         return self.value
