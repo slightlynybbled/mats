@@ -41,7 +41,7 @@ start/run behaviors.
 Each `Test` class has the option of implementing the `setup()`, `execute()`, and `teardown()` methods
 which will be retrieved by the `TestSequence` appropriately.
 
-![Flow Diagram](./images/flow-diagram.jpg)
+![Flow Diagram](/images/flow-diagram.jpg)
 
 ## Steps
 
