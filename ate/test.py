@@ -18,7 +18,18 @@ class Test:
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
-        self.moniker = moniker
+        if pass_if is not None:
+            moniker_str = f'{moniker} (pass if={pass_if})'
+        elif min_value is not None and max_value is not None:
+            moniker_str = f'{moniker} (min={min_value}, max={max_value})'
+        elif min_value is not None:
+            moniker_str = f'{moniker} (min={min_value})'
+        elif max_value is not None:
+            moniker_str = f'{moniker} (max={max_value})'
+        else:
+            moniker_str = moniker
+
+        self.moniker = moniker_str
         self._max_value, self._min_value, self._pass_if = max_value, min_value, pass_if
 
         self._test_is_passing = None
