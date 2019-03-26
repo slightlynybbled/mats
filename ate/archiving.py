@@ -6,7 +6,7 @@ from shutil import copy
 
 
 class ArchiveManager:
-    def __init__(self, path, fname='data', fextension='.csv', delimiter='\t', loglevel=logging.INFO):
+    def __init__(self, path='.', fname='data', fextension='.csv', delimiter='\t', loglevel=logging.INFO):
         """
         The basic save utility bundled into the test sequencer.  The archive manager is geared towards common manufacturing environments in which tab-delimited text files are common.
 
