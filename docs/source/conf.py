@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'ate'
+project = 'Automated Test Environment'
 copyright = '2019, Jason R. Jones'
 author = 'Jason R. Jones'
 
