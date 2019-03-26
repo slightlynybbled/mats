@@ -2,8 +2,7 @@ import logging
 from time import sleep
 from random import choice, random
 
-from ate import Test
-from ate import TestSequence
+from ate import Test, TestSequence, ArchiveManager
 
 
 # The CommunicationTest class shows the minimum test structure that might be reasonably
@@ -59,7 +58,12 @@ if __name__ == '__main__':
 
     # create the sequence of test objects
     sequence = [CommunicationTest(), PumpFlowTest()]
-    ts = TestSequence(sequence=sequence, auto_run=False, loglevel=logging.DEBUG)
+
+    # create the archive manager
+    am = ArchiveManager()
+
+    # create the test sequence using the sequence and archive manager objects from above
+    ts = TestSequence(sequence=sequence, archive_manager=am, auto_run=False, loglevel=logging.DEBUG)
 
     # start the test as many times as you wish!
     for _ in range(3):
