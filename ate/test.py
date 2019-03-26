@@ -73,13 +73,22 @@ class Test:
 
         if self._pass_if is not None:
             if self.value != self._pass_if:
+                self._logger.warning(f'"{self.value}" != pass_if requirement "{self._pass_if}", failing')
                 self.fail()
+            else:
+                self._logger.info(f'"{self.value}" == pass_if requirement "{self._pass_if}"')
         elif self._min_value is not None:
             if self.value < self._min_value:
+                self._logger.warning(f'"{self.value}" is below the minimum "{self._min_value}", failing')
                 self.fail()
+            else:
+                self._logger.info(f'"{self.value}" is above the minimum "{self._min_value}"')
         elif self._max_value is not None:
             if self.value > self._max_value:
+                self._logger.warning(f'"{self.value}" is above the maximum "{self._max_value}"')
                 self.fail()
+            else:
+                self._logger.info(f'"{self.value}" is below the maximum "{self._max_value}"')
 
         self.status = 'running' if not aborted else 'aborted'
 
