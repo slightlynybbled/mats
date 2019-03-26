@@ -94,7 +94,7 @@ class ArchiveManager:
                 f.write(header_string)
 
         # write the data string
-        self._logger.debug(f'appending data: "{data_string.strip()}"')
+        self._logger.info(f'appending data: "{data_string.strip()}"')
         with open(destination_path, 'a') as f:
             f.write(data_string)
 
