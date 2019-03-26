@@ -23,7 +23,12 @@ For most, simply ``pip install ate`` should do the trick.  You may wish to strol
 Key Concepts
 ------------
 
-todo: Key Concepts, Test and TestSequence
+There are two primary classes to pay attention to within the ATE:
+:ref:`classes_ate_test` and :ref:`classes_ate_testsequence`.  The ``TestSequence``
+consists of a series of ``Tests``.  One complete run through the entire sequence
+is initiated on utilization of the ``start()`` method.
+
+.. image:: images/flow-diagram.jpg
 
 .. toctree::
    :maxdepth: 2
