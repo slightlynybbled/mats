@@ -308,4 +308,29 @@ The final full form of ``test_sequence.py``:
 Save the Data
 -------------
 
-todo: use case for the ``ArchiveManager``
+At this point, we run the test and collect the data, but do not save it anywhere.
+There are a couple of options for saving.  The first - and easiest - is to use the
+built-in ``ArchiveManager``, which creates the most common formats of csv and csv-like
+files common in manufacturing environments.  It also does some basic test change
+detection in order to keep file headers separated as the test evolves over the life
+of the project.
+
+The most basic implementation of the ``ArchiveManager`` can be easily added to the
+sequence:
+
+.. code-block:: python
+   :emphasize-lines: 2, 5, 6
+
+    from ate import TestSequence
+    from automated_tests import FlowTest, CommunicationsTest, ArchiveManager
+
+    sequence = [CommunicationsTest(), FlowTest()]
+    am = ArchiveManager()
+    ts = TestSequence(sequence=sequence, archive_manager=am)
+
+    ts.start()
+
+The only requirement for the object instance supplied to ``archive_manager`` is to
+implement the ``save()`` method which will accept a ``dict`` containing the key: value
+pairs on test completion.  In this way, it is very easy to supply custom archive
+manager objects to extend the functionality of the archiving process.
