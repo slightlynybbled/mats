@@ -6,3 +6,6 @@ Classes
 
 .. autoclass:: ate.TestSequence
    :members: tests, test_names, ready, is_aborted, is_passing, start, abort
+
+.. autoclass:: ate.ArchiveManager
+   :members: save

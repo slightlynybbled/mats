@@ -6,15 +6,15 @@ from shutil import copy
 
 
 class ArchiveManager:
-    def __init__(self, path, fname='data', fextension='.csv', delimiter='\t', loglevel=logging.DEBUG):
+    def __init__(self, path, fname='data', fextension='.csv', delimiter='\t', loglevel=logging.INFO):
         """
-        The basic save utility bundled into the test sequencer.
+        The basic save utility bundled into the test sequencer.  The archive manager is geared towards common manufacturing environments in which tab-delimited text files are common.
 
-        :param path:
-        :param fname:
-        :param fextension:
-        :param delimiter:
-        :param loglevel:
+        :param path: the path on which to save the data, not including the file name
+        :param fname: the file name
+        :param fextension: the file extension
+        :param delimiter: the delimiter or separator between fields
+        :param loglevel: the logging level, for instance 'logging.INFO'
         """
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
@@ -25,6 +25,22 @@ class ArchiveManager:
         self._delimiter = delimiter
 
     def save(self, point: dict):
+        """
+        Takes a point of data supplied as a dict and, depending on existing conditions, will archive the data point on the disk.  Three conditions possible at save time:
+
+         * Data file does not exist
+         * Data file exists and is compatible with the current data point (the header strings match)
+         * Data file exists, but is not compatible with the current data point (the header strings do not match)
+
+        When the data file does not exist, then the ``save()`` method will create the new data file at ``<fname>.<extension>``.
+
+        When the data file exists at ``<fname>.<extension>`` and is compatible with the current data point, then the ``save()`` method will simply append the new data point to previous data in a tabular format.
+
+        Finally, when the current data point is deemed incompatible with the previous data, then the ``save()`` method will copy the old file to ``<fname>_<datetime>.<extension>`` and then create a new file at ``<fname>.<extension>`` under which data will be collected until a new format is once again detected.
+
+        :param point: a ``dict`` containing key: value pairs which specify the data to be saved
+        :return: None
+        """
         destination_path = self._path / (self._fname + self._fextension)
 
         headers = list(point.keys())
