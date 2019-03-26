@@ -30,6 +30,7 @@ todo: Key Concepts, Test and TestSequence
    :caption: Contents:
 
    pages/classes
+   pages/guided-test-development
    pages/examples
 
 Indices and tables
