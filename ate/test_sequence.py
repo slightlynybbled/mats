@@ -87,16 +87,28 @@ class TestSequence:
     def ready(self):
         """
         Returns True if the test sequence is ready for another go at it, False if not
+
         :return: True or False
         """
         return not self.in_progress
 
     @property
     def is_passing(self):
+        """
+        Returns True if the test sequence is currently passing, else False
+
+        :return: True or False
+        """
         return self._test_data['pass']
 
     @property
     def is_aborted(self):
+        """
+        Returns True if the test sequence has been aborted, else False
+
+        :return: True or False
+        """
+
         return self._aborted
 
     def abort(self):
@@ -110,16 +122,17 @@ class TestSequence:
     def start(self):
         """
         Start a test sequence.  Will only work if a test sequence isn't already in progress.
+
         :return: None
         """
         if self.in_progress:
             self._logger.warning('cannot begin another test when test is currently in progress')
             return
 
-        thread = Thread(target=self.run_test)
+        thread = Thread(target=self._run_test)
         thread.start()
 
-    def run_test(self):
+    def _run_test(self):
         """
         Runs one instance of the test sequence.  Executes continually if the auto_run flag was set on initialization.
 
@@ -172,5 +185,5 @@ class TestSequence:
 
         if self._auto_run and not self._aborted:
             self._logger.info('"auto_run" flag is set, looping')
-            thread = Thread(target=self.run_test)
+            thread = Thread(target=self._run_test)
             thread.start()
