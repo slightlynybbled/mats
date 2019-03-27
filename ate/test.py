@@ -8,13 +8,16 @@ class Test:
     `execute()` method is required to be overridden.
 
     :param moniker: a shortcut name for this particular test
-    :param min_value: the minimum value that is to be considered a pass, if defined
-    :param max_value: the maximum value that is to be considered a pass, if defined
+    :param min_value: the minimum value that is to be considered a pass, \
+    if defined
+    :param max_value: the maximum value that is to be considered a pass, \
+    if defined
     :param pass_if: the value that must be present in order to pass, if defined
     :param loglevel: the logging level to apply such as `logging.INFO`
     """
 
-    def __init__(self, moniker, min_value=None, max_value=None, pass_if=None, loglevel=logging.INFO):
+    def __init__(self, moniker, min_value=None, max_value=None, pass_if=None,
+                 loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -30,7 +33,8 @@ class Test:
             moniker_str = moniker
 
         self.moniker = moniker_str
-        self._max_value, self._min_value, self._pass_if = max_value, min_value, pass_if
+        self._max_value, self._min_value = max_value, min_value
+        self._pass_if = pass_if
 
         self._test_is_passing = None
         self.value = None
@@ -47,7 +51,8 @@ class Test:
         Pre-execution method used for logging and housekeeping.
 
         :param aborted: True if the test was aborted or False if not
-        :param is_passing: True if the test sequence is passing up to this point, else False
+        :param is_passing: True if the test sequence is passing up to this \
+        point, else False
         :return:
         """
         self._logger.info(f'setting up "{self.moniker}"')
@@ -64,7 +69,8 @@ class Test:
         Pre-execution method used for logging and housekeeping.
 
         :param aborted: True if the test was aborted or False if not
-        :param is_passing: True if the test sequence is passing up to this point, else False
+        :param is_passing: True if the test sequence is passing up to this \
+        point, else False
         :return:
         """
         self._logger.info(f'executing test "{self.moniker}"')
@@ -73,24 +79,32 @@ class Test:
 
         if self._pass_if is not None:
             if self.value != self._pass_if:
-                self._logger.warning(f'"{self.value}" != pass_if requirement "{self._pass_if}", failing')
+                self._logger.warning(
+                    f'"{self.value}" != pass_if requirement '
+                    f'"{self._pass_if}", failing')
                 self.fail()
             else:
-                self._logger.info(f'"{self.value}" == pass_if requirement "{self._pass_if}"')
+                self._logger.info(
+                    f'"{self.value}" == pass_if requirement "{self._pass_if}"')
 
         if self._min_value is not None:
             if self.value < self._min_value:
-                self._logger.warning(f'"{self.value}" is below the minimum "{self._min_value}", failing')
+                self._logger.warning(
+                    f'"{self.value}" is below the minimum '
+                    f'"{self._min_value}", failing')
                 self.fail()
             else:
-                self._logger.info(f'"{self.value}" is above the minimum "{self._min_value}"')
+                self._logger.info(
+                    f'"{self.value}" is above the minimum "{self._min_value}"')
 
         if self._max_value is not None:
             if self.value > self._max_value:
-                self._logger.warning(f'"{self.value}" is above the maximum "{self._max_value}"')
+                self._logger.warning(
+                    f'"{self.value}" is above the maximum "{self._max_value}"')
                 self.fail()
             else:
-                self._logger.info(f'"{self.value}" is below the maximum "{self._max_value}"')
+                self._logger.info(
+                    f'"{self.value}" is below the maximum "{self._max_value}"')
 
         self.status = 'running' if not aborted else 'aborted'
 
@@ -101,7 +115,8 @@ class Test:
         Pre-execution method used for logging and housekeeping.
 
         :param aborted: True if the test was aborted or False if not
-        :param is_passing: True if the test sequence is passing up to this point, else False
+        :param is_passing: True if the test sequence is passing up to \
+        this point, else False
         :return:
         """
         self._logger.info(f'tearing down "{self.moniker}"')
@@ -118,7 +133,8 @@ class Test:
 
     def save_dict(self, data: dict):
         """
-        Allows a test to save additional data other than that returned by ``execute()``
+        Allows a test to save additional data other than that returned \
+        by ``execute()``
 
         :param data: key: value pairs of the data to be stored
         :return: None
@@ -138,7 +154,8 @@ class Test:
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
-        :param is_passing: True if the test sequence is passing up to this point, else False
+        :param is_passing: True if the test sequence is passing up to this \
+        point, else False
         :return: None
         """
         pass
@@ -148,7 +165,8 @@ class Test:
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
-        :param is_passing: True if the test sequence is passing up to this point, else False
+        :param is_passing: True if the test sequence is passing up to this \
+        point, else False
         :return: value to be appended to the sequence dictionary
         """
         raise NotImplementedError
@@ -158,7 +176,8 @@ class Test:
         Abstract method intended to be overridden by subclass
 
         :param aborted: True if the test was aborted or False if not
-        :param is_passing: True if the test sequence is passing up to this point, else False
+        :param is_passing: True if the test sequence is passing up to this \
+        point, else False
         :return: None
         """
         pass

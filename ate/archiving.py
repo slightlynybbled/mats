@@ -54,7 +54,7 @@ class ArchiveManager:
         ``<fname>.<extension>`` under which data will be collected until a new
         format is once again detected.
 
-        :param point: a ``dict`` containing key: value pairs which specify
+        :param point: a ``dict`` containing key: value pairs which specify \
         the data to be saved
         :return: None
         """
