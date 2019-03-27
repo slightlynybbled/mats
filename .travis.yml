@@ -7,12 +7,12 @@ python:
   - "3.7"
 
 install:
-  - "pip install pytest flake8 python-coveralls"
+  - "pip install pytest flake8 pytest-cov python-coveralls"
   - "pip install -r requirements.txt"
 
 script:
   - "python setup.py install"
-  - "py.test tests/tests.py"
+  - "py.test tests/tests.py --cov coveralls"
   - "flake8 ate"
 
 after_success:
