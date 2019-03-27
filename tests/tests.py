@@ -30,6 +30,30 @@ def pass_if_Test():
 
 
 @pytest.fixture
+def min_Test():
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test', min_value=1.0)
+
+        def execute(self, aborted, is_passing):
+            return None
+
+    yield T()
+
+
+@pytest.fixture
+def max_Test():
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test', max_value=2.0)
+
+        def execute(self, aborted, is_passing):
+            return None
+
+    yield T()
+
+
+@pytest.fixture
 def bracketed_Test():
     class T(ate.Test):
         def __init__(self):
@@ -65,6 +89,18 @@ def test_Test_class_creation_with_pass_if(pass_if_Test):
     assert t._pass_if is True
     assert t._min_value is None
     assert t._max_value is None
+
+
+def test_Test_class_creation_min_only(min_Test):
+    t = min_Test
+
+    assert t.moniker == f'test (min=1.0)'
+
+
+def test_Test_class_creation_max_only(max_Test):
+    t = max_Test
+
+    assert t.moniker == f'test (max=2.0)'
 
 
 def test_Test_creation_with_min_and_max(bracketed_Test):
