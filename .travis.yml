@@ -13,3 +13,4 @@ install:
 script:
   - "python setup.py install"
   - "py.test tests/tests.py"
+  - "flake8 ate"
