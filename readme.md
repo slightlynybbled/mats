@@ -14,3 +14,6 @@ The ATE could be considered an automated test framework which imposes a consiste
 reduces the amount of mind share that you need to dedicate to developing automated device tests.
 
 Checkout the [documentation](https://ate.readthedocs.io/en/latest/index.html) for more details!
+
+There is a ready-to-run GUI using tkinter over at the [TkATE](https://github.com/slightlynybbled/tkate).  
+This is very useful to get a manufacturing test up quickly and easily.  Enjoy!
