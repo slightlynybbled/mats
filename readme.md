@@ -4,6 +4,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5a1c34e3898a43ebbdecc1b78c4cad4d)](https://www.codacy.com/app/slightlynybbled/ate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slightlynybbled/ate&amp;utm_campaign=Badge_Grade)
 
+[![Build Status](https://travis-ci.org/slightlynybbled/ate.svg?branch=master)](https://travis-ci.org/slightlynybbled/ate)
+
 `ATE` is a hardware-oriented test environment intended for production testing in a manufacturing 
 environment.  The `ATE` framework is a test template and test sequence executor only, so there 
 are no considerations for user interaction, meaning that you need to supply your own "start" button.
