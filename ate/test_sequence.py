@@ -12,17 +12,24 @@ Sequence = List[Test]
 
 class TestSequence:
     """
-    The TestSequence will "knit" the sequence together by taking the test objects and appropriately passing them through the automated testing process.
+    The TestSequence will "knit" the sequence together by taking the test \
+    objects and appropriately passing them through the automated testing \
+    process.
 
     :param sequence: a list of Tests
-    :param archive_manager: an instance of ``ArchiveManager`` which will contain the path and format-specific information
+    :param archive_manager: an instance of ``ArchiveManager`` which will \
+    contain the path and format-specific information
     :param auto_start: True if test is to be automatically started
     :param auto_run: True if the test is to be continually executed
-    :param callback: function to call on each test sequence completion; callback will be required to accept one parameter, which is the dictionary of values collected over that test iteration
+    :param callback: function to call on each test sequence completion; \
+    callback will be required to accept one parameter, which is the \
+    dictionary of values collected over that test iteration
     :param loglevel: the logging level
     """
-    def __init__(self, sequence: Sequence, archive_manager: ArchiveManager=None,
-                 auto_start=False, auto_run=False, callback: callable=None, loglevel=logging.INFO):
+    def __init__(self, sequence: Sequence,
+                 archive_manager: ArchiveManager = None,
+                 auto_start=False, auto_run=False, callback: callable = None,
+                 loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -58,7 +65,9 @@ class TestSequence:
                     test = t
                     break
         else:
-            raise TypeError(f'"{test_element}" is of type "{type(test_element)}"; expected "str" or "Test"')
+            raise TypeError(
+                f'"{test_element}" is of type "{type(test_element)}"; '
+                f'expected "str" or "Test"')
 
         if test is not None:
             return test
@@ -86,7 +95,8 @@ class TestSequence:
     @property
     def ready(self):
         """
-        Returns True if the test sequence is ready for another go at it, False if not
+        Returns True if the test sequence is ready for another go at it, \
+        False if not
 
         :return: True or False
         """
@@ -121,12 +131,14 @@ class TestSequence:
 
     def start(self):
         """
-        Start a test sequence.  Will only work if a test sequence isn't already in progress.
+        Start a test sequence.  Will only work if a test sequence isn't \
+        already in progress.
 
         :return: None
         """
         if self.in_progress:
-            self._logger.warning('cannot begin another test when test is currently in progress')
+            self._logger.warning('cannot begin another test when test is '
+                                 'currently in progress')
             return
 
         thread = Thread(target=self._run_test)
@@ -134,7 +146,8 @@ class TestSequence:
 
     def _run_test(self):
         """
-        Runs one instance of the test sequence.  Executes continually if the auto_run flag was set on initialization.
+        Runs one instance of the test sequence.  Executes continually if the \
+        auto_run flag was set on initialization.
 
         :return: None
         """
@@ -155,7 +168,8 @@ class TestSequence:
 
             test._setup(aborted=self._aborted, is_passing=self.is_passing)
 
-            test_result = test._execute(aborted=self._aborted, is_passing=self.is_passing)
+            test_result = test._execute(aborted=self._aborted,
+                                        is_passing=self.is_passing)
             if test_result is not None:
                 self._test_data[test.moniker] = test_result
 
@@ -180,7 +194,8 @@ class TestSequence:
         self._logger.debug(f'test results: {self._test_data}')
 
         if self._callback is not None:
-            self._logger.info(f'executing user-supplied callback function "{self._callback}"')
+            self._logger.info(f'executing user-supplied callback function '
+                              f'"{self._callback}"')
             self._callback(self._test_data)
 
         if self._auto_run and not self._aborted:
