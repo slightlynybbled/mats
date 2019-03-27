@@ -1,6 +1,5 @@
-import logging
 from time import sleep
-from random import choice, random
+from random import choice
 
 from ate import Test, TestSequence, ArchiveManager
 

@@ -1,4 +1,3 @@
-import logging
 from time import sleep
 from random import choice, random
 
