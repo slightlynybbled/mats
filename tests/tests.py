@@ -7,16 +7,37 @@ import ate
 
 @pytest.fixture
 def blank_Test():
-    yield ate.Test('test')
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test')
+
+        def execute(self, aborted, is_passing):
+            return None
+
+    yield T()
 
 @pytest.fixture
 def pass_if_Test():
-    yield ate.Test('test', pass_if=True)
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test', pass_if=True)
+
+        def execute(self, aborted, is_passing):
+            return None
+
+    yield T()
 
 
 @pytest.fixture
 def bracketed_Test():
-    yield ate.Test('test', min_value=1.0, max_value=2.0)
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test', min_value=1.0, max_value=2.0)
+
+        def execute(self, aborted, is_passing):
+            return None
+
+    yield T()
 
 
 def test_ate_version():
@@ -47,3 +68,31 @@ def test_Test_creation_with_min_and_max(bracketed_Test):
     assert t._min_value == 1.0
     assert t._max_value == 2.0
 
+
+def test_Test_execute_not_implemented():
+    t = ate.Test('test')
+    with pytest.raises(NotImplementedError):
+        t._execute(aborted=False, is_passing=True)
+
+def test_Test_blank_setup_execute_teardown(blank_Test):
+    t = blank_Test
+
+    # check values before _setup()
+    assert t.is_passing is None
+    assert t.status == 'waiting'
+
+    t._setup(aborted=False, is_passing=True)
+
+    # check values after _setup()
+    assert t.is_passing is True
+    assert t.status == 'running'
+
+    t._execute(aborted=False, is_passing=True)
+
+    assert t.is_passing is True
+    assert t.status == 'running'
+
+    t._teardown(aborted=False, is_passing=True)
+
+    assert t.is_passing is True
+    assert t.status == 'complete'
