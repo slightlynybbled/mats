@@ -1,8 +1,3 @@
-.. ate documentation master file, created by
-   sphinx-quickstart on Mon Mar 25 22:10:46 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Documentation for the Automated Test Environment (ATE)
 ========================================================
 
@@ -29,6 +24,9 @@ consists of a series of ``Tests``.  One complete run through the entire sequence
 is initiated on utilization of the ``start()`` method.
 
 .. image:: images/flow-diagram.jpg
+
+After each test sequence is completed, then there is an opportunity to save data using the
+:ref:`classes_ate_archivemanager` or other object that implements the same ``save()`` method.
 
 .. toctree::
    :maxdepth: 2
