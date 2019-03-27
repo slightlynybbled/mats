@@ -1,4 +1,3 @@
-import logging
 from random import choice
 from time import sleep
 
@@ -7,7 +6,7 @@ from ate import Test, TestSequence, ArchiveManager
 
 class LifeTest(Test):
     def __init__(self):
-        super().__init__(moniker='life test', pass_if=True, loglevel=logging.INFO)
+        super().__init__(moniker='life test', pass_if=True)
 
     def setup(self, aborted, is_passing):
         # do_something_to_setup()
