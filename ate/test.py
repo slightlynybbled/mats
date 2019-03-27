@@ -77,13 +77,15 @@ class Test:
                 self.fail()
             else:
                 self._logger.info(f'"{self.value}" == pass_if requirement "{self._pass_if}"')
-        elif self._min_value is not None:
+
+        if self._min_value is not None:
             if self.value < self._min_value:
                 self._logger.warning(f'"{self.value}" is below the minimum "{self._min_value}", failing')
                 self.fail()
             else:
                 self._logger.info(f'"{self.value}" is above the minimum "{self._min_value}"')
-        elif self._max_value is not None:
+
+        if self._max_value is not None:
             if self.value > self._max_value:
                 self._logger.warning(f'"{self.value}" is above the maximum "{self._max_value}"')
                 self.fail()
