@@ -115,6 +115,12 @@ class Test:
         self.status = 'waiting'
 
     def save_dict(self, data: dict):
+        """
+        Allows a test to save additional data other than that returned by ``execute()``
+
+        :param data: key: value pairs of the data to be stored
+        :return: None
+        """
         self.saved_data = data.copy()
 
     def fail(self):
