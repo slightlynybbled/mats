@@ -7,7 +7,7 @@ python:
   - "3.7"
 
 install:
-  - "pip install pytest flake8 pytest-cov python-coveralls"
+  - "pip install pytest flake8 coverage pytest-cov python-coveralls"
   - "pip install -r requirements.txt"
 
 script:
