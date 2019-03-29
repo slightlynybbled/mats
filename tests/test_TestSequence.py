@@ -73,3 +73,21 @@ def test_TestSequence_run(normal_test_sequence):
         sleep(0.1)
 
     assert ts.in_progress is False
+
+
+def test_TestSequence_run_attempted_interrupt(normal_test_sequence):
+    ts = normal_test_sequence
+
+    assert ts.ready
+    ts.start()
+
+    # wait a small amount of time, ensure that the test sequence has
+    # begun and is in progress
+    sleep(0.1)
+    assert ts.in_progress is True
+    ts.start()
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert ts.in_progress is False
