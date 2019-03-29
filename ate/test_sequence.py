@@ -164,16 +164,31 @@ class TestSequence:
 
         # begin the test sequence
         for test in self._sequence:
+            if self._aborted:
+                break
+
             self.current_test = test.moniker
 
-            test._setup(aborted=self._aborted, is_passing=self.is_passing)
+            test._setup(is_passing=self.is_passing)
 
-            test_result = test._execute(aborted=self._aborted,
-                                        is_passing=self.is_passing)
+            if test.aborted:
+                self._aborted = True
+                break
+
+            test_result = test._execute(is_passing=self.is_passing)
+
+            if test.aborted:
+                self._aborted = True
+                break
+
             if test_result is not None:
                 self._test_data[test.moniker] = test_result
 
-            test._teardown(aborted=self._aborted, is_passing=self.is_passing)
+            test._teardown(is_passing=self.is_passing)
+
+            if test.aborted:
+                self._aborted = True
+                break
 
             if not test._test_is_passing:
                 self._test_data['pass'] = False
