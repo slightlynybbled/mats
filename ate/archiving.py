@@ -119,22 +119,3 @@ class ArchiveManager:
         self._logger.info(f'appending data: "{data_string.strip()}"')
         with open(destination_path, 'a') as f:
             f.write(data_string)
-
-
-if __name__ == '__main__':
-    from time import sleep
-    import pint
-    logging.basicConfig(level=logging.DEBUG)
-    am = ArchiveManager(path='.')
-
-    unit = pint.UnitRegistry()
-
-    sleep(2.0)
-    am.save(point={'a': 1.0, 'b': 2.0, 'c': 3.0 * unit.rpm})
-    am.save(point={'a': 1.0, 'b': 2.0, 'c': 3.0 * unit.rpm})
-    am.save(point={'a': 1.0, 'b': 2.0, 'c': 3.0 * unit.rpm})
-    am.save(point={'a': 1.0, 'b': 2.0, 'c': 3.0 * unit.rpm})
-    am.save(point={'a': 1.0, 'b': 2.0, 'c': 3.0 * unit.rpm})
-
-    sleep(2.0)
-    am.save(point={'aa': 1.0, 'b': 2.0, 'c': 3.0})
