@@ -183,8 +183,8 @@ class TestSequence:
             try:
                 test._setup(is_passing=self.is_passing)
             except Exception as e:
-                self._logger.critical('critical error during '
-                                      'setup of "{test}"')
+                self._logger.critical(f'critical error during '
+                                      f'setup of "{test}"')
                 self.abort()
 
             if test.aborted:
@@ -195,8 +195,8 @@ class TestSequence:
                 test_result = test._execute(is_passing=self.is_passing)
             except Exception as e:
                 test_result = None
-                self._logger.critical('critical error during '
-                                      'execution of "{test}"')
+                self._logger.critical(f'critical error during '
+                                      f'execution of "{test}"')
                 self.abort()
 
             if test.aborted:
@@ -209,8 +209,8 @@ class TestSequence:
             try:
                 test._teardown(is_passing=self.is_passing)
             except Exception as e:
-                self._logger.critical('critical error during '
-                                      'teardown of "{test}"')
+                self._logger.critical(f'critical error during '
+                                      f'teardown of "{test}"')
                 self.abort()
 
             if test.aborted:

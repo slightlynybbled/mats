@@ -50,7 +50,7 @@ class T_failing(ate.Test):
 
 class T_setup_exception(ate.Test):
     def __init__(self):
-        super().__init__('test failing')
+        super().__init__('test setup exception')
 
     def setup(self, is_passing):
         raise ValueError
@@ -61,7 +61,7 @@ class T_setup_exception(ate.Test):
 
 class T_execute_exception(ate.Test):
     def __init__(self):
-        super().__init__('test failing')
+        super().__init__('test execute exception')
 
     def execute(self, is_passing):
         raise ValueError
@@ -69,7 +69,7 @@ class T_execute_exception(ate.Test):
 
 class T_teardown_exception(ate.Test):
     def __init__(self):
-        super().__init__('test failing')
+        super().__init__('test teardown exception')
 
     def execute(self, is_passing):
         return False
