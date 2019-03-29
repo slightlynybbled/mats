@@ -180,25 +180,41 @@ class TestSequence:
 
             self.current_test = test.moniker
 
-            test._setup(is_passing=self.is_passing)
+            try:
+                test._setup(is_passing=self.is_passing)
+            except Exception as e:
+                self._logger.critical('critical error during '
+                                      'setup of "{test}"')
+                self.abort()
 
             if test.aborted:
-                self._aborted = True
+                self.abort()
                 break
 
-            test_result = test._execute(is_passing=self.is_passing)
+            try:
+                test_result = test._execute(is_passing=self.is_passing)
+            except Exception as e:
+                test_result = None
+                self._logger.critical('critical error during '
+                                      'execution of "{test}"')
+                self.abort()
 
             if test.aborted:
-                self._aborted = True
+                self.abort()
                 break
 
             if test_result is not None:
                 self._test_data[test.moniker] = test_result
 
-            test._teardown(is_passing=self.is_passing)
+            try:
+                test._teardown(is_passing=self.is_passing)
+            except Exception as e:
+                self._logger.critical('critical error during '
+                                      'teardown of "{test}"')
+                self.abort()
 
             if test.aborted:
-                self._aborted = True
+                self.abort()
                 break
 
             if not test._test_is_passing:

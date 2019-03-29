@@ -48,6 +48,35 @@ class T_failing(ate.Test):
         return False
 
 
+class T_setup_exception(ate.Test):
+    def __init__(self):
+        super().__init__('test failing')
+
+    def setup(self, is_passing):
+        raise ValueError
+
+    def execute(self, is_passing):
+        return False
+
+
+class T_execute_exception(ate.Test):
+    def __init__(self):
+        super().__init__('test failing')
+
+    def execute(self, is_passing):
+        raise ValueError
+
+
+class T_teardown_exception(ate.Test):
+    def __init__(self):
+        super().__init__('test failing')
+
+    def execute(self, is_passing):
+        return False
+
+    def teardown(self, is_passing):
+        raise ValueError
+
 t1, t2 = T_normal_1(), T_normal_2()
 ta, tf = T_aborted(), T_failing()
 
@@ -180,3 +209,54 @@ def test_TestSequence_auto_run(auto_run_test_sequence):
 
     assert test_counter > 2  # ensure that the test sequence
                              # has been executed multiple times
+
+
+def test_TestSequence_setup_exception():
+    counter = 0
+
+    def on_test_exception():
+        nonlocal counter
+        counter += 1
+
+    ts = ate.TestSequence(sequence=[T_setup_exception()],
+                          teardown=on_test_exception)
+    ts.start()
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert counter == 1
+
+
+def test_TestSequence_execute_exception():
+    counter = 0
+
+    def on_test_exception():
+        nonlocal counter
+        counter += 1
+
+    ts = ate.TestSequence(sequence=[T_execute_exception()],
+                          teardown=on_test_exception)
+    ts.start()
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert counter == 1
+
+
+def test_TestSequence_teardown_exception():
+    counter = 0
+
+    def on_test_exception():
+        nonlocal counter
+        counter += 1
+
+    ts = ate.TestSequence(sequence=[T_teardown_exception()],
+                          teardown=on_test_exception)
+    ts.start()
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert counter == 1
