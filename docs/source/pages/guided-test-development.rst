@@ -68,14 +68,14 @@ First, we import ``ate.Test`` and subclass our custom tests::
         def __init__(self):
             super().__init__(moniker='communications')
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return None
 
     class FlowTest(Test):
         def __init__(self):
             super().__init__(moniker='flow')
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return None
 
 At this point, our tests don't do anything but implement the test class.  If this test
@@ -105,10 +105,10 @@ Next, we actually setup the device in preparation to use it by overriding the
         def __init__(self):
             super().__init__(moniker='communications')
 
-        def setup(self, abort, is_passing):
+        def setup(self, is_passing):
             self._device = Device()
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return None
 
 Now, it is time to acquire a bit of data.
@@ -120,10 +120,10 @@ Now, it is time to acquire a bit of data.
         def __init__(self):
             super().__init__(moniker='communications')
 
-        def setup(self, abort, is_passing):
+        def setup(self, is_passing):
             self._device = Device()
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return self._device.is_communicating
 
 If the test sequence were executed at this point, there would be no pass/fail
@@ -140,10 +140,10 @@ In order to apply criteria, we will use the ``pass_if`` parameter of
         def __init__(self):
             super().__init__(moniker='communications', pass_if=True)
 
-        def setup(self, abort, is_passing):
+        def setup(self, is_passing):
             self._device = Device()
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return self._device.is_communicating
 
 At this point, the test sequence will apply the pass fail condition to the results
@@ -158,17 +158,17 @@ The complete contents of ``automated_test.py``::
         def __init__(self):
             super().__init__(moniker='communications', pass_if=True)
 
-        def setup(self, abort, is_passing):
+        def setup(self, is_passing):
             self._device = Device()
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return self._device.is_communicating
 
     class FlowTest(Test):
         def __init__(self):
             super().__init__(moniker='flow')
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return None
 
 
@@ -194,7 +194,7 @@ we utilize the ``daq.flow`` property to return the flow value on test execution.
       def __init__(self):
           super().__init__(moniker='flow')
 
-      def execute(self, abort, is_passing):
+      def execute(self, is_passing):
           return daq.flow
 
 Next, we will apply minimum and maximum pass/fail criteria to the test:
@@ -206,7 +206,7 @@ Next, we will apply minimum and maximum pass/fail criteria to the test:
         def __init__(self):
             super().__init__(moniker='flow', min_value=5.8, max_value=6.2)
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return daq.flow
 
 Using the ``min_value`` and ``max_value`` parameters allows us to apply quantitative
@@ -227,17 +227,17 @@ Finally, we have our complete test definition!
         def __init__(self):
             super().__init__(moniker='communications', pass_if=True)
 
-        def setup(self, abort, is_passing):
+        def setup(self, is_passing):
             self._device = Device()
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return self._device.is_communicating
 
     class FlowTest(Test):
         def __init__(self):
             super().__init__(moniker='flow', min_value=5.8, max_value=6.2)
 
-        def execute(self, abort, is_passing):
+        def execute(self, is_passing):
             return daq.flow
 
 Create Test Sequence

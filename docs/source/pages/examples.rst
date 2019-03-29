@@ -24,7 +24,7 @@ The standard production test consists of running the same test consistently on e
                              pass_if=True)
 
         # overriding the execute method
-        def execute(self, aborted, is_passing):
+        def execute(self, is_passing):
             # a normal test would set `test_is_passing` based on
             #real conditions, we are implementing a random value
             # here simply for illustrative purposes
@@ -42,18 +42,13 @@ The standard production test consists of running the same test consistently on e
             super().__init__(moniker='pump flow test',
                              min_value=5.6, max_value=6.4)
 
-        def setup(self, aborted, is_passing):
+        def setup(self, is_passing):
             # setting the speed of the pump might be something done
             # in the setup, including the wait time to speed up the
             # pump, which we will simulate with a 2s sleep
             sleep(0.1)
 
-        def execute(self, aborted, is_passing):
-            # user may abort the test based on the `aborted` or may
-            # continue the test, at the author's discretion
-            if aborted:
-                return None
-
+        def execute(self, is_passing):
             # simulate long-running process, such as several flow
             # measurement/averaging cycles
             sleep(0.1)
@@ -63,7 +58,7 @@ The standard production test consists of running the same test consistently on e
             # of the test
             return flow
 
-        def teardown(self, aborted, is_passing):
+        def teardown(self, is_passing):
             # again, simulating another long-running process...
             sleep(0.1)
 
@@ -108,7 +103,7 @@ This test is similar to the above production test.  We use the setup method to p
                              pass_if=True)
 
         # overriding the execute method
-        def execute(self, aborted, is_passing):
+        def execute(self, is_passing):
             # a normal test would set `test_is_passing` based on
             # real conditions, we are implementing a random value
             # here simply for illustrative purposes
@@ -125,7 +120,7 @@ This test is similar to the above production test.  We use the setup method to p
         def __init__(self):
             super().__init__(moniker='burnin', min_value=5.6, max_value=6.4)
 
-        def setup(self, aborted, is_passing):
+        def setup(self, is_passing):
             # just wait for a while, maybe display a bit of a countdown...
             seconds = 0
             while seconds < 10:
@@ -133,7 +128,7 @@ This test is similar to the above production test.  We use the setup method to p
                 self._logger.info(f'burning in count: {seconds}s')
                 sleep(1.0)
 
-        def execute(self, aborted, is_passing):
+        def execute(self, is_passing):
             # check to see if the device is still communicating
             is_communicating = choice([True] * 3 + [False])
 
@@ -175,11 +170,11 @@ A test that simulates on-off cycles and keeps chugging... forever... and ever...
         def __init__(self):
             super().__init__(moniker='life test', pass_if=True)
 
-        def setup(self, aborted, is_passing):
+        def setup(self, is_passing):
             # do_something_to_setup()
             sleep(0.1)
 
-        def execute(self, aborted, is_passing):
+        def execute(self, is_passing):
             sleep(0.25)
 
             # simulate the collection of some data, then return it so
@@ -188,7 +183,7 @@ A test that simulates on-off cycles and keeps chugging... forever... and ever...
 
             return result
 
-        def teardown(self, aborted, is_passing):
+        def teardown(self, is_passing):
             # do_something_to_teardown()
             sleep(0.1)
 

@@ -8,19 +8,20 @@ class LifeTest(Test):
     def __init__(self):
         super().__init__(moniker='life test', pass_if=True)
 
-    def setup(self, aborted, is_passing):
+    def setup(self, is_passing):
         # do_something_to_setup()
         sleep(0.1)
 
-    def execute(self, aborted, is_passing):
+    def execute(self, is_passing):
         sleep(0.25)
 
-        # simulate the collection of some data, then return it so that the 'pass-if' condition may be applied
+        # simulate the collection of some data, then return it
+        # so that the 'pass-if' condition may be applied
         result = choice([True] * 2 + [False])
 
         return result
 
-    def teardown(self, aborted, is_passing):
+    def teardown(self, is_passing):
         # do_something_to_teardown()
         sleep(0.1)
 
