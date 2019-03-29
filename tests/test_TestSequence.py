@@ -96,6 +96,13 @@ def aborted_test_sequence():
 
 
 @pytest.fixture
+def failed_test_sequence():
+    global test_counter
+    yield ate.TestSequence(sequence=[t1, tf])
+    test_counter = 0
+
+
+@pytest.fixture
 def auto_test_sequence():
     global test_counter
     yield ate.TestSequence(sequence=[t1, t2], auto_start=True)
@@ -183,6 +190,19 @@ def test_TestSequence_run_aborted(aborted_test_sequence):
     assert aborted_test.aborted is True
 
     assert ts.is_aborted is True
+
+
+def test_TestSequence_run_failed(failed_test_sequence):
+    ts = failed_test_sequence
+
+    assert ts.ready
+    ts.start()
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert ts.is_passing is False
+    assert ts.is_aborted is False
 
 
 def test_TestSequence_auto_start(auto_test_sequence):
