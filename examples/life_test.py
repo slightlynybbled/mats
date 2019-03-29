@@ -33,3 +33,6 @@ if __name__ == '__main__':
         auto_run=True,          # run the lifetest automatically after every iteration
         auto_start=True         # automatically start the sequence
     )
+
+    sleep(5.0)
+    ts.abort()
