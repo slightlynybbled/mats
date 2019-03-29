@@ -29,6 +29,7 @@ class TestSequence:
     def __init__(self, sequence: Sequence,
                  archive_manager: ArchiveManager = None,
                  auto_start=False, auto_run=False, callback: callable = None,
+                 setup: callable = None, teardown: callable = None,
                  loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
@@ -37,6 +38,8 @@ class TestSequence:
         self._archive_manager = archive_manager
         self._auto_run = auto_run
         self._callback = callback
+        self._setup = setup
+        self._teardown = teardown
 
         self.in_progress = False
         self._aborted = False
@@ -164,6 +167,9 @@ class TestSequence:
         for test in self._sequence:
             test.reset()
 
+        if self._setup is not None:
+            self._setup()
+
         # begin the test sequence
         for test in self._sequence:
             if self._aborted:
@@ -209,6 +215,9 @@ class TestSequence:
 
         self._logger.info('test sequence complete')
         self._logger.debug(f'test results: {self._test_data}')
+
+        if self._teardown is not None:
+            self._teardown()
 
         if self._callback is not None:
             self._logger.info(f'executing user-supplied callback function '
