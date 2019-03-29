@@ -49,6 +49,8 @@ class TestSequence:
         self.current_test = None
 
         if auto_start:
+            self._logger.info('"auto_start" flag is set, '
+                              'beginning test sequence')
             self.start()
 
     def __getitem__(self, test_element: (str, Test)):
