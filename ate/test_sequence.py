@@ -213,7 +213,11 @@ class TestSequence:
                               f'"{self._callback}"')
             self._callback(self._test_data)
 
-        if self._auto_run and not self._aborted:
-            self._logger.info('"auto_run" flag is set, looping')
-            thread = Thread(target=self._run_test)
-            thread.start()
+        if self._auto_run:
+            if not self._aborted:
+                self._logger.info('"auto_run" flag is set, looping')
+                thread = Thread(target=self._run_test)
+                thread.start()
+            else:
+                self._logger.warning('"auto_run" flag is set, but the test '
+                                     'sequence was prematurely aborted')
