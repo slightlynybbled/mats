@@ -6,6 +6,8 @@
 
 [![Build Status](https://travis-ci.org/slightlynybbled/ate.svg?branch=master)](https://travis-ci.org/slightlynybbled/ate)
 
+[![Coverage Status](https://coveralls.io/repos/github/slightlynybbled/ate/badge.svg?branch=master)](https://coveralls.io/github/slightlynybbled/ate?branch=master)
+
 `ATE` is a hardware-oriented test environment intended for production testing in a manufacturing 
 environment.  The `ATE` framework is a test template and test sequence executor only, so there 
 are no considerations for user interaction, meaning that you need to supply your own "start" button.
