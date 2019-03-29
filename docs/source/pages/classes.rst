@@ -7,7 +7,7 @@ Classes
 --------
 
 .. autoclass:: ate.Test
-   :members: setup, execute, teardown
+   :members: setup, execute, teardown, abort, is_passing
 
 .. _classes_ate_testsequence:
 
