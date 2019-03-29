@@ -141,6 +141,7 @@ class TestSequence:
                                  'currently in progress')
             return
 
+        self.in_progress = True
         thread = Thread(target=self._run_test)
         thread.start()
 
@@ -152,7 +153,6 @@ class TestSequence:
         :return: None
         """
         self._logger.info('-' * 80)
-        self.in_progress = True
         self._aborted = False
         self._test_data = {
             'datetime': str(datetime.now()),

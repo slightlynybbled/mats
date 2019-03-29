@@ -47,6 +47,9 @@ class Test:
     def is_passing(self):
         return self._test_is_passing
 
+    def abort(self):
+        self.aborted = True
+
     def _setup(self, is_passing):
         """
         Pre-execution method used for logging and housekeeping.
@@ -73,6 +76,11 @@ class Test:
         point, else False
         :return:
         """
+        self.status = 'running' if not self.aborted else 'aborted'
+        if self.aborted:
+            self._logger.warning('aborted, not executing')
+            return
+
         self._logger.info(f'executing test "{self.moniker}"')
 
         self.value = self.execute(is_passing=is_passing)
@@ -118,6 +126,11 @@ class Test:
         this point, else False
         :return:
         """
+        if self.aborted:
+            self.status = 'aborted'
+            self._logger.warning('aborted, not executing')
+            return
+
         self._logger.info(f'tearing down "{self.moniker}"')
 
         self.teardown(is_passing)
