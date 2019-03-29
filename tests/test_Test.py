@@ -1,5 +1,6 @@
 """
-Automated test suite for the Automated Test Environment
+Automated test suite for the Automated Test Environment.  This file focuses
+on testing the ``Test`` class.
 """
 import pytest
 import ate
