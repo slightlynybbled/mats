@@ -5,12 +5,16 @@ on testing the ``ArchiveManager`` class.
 from pathlib import Path
 from os import remove
 
+import pint
 import pytest
+
 import ate
+
+unit = pint.UnitRegistry()
 
 
 data_point_1 = {'t1': 10, 't2': 10.0, 't3': 'string 10'}
-data_point_2 = {'t1': 10, 't2': 10.0, 't3': 'string 10', 't4': 'another str'}
+data_point_2 = {'t1': 10, 't2': 10.0, 't3': 'string 10', 't4': 1 * unit.rpm}
 
 
 @pytest.fixture
