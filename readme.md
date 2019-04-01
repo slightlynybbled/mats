@@ -17,7 +17,7 @@ Checkout the [documentation](https://ate.readthedocs.io/en/latest/index.html) fo
 There is a ready-to-run GUI using tkinter over at the [TkATE](https://github.com/slightlynybbled/tkate).  
 This is very useful to get a manufacturing test up quickly and easily.  Enjoy!
 
-# Contribution Guidelines
+## Contribution Guidelines
 
 Contribution guidelines are outlined in the [documentation](https://ate.readthedocs.io/en/latest/pages/contribution_guidelines.html).
 
