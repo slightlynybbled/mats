@@ -37,6 +37,9 @@ class TestSequence:
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
+        if not self._validate_sequence(sequence):
+            raise ValueError('test monikers are not uniquely identified')
+
         self._sequence = sequence
         self._archive_manager = archive_manager
         self._auto_run = auto_run
@@ -128,6 +131,14 @@ class TestSequence:
         """
 
         return self._aborted
+
+    def _validate_sequence(self, sequence: List[Test]):
+        moniker_set = set([t.moniker for t in sequence])
+
+        if len(moniker_set) != len(sequence):
+            return False
+
+        return True
 
     def abort(self):
         """

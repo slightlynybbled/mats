@@ -124,6 +124,12 @@ def test_TestSequence_creation(normal_test_sequence):
     assert len(ts.tests) == 2
 
 
+def test_TestSequence_duplicate_monikers():
+    with pytest.raises(ValueError):
+        ate.TestSequence(sequence=[t1, t1, t1])
+
+
+
 def test_TestSequence_retrieve_by_moniker(normal_test_sequence):
     ts = normal_test_sequence
     test = ts['test 1']
