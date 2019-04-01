@@ -66,6 +66,49 @@ def bracketed_Test():
     yield T()
 
 
+@pytest.fixture
+def aborted_in_setup_Test():
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test')
+
+        def setup(self, is_passing):
+            self.abort()
+
+        def execute(self, is_passing):
+            return None
+
+    yield T()
+
+
+@pytest.fixture
+def aborted_in_execute_Test():
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test')
+
+        def execute(self, is_passing):
+            self.abort()
+            return None
+
+    yield T()
+
+
+@pytest.fixture
+def aborted_in_teardown_Test():
+    class T(ate.Test):
+        def __init__(self):
+            super().__init__('test')
+
+        def execute(self, is_passing):
+            return None
+
+        def teardown(self, is_passing):
+            self.abort()
+
+    yield T()
+
+
 def test_ate_version():
     assert ate.__version__
 
@@ -223,3 +266,57 @@ def test_Test_max_should_fail(bracketed_Test):
     t._execute(is_passing=True)
 
     assert t.is_passing is False
+
+
+def test_Test_aborted_in_setup(aborted_in_setup_Test):
+    t = aborted_in_setup_Test
+    t._setup(is_passing=True)
+    assert t.aborted is True
+
+    t._execute(is_passing=False)
+    assert t.aborted is True
+
+    t._teardown(is_passing=False)
+    assert t.aborted is True
+
+
+def test_Test_aborted_in_execute(aborted_in_execute_Test):
+    t = aborted_in_execute_Test
+
+    t._setup(is_passing=True)
+    assert t.aborted is False
+
+    t._execute(is_passing=True)
+    assert t.aborted is True
+
+    t._teardown(is_passing=True)
+    assert t.aborted is True
+
+
+def test_Test_aborted_in_teardown(aborted_in_teardown_Test):
+    t = aborted_in_teardown_Test
+    t._setup(is_passing=True)
+    assert t.aborted is False
+
+    t._execute(is_passing=True)
+    assert t.aborted is False
+
+    t._teardown(is_passing=True)
+    assert t.aborted is True
+
+
+def test_Test_adding_extra_data(bracketed_Test):
+    t = bracketed_Test
+
+    def execute(is_passing):
+        t.save_dict({'a': 1.0})
+        return 1.99999
+
+    t.execute = execute
+
+    t._setup(is_passing=True)
+    t._execute(is_passing=True)
+    t._teardown(is_passing=True)
+
+    assert t.is_passing is True
+    assert t.saved_data['a'] == 1.0
