@@ -37,6 +37,13 @@ class TestSequence:
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
+        # protection just in case one or more of the instances contained
+        # within the sequence were not instantiated properly, this will
+        # instantiate them
+        for i, test in enumerate(sequence):
+            if not isinstance(test, Test):
+                sequence[i] = test()
+
         if not self._validate_sequence(sequence):
             raise ValueError('test monikers are not uniquely identified')
 

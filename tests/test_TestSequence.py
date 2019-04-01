@@ -77,6 +77,7 @@ class T_teardown_exception(ate.Test):
     def teardown(self, is_passing):
         raise ValueError
 
+
 t1, t2 = T_normal_1(), T_normal_2()
 ta, tf = T_aborted(), T_failing()
 
@@ -128,6 +129,11 @@ def test_TestSequence_duplicate_monikers():
     with pytest.raises(ValueError):
         ate.TestSequence(sequence=[t1, t1, t1])
 
+
+def test_TestSequence_uninstantiated_Tests():
+    ate.TestSequence(sequence=[
+        T_normal_1, T_normal_2
+    ])
 
 
 def test_TestSequence_retrieve_by_moniker(normal_test_sequence):
