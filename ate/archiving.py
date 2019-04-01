@@ -76,7 +76,7 @@ class ArchiveManager:
                     # convert from pint-style values
                     data.append(f'{value.magnitude: .03f}')
                 except AttributeError:
-                    data.append(str(value)) # this is the catch-all
+                    data.append(str(value))  # this is the catch-all
 
         data_string = f'{self._delimiter.join(data)}\n'
 
