@@ -1,0 +1,6 @@
+coverage
+flake8
+pint
+pytest
+pytest-cov
+python-coveralls

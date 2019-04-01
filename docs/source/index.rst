@@ -35,6 +35,7 @@ After each test sequence is completed, then there is an opportunity to save data
    pages/classes
    pages/guided-test-development
    pages/examples
+   pages/contribution_guidelines.rst
 
 Indices and tables
 ==================
