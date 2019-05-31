@@ -1,6 +1,7 @@
 from datetime import datetime
 import logging
 from threading import Thread
+import traceback
 from typing import List
 
 from ate.test import Test
@@ -203,7 +204,9 @@ class TestSequence:
             except Exception as e:
                 self._logger.critical(f'critical error during '
                                       f'setup of "{test}": {e}')
+                self._logger.critical(str(traceback.format_exc()))
                 self.abort()
+                test.fail()
 
             if test.aborted:
                 self.abort()
@@ -215,10 +218,13 @@ class TestSequence:
                 test_result = None
                 self._logger.critical(f'critical error during '
                                       f'execution of "{test}": {e}')
+                self._logger.critical(str(traceback.format_exc()))
                 self.abort()
+                test.fail()
 
             if test.aborted:
                 self.abort()
+                test.fail()
                 break
 
             if test_result is not None:
@@ -229,7 +235,9 @@ class TestSequence:
             except Exception as e:
                 self._logger.critical(f'critical error during '
                                       f'teardown of "{test}": {e}')
+                self._logger.critical(str(traceback.format_exc()))
                 self.abort()
+                test.fail()
 
             if test.aborted:
                 self.abort()

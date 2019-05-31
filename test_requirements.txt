@@ -4,3 +4,4 @@ pint
 pytest
 pytest-cov
 python-coveralls
+wheel
