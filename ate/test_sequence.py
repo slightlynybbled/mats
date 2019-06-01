@@ -26,8 +26,8 @@ class TestSequence:
     callback will be required to accept one parameter, which is the \
     dictionary of values collected over that test iteration
     :param setup: function to call before the test sequence
-    :param teardown: function to call after the test sequence is complete, even \
-    if there was a problem; common to have safety issues addressed here
+    :param teardown: function to call after the test sequence is complete, \
+    even if there was a problem; common to have safety issues addressed here
     :param loglevel: the logging level
     """
     def __init__(self, sequence: Sequence,
