@@ -4,4 +4,5 @@ pint
 pytest
 pytest-cov
 python-coveralls
+sphinx
 wheel
