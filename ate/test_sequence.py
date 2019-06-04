@@ -140,6 +140,15 @@ class TestSequence:
 
         return self._aborted
 
+    @property
+    def failed_tests(self):
+        """
+        Return a list of the tests which failed.
+
+        :return: list of tests that failed
+        """
+        return self._test_data['failed']
+
     def _validate_sequence(self, sequence: List[Test]):
         moniker_set = set([t.moniker for t in sequence])
 
