@@ -1,6 +1,3 @@
-Documentation for the Automated Test Environment (ATE)
-========================================================
-
 Introduction
 --------------
 
@@ -23,7 +20,7 @@ There are two primary classes to pay attention to within the ATE:
 consists of a series of ``Tests``.  One complete run through the entire sequence
 is initiated on utilization of the ``start()`` method.
 
-.. image:: images/flow-diagram.jpg
+.. image:: _static/flow-diagram.jpg
 
 After each test sequence is completed, then there is an opportunity to save data using the
 :ref:`classes_ate_archivemanager` or other object that implements the same ``save()`` method.
