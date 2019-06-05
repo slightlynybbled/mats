@@ -153,12 +153,13 @@ class TestSequence:
     @property
     def progress(self):
         """
-        Returns a tuple containing (current_test_number, total_tests) in order
-        to give an indication of the progress of the test sequence.
+        Returns a tuple containing (current_test_number, total_tests) in \
+        order to give an indication of the progress of the test sequence.
 
         :return: tuple containing (current_test_number, total_tests)
         """
-        return self._current_test_number, len([test.moniker for test in self._sequence])
+        return (self._current_test_number,
+                len([test.moniker for test in self._sequence]))
 
     def _validate_sequence(self, sequence: List[Test]):
         moniker_set = set([t.moniker for t in sequence])
