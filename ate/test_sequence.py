@@ -64,6 +64,7 @@ class TestSequence:
         }
 
         self.current_test = None
+        self._current_test_number = 0
 
         if auto_start:
             self._logger.info('"auto_start" flag is set, '
@@ -149,6 +150,16 @@ class TestSequence:
         """
         return self._test_data['failed']
 
+    @property
+    def progress(self):
+        """
+        Returns a tuple containing (current_test_number, total_tests) in order
+        to give an indication of the progress of the test sequence.
+
+        :return: tuple containing (current_test_number, total_tests)
+        """
+        return self._current_test_number, len([test.moniker for test in self._sequence])
+
     def _validate_sequence(self, sequence: List[Test]):
         moniker_set = set([t.moniker for t in sequence])
 
@@ -195,6 +206,9 @@ class TestSequence:
             'pass': True,
             'failed': []
         }
+
+        self._current_test_number = 0
+
         for test in self._sequence:
             test.reset()
 
@@ -202,7 +216,9 @@ class TestSequence:
             self._setup()
 
         # begin the test sequence
-        for test in self._sequence:
+        for i, test in enumerate(self._sequence):
+            self._current_test_number = i
+
             if self._aborted:
                 break
 
