@@ -205,6 +205,13 @@ def test_TestSequence_run_aborted(aborted_test_sequence):
 
 
 def test_TestSequence_run_failed(failed_test_sequence):
+    """
+    Ensures that a test sequence that fails will cause the test sequence \
+    to fail but not indicate aborted.
+
+    :param failed_test_sequence:
+    :return:
+    """
     ts = failed_test_sequence
 
     assert ts.ready
@@ -218,10 +225,19 @@ def test_TestSequence_run_failed(failed_test_sequence):
 
 
 def test_TestSequence_auto_start(auto_test_sequence):
+    """
+    Test to ensure that the auto-start flag will actually start and run the \
+    test sequence.
+
+    :param auto_test_sequence:
+    :return: None
+    """
     ts = auto_test_sequence
 
     assert ts.in_progress is True
+    assert ts.ready is False
 
+    # wait for test to complete
     while ts.in_progress is True:
         sleep(0.1)
 
@@ -229,6 +245,13 @@ def test_TestSequence_auto_start(auto_test_sequence):
 
 
 def test_TestSequence_auto_run(auto_run_test_sequence):
+    """
+    Ensures that the auto-run test sequence is executed multiple times until \
+    the test sequence is aborted.
+
+    :param auto_run_test_sequence:
+    :return: None
+    """
     global test_counter
     assert test_counter == 0
 
@@ -239,11 +262,19 @@ def test_TestSequence_auto_run(auto_run_test_sequence):
 
     ts.abort()
 
-    assert test_counter > 2  # ensure that the test sequence
-                             # has been executed multiple times
+    # ensure that the test sequence
+    # has been executed multiple times
+    assert test_counter > 2
 
 
 def test_TestSequence_setup_exception():
+    """
+    Tests the case in which there is some exception that occurs during \
+    the setup phase of the test.  THe test should execute the teardown
+    sequence.
+
+    :return: None
+    """
     counter = 0
 
     def on_test_exception():
@@ -261,6 +292,13 @@ def test_TestSequence_setup_exception():
 
 
 def test_TestSequence_execute_exception():
+    """
+    Tests the case in which there is some exception that occurs during \
+    the execution phase of the test.  THe test should execute the teardown \
+    sequence.
+
+    :return: None
+    """
     counter = 0
 
     def on_test_exception():
@@ -278,6 +316,13 @@ def test_TestSequence_execute_exception():
 
 
 def test_TestSequence_teardown_exception():
+    """
+    Tests the case in which there is some exception that occurs during \
+    the teardown phase of the test.  THe test should execute the teardown \
+    sequence.
+
+    :return: None
+    """
     counter = 0
 
     def on_test_exception():
