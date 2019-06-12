@@ -7,7 +7,7 @@ Classes
 --------
 
 .. autoclass:: ate.Test
-   :members: setup, execute, teardown, abort, is_passing
+   :members:
 
 .. _classes_ate_testsequence:
 
@@ -15,7 +15,7 @@ Classes
 ----------------
 
 .. autoclass:: ate.TestSequence
-   :members: tests, test_names, ready, is_aborted, is_passing, start, abort
+   :members:
 
 .. _classes_ate_archivemanager:
 
@@ -23,4 +23,4 @@ Classes
 ------------------
 
 .. autoclass:: ate.ArchiveManager
-   :members: save
+   :members:
