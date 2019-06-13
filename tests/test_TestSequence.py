@@ -172,6 +172,14 @@ def test_TestSequence_run(normal_test_sequence):
 
 
 def test_TestSequence_run_attempted_interrupt(normal_test_sequence):
+    """
+    Testing to ensure that an interrupted test sequence is not actually \
+    interrupted.  This test should clearly show in the coverage and in the \
+    logging messages.
+
+    :param normal_test_sequence:
+    :return:
+    """
     ts = normal_test_sequence
 
     assert ts.ready
@@ -190,6 +198,13 @@ def test_TestSequence_run_attempted_interrupt(normal_test_sequence):
 
 
 def test_TestSequence_run_aborted(aborted_test_sequence):
+    """
+    Testing to ensure that the test is aborted, the test indicates that it is \
+    aborted and that the test sequence indicates that it is aborted.
+
+    :param aborted_test_sequence:
+    :return:
+    """
     ts = aborted_test_sequence
 
     assert ts.ready
