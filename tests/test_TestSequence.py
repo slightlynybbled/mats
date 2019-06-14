@@ -154,8 +154,14 @@ def test_TestSequence_retrieve_by_integer_should_error(normal_test_sequence):
         return ts[0]
 
 
-def test_TestSequence_run(normal_test_sequence):
-    ts = normal_test_sequence
+def test_TestSequence_run():
+    """
+    Checking a normal test sequence.
+
+    :param normal_test_sequence:
+    :return:
+    """
+    ts = ate.TestSequence(sequence=[t1, t2])
 
     assert ts.ready
     ts.start()
@@ -171,16 +177,15 @@ def test_TestSequence_run(normal_test_sequence):
     assert ts.in_progress is False
 
 
-def test_TestSequence_run_attempted_interrupt(normal_test_sequence):
+def test_TestSequence_run_attempted_interrupt():
     """
     Testing to ensure that an interrupted test sequence is not actually \
     interrupted.  This test should clearly show in the coverage and in the \
     logging messages.
 
-    :param normal_test_sequence:
     :return:
     """
-    ts = normal_test_sequence
+    ts = ate.TestSequence(sequence=[t1, t2])
 
     assert ts.ready
     ts.start()
@@ -195,6 +200,31 @@ def test_TestSequence_run_attempted_interrupt(normal_test_sequence):
         sleep(0.1)
 
     assert ts.in_progress is False
+
+
+def test_TestSequence_run_with_callback():
+    """
+    Testing to ensure that the callback is executed during a normal test \
+    sequence.
+
+    :param normal_test_sequence:
+    :return:
+    """
+    count = 0
+
+    def increment_count(data):
+        nonlocal count
+        count += 1
+
+    ts = ate.TestSequence(
+        sequence=[t1, t2],
+        callback=increment_count)
+    ts.start()
+
+    while(ts.in_progress):
+        sleep(0.1)
+
+    assert count == 1
 
 
 def test_TestSequence_run_aborted(aborted_test_sequence):
