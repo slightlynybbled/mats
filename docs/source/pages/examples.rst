@@ -1,11 +1,14 @@
 Examples
 ============
 
-Standard Production Test
+.. _examples_simple_production_test:
+
+Simple Production Test
 ---------------------------
 
-The standard production test consists of running the same test consistently on every ``start()`` of the
-:ref:`classes_ate_testsequence`.
+The standard production test consists of running the same test consistently on
+every ``start()`` of the :ref:`classes_ate_testsequence`.  In this sequence,
+the hardware is allocated on-the-fly within each test.
 
 .. code-block:: python
 
@@ -14,25 +17,31 @@ The standard production test consists of running the same test consistently on e
 
     from ate import Test, TestSequence, ArchiveManager
 
+    from my_lib import Device, FlowSensor
 
-    # The CommunicationTest class shows the minimum test structure
-    # that might be reasonably be implemented.  Only the `execute()`
-    # method is implemented.
+
+    # A simple communications check with a device
     class CommunicationTest(Test):
         def __init__(self):
             super().__init__(moniker='communications test',
                              pass_if=True)
 
+        def setup(self, is_passing):
+            # initialize hardware communications
+            self._device = Device()
+
+            # wait for communication to begin...
+            while not self._device.is_communicating:
+                sleep(0.1)
+
         # overriding the execute method
         def execute(self, is_passing):
-            # a normal test would set `test_is_passing` based on
-            #real conditions, we are implementing a random value
-            # here simply for illustrative purposes
-            is_communicating = choice([True] * 3 + [False])
+            # should return a the results of the test
+            return self._device.is_communicating
 
-            # should return a (key, value) which are the results
-            # of the test
-            return is_communicating
+        def teardown(self, is_passing):
+            # de-allocate the hardware
+            self._device.close()
 
 
     # The FlowTest implements the `setup' and `teardown` methods
@@ -43,24 +52,19 @@ The standard production test consists of running the same test consistently on e
                              min_value=5.6, max_value=6.4)
 
         def setup(self, is_passing):
-            # setting the speed of the pump might be something done
-            # in the setup, including the wait time to speed up the
-            # pump, which we will simulate with a 2s sleep
-            sleep(0.1)
+            # initialize hardware
+            self._flow_sensor = FlowSensor()
+
+            # wait for flow sensor to begin pulling values
+            while self._flow_sensor.value is not None:
+                sleep(0.1)
 
         def execute(self, is_passing):
-            # simulate long-running process, such as several flow
-            # measurement/averaging cycles
-            sleep(0.1)
-            flow = 5.5 + random()
-
-            # should return a (key, value) tuple which are the results
-            # of the test
-            return flow
+            return self._flow_sensor.value
 
         def teardown(self, is_passing):
             # again, simulating another long-running process...
-            sleep(0.1)
+            self._flow_sensor.close()
 
 
     if __name__ == '__main__':
@@ -80,6 +84,79 @@ The standard production test consists of running the same test consistently on e
         for _ in range(3):
             ts.start()
             sleep(2.0)
+
+.. _examples_simple_production_test_revisited:
+
+Simple Production Test (revisited)
+----------------------------------
+
+The production test could also be done by allocating the hardware at the beginning
+of the sequence and realizing some time-saving on each test execution of the test.
+
+.. code-block:: python
+
+    from time import sleep
+    from random import choice, random
+
+    from ate import Test, TestSequence, ArchiveManager
+
+    from my_lib import Device, FlowSensor
+
+
+    # A simple communications check with a device
+    class CommunicationTest(Test):
+        def __init__(self, device: Device):
+            super().__init__(moniker='communications test',
+                             pass_if=True)
+
+            self._device = device
+
+        # overriding the execute method
+        def execute(self, is_passing):
+            # should return a the results of the test
+            return self._device.is_communicating
+
+
+    class FlowTest(Test):
+        def __init__(self, flow_sensor: FlowSensor):
+            super().__init__(moniker='pump flow test',
+                             min_value=5.6, max_value=6.4)
+
+            self._flow_sensor = flow_sensor
+
+        def execute(self, is_passing):
+            return self._flow_sensor.value
+
+
+    if __name__ == '__main__':
+        # hardware allocated one time during program initialization, no
+        # need to re-allocate during CommunicationTest and FlowTest
+        device = Device()
+        flow_sensor = FlowSensor()
+
+        while not device.is_communicating and flow_sensor.value is not None:
+            sleep(0.1)
+
+        # create the sequence of test objects
+        sequence = [
+            CommunicationTest(device=device),
+            FlowTest(flow_sensor=flow_sensor)
+        ]
+
+        # create the archive manager
+        am = ArchiveManager()
+
+        # create the test sequence using the sequence and archive manager
+        # objects from above
+        ts = TestSequence(sequence=sequence,
+                          archive_manager=am,
+                          auto_run=False)
+
+        # start the test as many times as you wish!
+        for _ in range(3):
+            ts.start()
+            sleep(2.0)
+
 
 Production Test with Burn-In
 -----------------------------
