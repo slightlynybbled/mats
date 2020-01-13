@@ -1,5 +1,5 @@
 from setuptools import setup
-from ate import __version__
+from mats import __version__
 
 # read the long description
 with open('readme.md', 'r') as f:

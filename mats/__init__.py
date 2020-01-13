@@ -1,10 +1,10 @@
 import coloredlogs
 import logging
 
-from ate.test import Test
-from ate.test_sequence import TestSequence
-from ate.archiving import ArchiveManager
-from ate.version import __version__
+from mats.test import Test
+from mats.test_sequence import TestSequence
+from mats.archiving import ArchiveManager
+from mats.version import __version__
 
 __all__ = ['Test', 'TestSequence', 'ArchiveManager', '__version__']
 

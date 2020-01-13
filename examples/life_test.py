@@ -1,7 +1,7 @@
 from random import choice
 from time import sleep
 
-from ate import Test, TestSequence, ArchiveManager
+from mats import Test, TestSequence, ArchiveManager
 
 
 class LifeTest(Test):

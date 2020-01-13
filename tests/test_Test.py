@@ -3,12 +3,12 @@ Automated test suite for the Automated Test Environment.  This file focuses
 on testing the ``Test`` class.
 """
 import pytest
-import ate
+import mats
 
 
 @pytest.fixture
 def blank_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test')
 
@@ -20,7 +20,7 @@ def blank_Test():
 
 @pytest.fixture
 def pass_if_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test', pass_if=True)
 
@@ -32,7 +32,7 @@ def pass_if_Test():
 
 @pytest.fixture
 def min_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test', min_value=1.0)
 
@@ -44,7 +44,7 @@ def min_Test():
 
 @pytest.fixture
 def max_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test', max_value=2.0)
 
@@ -56,7 +56,7 @@ def max_Test():
 
 @pytest.fixture
 def bracketed_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test', min_value=1.0, max_value=2.0)
 
@@ -68,7 +68,7 @@ def bracketed_Test():
 
 @pytest.fixture
 def aborted_in_setup_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test')
 
@@ -83,7 +83,7 @@ def aborted_in_setup_Test():
 
 @pytest.fixture
 def aborted_in_execute_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test')
 
@@ -96,7 +96,7 @@ def aborted_in_execute_Test():
 
 @pytest.fixture
 def aborted_in_teardown_Test():
-    class T(ate.Test):
+    class T(mats.Test):
         def __init__(self):
             super().__init__('test')
 
@@ -110,11 +110,11 @@ def aborted_in_teardown_Test():
 
 
 def test_ate_version():
-    assert ate.__version__
+    assert mats.__version__
 
 
 def test_Test_execute_not_implemented():
-    t = ate.Test('test')
+    t = mats.Test('test')
     with pytest.raises(NotImplementedError):
         t._execute(is_passing=True)
 

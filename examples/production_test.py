@@ -1,7 +1,7 @@
 from time import sleep
 from random import choice, random
 
-from ate import Test, TestSequence, ArchiveManager
+from mats import Test, TestSequence, ArchiveManager
 
 
 # The CommunicationTest class shows the minimum test structure that might

@@ -4,13 +4,13 @@ on testing the ``TestSequence`` class.
 """
 from time import sleep
 import pytest
-import ate
+import mats
 
 
 test_counter = 0  # use this to keep track of some test execution counts
 
 
-class T_normal_1(ate.Test):
+class T_normal_1(mats.Test):
     def __init__(self):
         super().__init__('test 1')
 
@@ -23,7 +23,7 @@ class T_normal_1(ate.Test):
         test_counter += 1
 
 
-class T_normal_2(ate.Test):
+class T_normal_2(mats.Test):
     def __init__(self):
         super().__init__('test 2')
 
@@ -31,7 +31,7 @@ class T_normal_2(ate.Test):
         return None
 
 
-class T_aborted(ate.Test):
+class T_aborted(mats.Test):
     def __init__(self):
         super().__init__('test aborting')
 
@@ -40,7 +40,7 @@ class T_aborted(ate.Test):
         return None
 
 
-class T_failing(ate.Test):
+class T_failing(mats.Test):
     def __init__(self):
         super().__init__('test failing', pass_if=True)
 
@@ -48,7 +48,7 @@ class T_failing(ate.Test):
         return False
 
 
-class T_setup_exception(ate.Test):
+class T_setup_exception(mats.Test):
     def __init__(self):
         super().__init__('test setup exception')
 
@@ -59,7 +59,7 @@ class T_setup_exception(ate.Test):
         return False
 
 
-class T_execute_exception(ate.Test):
+class T_execute_exception(mats.Test):
     def __init__(self):
         super().__init__('test execute exception')
 
@@ -67,7 +67,7 @@ class T_execute_exception(ate.Test):
         raise ValueError
 
 
-class T_teardown_exception(ate.Test):
+class T_teardown_exception(mats.Test):
     def __init__(self):
         super().__init__('test teardown exception')
 
@@ -85,35 +85,35 @@ ta, tf = T_aborted(), T_failing()
 @pytest.fixture
 def normal_test_sequence():
     global test_counter
-    yield ate.TestSequence(sequence=[t1, t2])
+    yield mats.TestSequence(sequence=[t1, t2])
     test_counter = 0
 
 
 @pytest.fixture
 def aborted_test_sequence():
     global test_counter
-    yield ate.TestSequence(sequence=[ta])
+    yield mats.TestSequence(sequence=[ta])
     test_counter = 0
 
 
 @pytest.fixture
 def failed_test_sequence():
     global test_counter
-    yield ate.TestSequence(sequence=[t1, tf])
+    yield mats.TestSequence(sequence=[t1, tf])
     test_counter = 0
 
 
 @pytest.fixture
 def auto_test_sequence():
     global test_counter
-    yield ate.TestSequence(sequence=[t1, t2], auto_start=True)
+    yield mats.TestSequence(sequence=[t1, t2], auto_start=True)
     test_counter = 0
 
 
 @pytest.fixture
 def auto_run_test_sequence():
     global test_counter
-    yield ate.TestSequence(sequence=[t1, t2], auto_start=True, auto_run=True)
+    yield mats.TestSequence(sequence=[t1, t2], auto_start=True, auto_run=True)
     test_counter = 0
 
 
@@ -127,11 +127,11 @@ def test_TestSequence_creation(normal_test_sequence):
 
 def test_TestSequence_duplicate_monikers():
     with pytest.raises(ValueError):
-        ate.TestSequence(sequence=[t1, t1, t1])
+        mats.TestSequence(sequence=[t1, t1, t1])
 
 
 def test_TestSequence_uninstantiated_Tests():
-    ate.TestSequence(sequence=[
+    mats.TestSequence(sequence=[
         T_normal_1, T_normal_2
     ])
 
@@ -161,7 +161,7 @@ def test_TestSequence_run():
     :param normal_test_sequence:
     :return:
     """
-    ts = ate.TestSequence(sequence=[t1, t2])
+    ts = mats.TestSequence(sequence=[t1, t2])
 
     assert ts.ready
     ts.start()
@@ -185,7 +185,7 @@ def test_TestSequence_run_attempted_interrupt():
 
     :return:
     """
-    ts = ate.TestSequence(sequence=[t1, t2])
+    ts = mats.TestSequence(sequence=[t1, t2])
 
     assert ts.ready
     ts.start()
@@ -216,7 +216,7 @@ def test_TestSequence_run_with_callback():
         nonlocal count
         count += 1
 
-    ts = ate.TestSequence(
+    ts = mats.TestSequence(
         sequence=[t1, t2],
         callback=increment_count)
     ts.start()
@@ -326,8 +326,8 @@ def test_TestSequence_setup_exception():
         nonlocal counter
         counter += 1
 
-    ts = ate.TestSequence(sequence=[T_setup_exception()],
-                          teardown=on_test_exception)
+    ts = mats.TestSequence(sequence=[T_setup_exception()],
+                           teardown=on_test_exception)
     ts.start()
 
     while ts.in_progress is True:
@@ -350,8 +350,8 @@ def test_TestSequence_execute_exception():
         nonlocal counter
         counter += 1
 
-    ts = ate.TestSequence(sequence=[T_execute_exception()],
-                          teardown=on_test_exception)
+    ts = mats.TestSequence(sequence=[T_execute_exception()],
+                           teardown=on_test_exception)
     ts.start()
 
     while ts.in_progress is True:
@@ -374,8 +374,8 @@ def test_TestSequence_teardown_exception():
         nonlocal counter
         counter += 1
 
-    ts = ate.TestSequence(sequence=[T_teardown_exception()],
-                          teardown=on_test_exception)
+    ts = mats.TestSequence(sequence=[T_teardown_exception()],
+                           teardown=on_test_exception)
     ts.start()
 
     while ts.in_progress is True:

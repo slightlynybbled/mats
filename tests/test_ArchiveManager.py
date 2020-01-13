@@ -8,7 +8,7 @@ from os import remove
 import pint
 import pytest
 
-import ate
+import mats
 
 unit = pint.UnitRegistry()
 
@@ -21,7 +21,7 @@ data_point_2 = {'t1': 10, 't2': 10.0, 't3': 'string 10', 't4': 1 * unit.rpm}
 def am():
     path = Path('.')
 
-    yield ate.ArchiveManager(path=path)
+    yield mats.ArchiveManager(path=path)
 
     data_paths = [f for f in Path('.').iterdir() if 'data' in str(f)]
     for p in data_paths:

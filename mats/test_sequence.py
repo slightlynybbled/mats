@@ -4,8 +4,8 @@ from threading import Thread
 import traceback
 from typing import List
 
-from ate.test import Test
-from ate.archiving import ArchiveManager
+from mats.test import Test
+from mats.archiving import ArchiveManager
 
 
 Sequence = List[Test]
