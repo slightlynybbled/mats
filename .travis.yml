@@ -12,8 +12,8 @@ install:
 
 script:
   - "python setup.py install"
-  - "py.test tests/ --cov ate --cov-report term-missing"
-  - "flake8 ate"
+  - "py.test tests/ --cov mats --cov-report term-missing"
+  - "flake8 mats"
 
 after_success:
   - "coveralls"
