@@ -282,8 +282,6 @@ class TestSequence:
         if not self._aborted and self._archive_manager is not None:
             self._archive_manager.save(self._test_data)
 
-        self.in_progress = False
-
         self._logger.info('test sequence complete')
         self._logger.debug(f'test results: {self._test_data}')
 
@@ -294,6 +292,8 @@ class TestSequence:
             self._logger.info(f'executing user-supplied callback function '
                               f'"{self._callback}"')
             self._callback(self._test_data)
+
+        self.in_progress = False
 
         if self._auto_run:
             if not self._aborted:
