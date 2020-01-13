@@ -60,9 +60,9 @@ tests that we wish to execute, but not necessarily the order.
 
 Within ``automated_tests.py``, we create our tests.
 
-First, we import ``ate.Test`` and subclass our custom tests::
+First, we import ``mats.Test`` and subclass our custom tests::
 
-    from ate import Test
+    from mats import Test
 
     class CommunicationTest(Test):
         def __init__(self):

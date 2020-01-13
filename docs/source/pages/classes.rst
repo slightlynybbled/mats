@@ -1,26 +1,26 @@
 Classes
 =============
 
-.. _classes_ate_test:
+.. _classes_mats_test:
 
 ``Test``
 --------
 
-.. autoclass:: ate.Test
+.. autoclass:: mats.Test
    :members:
 
-.. _classes_ate_testsequence:
+.. _classes_mats_testsequence:
 
 ``TestSequence``
 ----------------
 
-.. autoclass:: ate.TestSequence
+.. autoclass:: mats.TestSequence
    :members:
 
-.. _classes_ate_archivemanager:
+.. _classes_mats_archivemanager:
 
 ``ArchiveManager``
 ------------------
 
-.. autoclass:: ate.ArchiveManager
+.. autoclass:: mats.ArchiveManager
    :members:

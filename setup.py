@@ -11,16 +11,16 @@ with open('requirements.txt', 'r') as f:
     requirements = [r for r in requirements if r]
 
 setup_attributes = {
-    'name': 'ate',
+    'name': 'mats',
     'version': __version__,
-    'description': 'Automated Test Environment, a framework for building device testing quickly and consistently',
+    'description': 'Manufacturing Automated Test System, a framework for building device testing quickly and consistently',
     'long_description': long_description,
     'long_description_content_type': 'text/markdown',
-    'url': 'https://github.com/slightlynybbled/ate',
+    'url': 'https://github.com/slightlynybbled/mats',
     'author': 'Jason R. Jones',
     'author_email': 'slightlynybbled@gmail.com',
     'license': 'MIT',
-    'packages': ['ate'],
+    'packages': ['mats'],
     'python_requires': '>=3.6.0',
     'install_requires': requirements,
     'classifiers': [

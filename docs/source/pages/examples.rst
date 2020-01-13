@@ -7,7 +7,7 @@ Simple Production Test
 ---------------------------
 
 The standard production test consists of running the same test consistently on
-every ``start()`` of the :ref:`classes_ate_testsequence`.  In this sequence,
+every ``start()`` of the :ref:`classes_mats_testsequence`.  In this sequence,
 the hardware is allocated on-the-fly within each test.
 
 .. code-block:: python
@@ -15,7 +15,7 @@ the hardware is allocated on-the-fly within each test.
     from time import sleep
     from random import choice, random
 
-    from ate import Test, TestSequence, ArchiveManager
+    from mats import Test, TestSequence, ArchiveManager
 
     from my_lib import Device, FlowSensor
 
@@ -98,7 +98,7 @@ of the sequence and realizing some time-saving on each test execution of the tes
     from time import sleep
     from random import choice, random
 
-    from ate import Test, TestSequence, ArchiveManager
+    from mats import Test, TestSequence, ArchiveManager
 
     from my_lib import Device, FlowSensor
 
@@ -168,7 +168,7 @@ This test is similar to the above production test.  We use the setup method to p
     from time import sleep
     from random import choice, random
 
-    from ate import Test, TestSequence, ArchiveManager
+    from mats import Test, TestSequence, ArchiveManager
 
 
     # The CommunicationTest class shows the minimum test structure
@@ -240,7 +240,7 @@ A test that simulates on-off cycles and keeps chugging... forever... and ever...
     from random import choice
     from time import sleep
 
-    from ate import Test, TestSequence, ArchiveManager
+    from mats import Test, TestSequence, ArchiveManager
 
 
     class LifeTest(Test):

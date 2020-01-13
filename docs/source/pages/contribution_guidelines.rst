@@ -61,6 +61,6 @@ Run all tests using::
 
 Then run the style checker using::
 
-    $> flake8 ate
+    $> flake8 mats
 
 
