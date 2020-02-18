@@ -34,6 +34,7 @@ After each test sequence is completed, then there is an opportunity to save data
    pages/dealing-with-hardware
    pages/examples
    pages/contribution_guidelines.rst
+   pages/test_gui.rst
 
 Indices and tables
 ==================

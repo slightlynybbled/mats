@@ -14,7 +14,7 @@ reduces the amount of mind share that you need to dedicate to developing automat
 
 Checkout the [documentation](https://mats.readthedocs.io/en/latest/index.html) for more details!
 
-There is a ready-to-run GUI using tkinter over at the [TkMATS](https://github.com/slightlynybbled/tkmats).  
+There is a ready-to-run GUI using tkinter over at the [TkMATS](https://github.com/slightlynybbled/tkmats), which includes a start button.  
 This is very useful to get a manufacturing test up quickly and easily.  Enjoy!
 
 ## Contribution Guidelines
