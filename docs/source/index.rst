@@ -29,12 +29,12 @@ After each test sequence is completed, then there is an opportunity to save data
    :maxdepth: 2
    :caption: Contents:
 
-   pages/classes
-   pages/guided-test-development
+   pages/getting-started
    pages/dealing-with-hardware
    pages/examples
+   pages/classes
+   pages/gui.rst
    pages/contribution_guidelines.rst
-   pages/test_gui.rst
 
 Indices and tables
 ==================
