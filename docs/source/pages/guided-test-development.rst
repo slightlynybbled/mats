@@ -92,7 +92,7 @@ method is used in the :ref:`flow_test` outline.
 .. code-block:: python
    :emphasize-lines: 2
 
-   from ate import Test
+   from mats import Test
    from device import Device
 
 Next, we actually setup the device in preparation to use it by overriding the
@@ -151,7 +151,7 @@ of the ``execute()`` method.
 
 The complete contents of ``automated_test.py``::
 
-    from ate import Test
+    from mats import Test
     from device import Device
 
     class CommunicationTest(Test):
@@ -186,7 +186,7 @@ we utilize the ``daq.flow`` property to return the flow value on test execution.
 .. code-block:: python
    :emphasize-lines: 3, 10
 
-   from ate import Test
+   from mats import Test
    from device import Device
    from daq import daq
 
@@ -219,7 +219,7 @@ Finally, we have our complete test definition!
 
 .. code-block:: python
 
-    from ate import Test
+    from mats import Test
     from device import Device
     from daq import daq
 
@@ -259,12 +259,12 @@ We will create the ``TestSequence`` within its own file, making our new file str
       device.py
       test_sequence.py
 
-Within ``test_sequence.py``, we will import our ``ate.TestSequence()`` along with
+Within ``test_sequence.py``, we will import our ``mats.TestSequence()`` along with
 the ``CommunicationsTest()`` and ``FlowTest()`` that we previously defined:
 
 .. code-block:: python
 
-    from ate import TestSequence
+    from mats import TestSequence
     from automated_tests import FlowTest, CommunicationsTest
 
 Now, we create our sequence as the instantiation of the test objects into a list:
@@ -297,7 +297,7 @@ The final full form of ``test_sequence.py``:
 
 .. code-block:: python
 
-    from ate import TestSequence
+    from mats import TestSequence
     from automated_tests import FlowTest, CommunicationsTest
 
     sequence = [CommunicationsTest(), FlowTest()]
@@ -321,7 +321,7 @@ sequence:
 .. code-block:: python
    :emphasize-lines: 2, 5, 6
 
-    from ate import TestSequence
+    from mats import TestSequence
     from automated_tests import FlowTest, CommunicationsTest, ArchiveManager
 
     sequence = [CommunicationsTest(), FlowTest()]
