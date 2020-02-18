@@ -200,11 +200,12 @@ we utilize the ``daq.flow`` property to return the flow value on test execution.
 Next, we will apply minimum and maximum pass/fail criteria to the test:
 
 .. code-block:: python
-   :emphasize-lines: 3
+   :emphasize-lines: 3, 4
 
     class FlowTest(Test):
         def __init__(self):
-            super().__init__(moniker='flow', min_value=5.8, max_value=6.2)
+            super().__init__(moniker='flow',
+                             min_value=5.8, max_value=6.2)
 
         def execute(self, is_passing):
             return daq.flow
@@ -235,7 +236,8 @@ Finally, we have our complete test definition!
 
     class FlowTest(Test):
         def __init__(self):
-            super().__init__(moniker='flow', min_value=5.8, max_value=6.2)
+            super().__init__(moniker='flow',
+                             min_value=5.8, max_value=6.2)
 
         def execute(self, is_passing):
             return daq.flow
@@ -319,10 +321,11 @@ The most basic implementation of the ``ArchiveManager`` can be easily added to t
 sequence:
 
 .. code-block:: python
-   :emphasize-lines: 2, 5, 6
+   :emphasize-lines: 2, 3, 6, 7
 
     from mats import TestSequence
-    from automated_tests import FlowTest, CommunicationsTest, ArchiveManager
+    from automated_tests import FlowTest, \
+                                CommunicationsTest, ArchiveManager
 
     sequence = [CommunicationsTest(), FlowTest()]
     am = ArchiveManager()
