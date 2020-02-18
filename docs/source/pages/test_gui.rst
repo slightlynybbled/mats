@@ -1,5 +1,5 @@
-TkMATS
-======
+GUI
+===
 
 Since MATS doesn't include its own start button, the test must be started on some trigger.
 Often, it is adequate to simply run the production test at startup and it will work just fine.
@@ -19,5 +19,10 @@ How do you get started?  My workflow generally looks something like this:
  #. Create a Tkinter root window.
  #. Within the Tkinter root window, create an instance of `tkmats.TkMatsFrame`, supplying the
     test sequence as a list.
+
+The below GUI element is simple, yet powerful.  Note that each test that is executed will
+light up green or red in addition to displaying an overall pass/fail status for the sequence.
+
+.. image:: ../_static/tkmats-animation.gif
 
 All else is up to you!
