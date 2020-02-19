@@ -17,7 +17,7 @@ How do you get started?  My workflow generally looks something like this:
  #. Develop the `sequence.py` as a console program until I'm happy with the resulting test,
     including archiving data.
  #. Create a Tkinter root window.
- #. Within the Tkinter root window, create an instance of `tkmats.TkMatsFrame`, supplying the
+ #. Within the Tkinter root window, create an instance of `tkmats.MatsFrame`, supplying the
     test sequence as a list.
 
 The below GUI element is simple, yet powerful.  Note that each test that is executed will
