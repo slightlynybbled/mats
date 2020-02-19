@@ -24,3 +24,12 @@ Classes
 
 .. autoclass:: mats.ArchiveManager
    :members:
+
+.. _classes_mats_gui_tk_matsframe:
+
+``gui.tk.MatsFrame``
+--------------------
+
+.. autoclass:: mats.gui.tk.MatsFrame
+   :members:
+
