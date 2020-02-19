@@ -17,8 +17,10 @@ class MatsFrame(Frame):
 
     :param parent: the tk parent frame
     :param sequence: the instance of `TestSequence` to monitor
-    :param vertical: if `True`, will stack tests vertically; otherwise, horizontally
-    :param start_btn: if `True`, will populate a start button; otherwise, will not
+    :param vertical: if `True`, will stack tests vertically;
+    otherwise, horizontally
+    :param start_btn: if `True`, will populate a start button;
+    otherwise, will not
     :param loglevel: the logging level, for instance 'logging.INFO'
     """
     def __init__(self, parent, sequence: TestSequence,
@@ -38,12 +40,14 @@ class MatsFrame(Frame):
         col = 0
 
         if start_btn:
-            Button(self, text='Start', command=sequence.start).grid(row=row, column=col, sticky='news')
+            Button(self, text='Start', command=sequence.start)\
+                .grid(row=row, column=col, sticky='news')
 
         if not vertical:
             col += 1 if not vertical else 0
             row += 1 if vertical else 0
-            Label(self, text=arrow, justify='center', anchor='center').grid(row=row, column=col, sticky='news')
+            Label(self, text=arrow, justify='center', anchor='center')\
+                .grid(row=row, column=col, sticky='news')
 
         col += 1 if not vertical else 0
         row += 1 if vertical else 0
@@ -64,12 +68,14 @@ class MatsFrame(Frame):
                 col += 1 if not vertical else 0
                 row += 1 if vertical else 0
 
-                Label(self, text=arrow, justify='center', anchor='center').grid(row=row, column=col, sticky='news')
+                Label(self, text=arrow, justify='center', anchor='center')\
+                    .grid(row=row, column=col, sticky='news')
 
         col += 1 if not vertical else 0
         row += 1 if vertical else 0
 
-        self._complete_label = Label(self, text='-', anchor='center', justify='center')
+        self._complete_label = Label(self, text='-',
+                                     anchor='center', justify='center')
         self._complete_label.grid(row=row, column=col, sticky='news')
         self._complete_label.config(relief=_relief, padding=_label_padding)
 
@@ -77,13 +83,17 @@ class MatsFrame(Frame):
 
     def _update(self):
         if self._sequence.in_progress:
-            self._complete_label.config(text='in progress', background=_light_yellow)
+            self._complete_label.config(text='in progress',
+                                        background=_light_yellow)
         elif self._sequence.is_aborted:
-            self._complete_label.config(text='aborted', background=_light_red)
+            self._complete_label.config(text='aborted',
+                                        background=_light_red)
         elif self._sequence.is_passing:
-            self._complete_label.config(text='pass', background=_light_green)
+            self._complete_label.config(text='pass',
+                                        background=_light_green)
         else:
-            self._complete_label.config(text='fail', background=_light_red)
+            self._complete_label.config(text='fail',
+                                        background=_light_red)
 
         self.after(100, self._update)
 
@@ -92,7 +102,8 @@ class _TestLabel(Label):
     """
     A single instance of a test label frame.
     """
-    def __init__(self, parent, test: Test, vertical: bool, loglevel=logging.INFO):
+    def __init__(self, parent, test: Test, vertical: bool,
+                 loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -105,7 +116,8 @@ class _TestLabel(Label):
             self._label_text = self._test.moniker.replace(' ', '\n')
         else:
             self._label_text = self._test.moniker
-        self.config(text=self._label_text, relief=_relief, padding=_label_padding)
+        self.config(text=self._label_text, relief=_relief,
+                    padding=_label_padding)
 
         self._label_bg_color = self.cget('background')
 
