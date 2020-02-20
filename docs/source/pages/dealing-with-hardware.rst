@@ -10,15 +10,14 @@ are basically two ways to connect to hardware for your test environment:
 In many cases, the same hardware will be utilized for multiple tests.  For instance,
 a DAQ commonly includes digital inputs, outputs, etc, therefore a single test
 sequence will likely contain multiple ``Test`` instances that utilize the same physical
-hardware.  In these cases, hardware initialization
+hardware.  In these cases, hardware may be allocated to global variables.  Often it is
+more practical to allocate the hardware one time and simply pass around the instances.
 
 Allocation within ``Test``
 ==========================
-The examples presented thus far in the  have utilized this method.  The
-allocation of hardware within the test is simple, but it may have a time impact
+The allocation of hardware within the test is simple, but it may have a time impact
 that may or may not be acceptable in the application.  An example of this may be
 found within the :ref:`examples_simple_production_test`.
-
 
 One-Time Allocation
 ===================
