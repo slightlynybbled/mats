@@ -30,11 +30,12 @@ After each test sequence is completed, then there is an opportunity to save data
    :caption: Contents:
 
    pages/getting-started
+   pages/saving-data
    pages/dealing-with-hardware
    pages/examples
-   pages/classes
-   pages/gui.rst
-   pages/contribution_guidelines.rst
+   pages/api
+   pages/gui
+   pages/contribution_guidelines
 
 Indices and tables
 ==================

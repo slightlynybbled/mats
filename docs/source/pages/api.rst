@@ -1,5 +1,5 @@
-Classes
-=============
+API
+===
 
 .. _classes_mats_test:
 

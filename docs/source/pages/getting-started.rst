@@ -1,5 +1,5 @@
-Guided Test Development
-==========================
+Getting Started
+===============
 
 Define Requirements
 --------------------
@@ -14,21 +14,32 @@ False?
 The second test is a flow test in which the test communicates with an instrument
 and reads the flow, applying a minimum and maximum flow.
 
+In addition to the test requirements, it turns out that most hardware requires a power supply
+or other physical component to be turned on or initialized.  We will deal with this in
+our setup and teardown.
+
 Develop Hardware API
 --------------------
 
 Based on the test requirements, it is useful to create some hardware abstractions which
 expose some of the functionality that we are interested in.  The hardware API development
 effort is independent of the test, but will be necessary to most testing efforts and,
-thus, we will cover a basic
+thus, we will cover a basic implementation.
 
-The first abstraction communicates with the device and provides a property exposing
+Our first object will be a power supply.  During the test, we will wish to control
+a power supply on and off, perhaps even setting different voltages and current limits,
+depending on the test.  For this example, we will only wish to turn on the power supply
+at the beginning of the test and turn it off at the end of the test **or** if there
+is some test fault.  We will call our power supply class ``PowerSupply`` and we will
+store the ``PowerSupply`` class within ``power_supply.py``.
+
+The next abstraction communicates with the device and provides a property exposing
 whether the device is communicating or not.  The development of this abstraction is
 beyond the scope of this document; however, it is possible to assume a simple API
 has been provided using a class called ``Device`` which has the property
 ``is_communicating``.
 
-The second abstraction communicates with data acquisition hardware to determine the
+The last abstraction communicates with data acquisition hardware to determine the
 flow of the system in liters / minute.  The simple api that we are assuming is
 embodied in a class called ``Daq`` and exposed on a property ``flow``.
 
@@ -40,15 +51,14 @@ the abstractions.  We will call these ``daq.py`` and ``device.py``:
     root/
       daq.py
       device.py
+      power_supply.py
 
-Develop Individual Tests
-------------------------
 
-Communications Test
-*******************
+Create Automated Test File
+--------------------------
 
 We will now create an ``automated_tests.py`` which will contain all of the automated
-tests that we wish to execute, but not necessarily the order.
+tests that we wish to execute, setup function, and teardown function.
 
 .. code-block:: text
    :emphasize-lines: 2
@@ -57,12 +67,66 @@ tests that we wish to execute, but not necessarily the order.
       automated_tests.py
       daq.py
       device.py
+      power_supply.py
 
-Within ``automated_tests.py``, we create our tests.
+Within ``automated_tests.py``, we create our setup, teardown, and individual tests.
 
-First, we import ``mats.Test`` and subclass our custom tests::
+``setup()`` and ``teardown()``
+------------------------------
 
+For each test, we want to start in a known condition.  Use ``setup`` and ``teardown``
+functions supplied to execute commands without saving any data.  The primary difference
+between these functions and a ``Test`` is that the ``setup`` and ``teardown`` functions
+do not save data.
+
+In our case, the ``setup()`` function will turn on the power supply and the ``teardown()``
+funciton will turn the power supply off.  If there is a critical error during the test,
+the ``teardown()`` function will be executed, making it especially convenient for test
+environments in which the safe must end in a guaranteed safe condition.
+
+.. code-block:: python
+
+   from time import sleep
+   from power_supply import PowerSupply
+
+   def setup_hardware(psu: PowerSupply):
+       psu.set_voltage(12.0)
+       psu.set_current(3.0)
+       psu.on()
+       sleep(1.0)  # allow power to stabilize
+
+   def teardown_hardware(psu: PowerSupply):
+      psu.off()
+      sleep(0.1)
+
+Note that our setup and teardown functions accept instances of hardware classes.  This
+method makes it fairly easy to modularize and develop each function and ``Test`` class
+efficiently.
+
+Develop Individual Tests
+------------------------
+
+Communications Test
+*******************
+
+Within ``automated_tests.py``, import ``mats.Test`` and subclass our custom tests.
+
+.. code-block:: python
+   :emphasize-lines: 2, 15-20, 22-27
+
+    from time import sleep
     from mats import Test
+    from power_supply import PowerSupply
+
+    def setup_hardware(psu: PowerSupply):
+        psu.set_voltage(12.0)
+        psu.set_current(3.0)
+        psu.on()
+        sleep(1.0)  # allow power to stabilize
+
+    def teardown_hardware(psu: PowerSupply):
+        psu.off()
+        sleep(0.1)
 
     class CommunicationTest(Test):
         def __init__(self):
@@ -83,30 +147,37 @@ were executed within a sequence that saved data, it would end up applying no pas
 criteria and would save ``None`` to the headers fields ``communications`` and
 ``flow``.
 
+.. note::
+
+   The ``moniker`` of all test sequences must be unique or the test sequence will raise
+   an error!
+
 First, we will focus on the communications test.  We will modify our imports to add
 ``from device import Device`` which gives us access to the device class.  In some
 cases, the device will be instantiated already, in which case it might be more
-appropriate to import the instance of the class rather than the class itself.  This
-method is used in the :ref:`flow_test` outline.
+appropriate to import the instance of the class rather than the class itself.  In most
+cases, it is worth it to externally allocate hardware and execute the test by passing
+the class instance.
 
 .. code-block:: python
-   :emphasize-lines: 2
+   :emphasize-lines: 4
 
+   from time import sleep
    from mats import Test
+   from power_supply import PowerSupply
    from device import Device
+   ...
 
-Next, we actually setup the device in preparation to use it by overriding the
-``setup()`` method of ``Test``.
+Next, we will store an instance of the hardware within the ``CommunicationTest``
+and so that we can utilize it during development.
 
 .. code-block:: python
-   :emphasize-lines: 5, 6
+   :emphasize-lines: 2, 4
 
     class CommunicationTest(Test):
-        def __init__(self):
+        def __init__(self, device: Device):
             super().__init__(moniker='communications')
-
-        def setup(self, is_passing):
-            self._device = Device()
+            self._device = device
 
         def execute(self, is_passing):
             return None
@@ -114,14 +185,12 @@ Next, we actually setup the device in preparation to use it by overriding the
 Now, it is time to acquire a bit of data.
 
 .. code-block:: python
-   :emphasize-lines: 9
+   :emphasize-lines: 7
 
     class CommunicationTest(Test):
-        def __init__(self):
+        def __init__(self, device: Device):
             super().__init__(moniker='communications')
-
-        def setup(self, is_passing):
-            self._device = Device()
+            self._device = device
 
         def execute(self, is_passing):
             return self._device.is_communicating
@@ -137,65 +206,38 @@ In order to apply criteria, we will use the ``pass_if`` parameter of
    :emphasize-lines: 3
 
     class CommunicationTest(Test):
-        def __init__(self):
+        def __init__(self, device: Device):
             super().__init__(moniker='communications', pass_if=True)
-
-        def setup(self, is_passing):
-            self._device = Device()
+            self._device = device
 
         def execute(self, is_passing):
             return self._device.is_communicating
-
-At this point, the test sequence will apply the pass fail condition to the results
-of the ``execute()`` method.
-
-The complete contents of ``automated_test.py``::
-
-    from mats import Test
-    from device import Device
-
-    class CommunicationTest(Test):
-        def __init__(self):
-            super().__init__(moniker='communications', pass_if=True)
-
-        def setup(self, is_passing):
-            self._device = Device()
-
-        def execute(self, is_passing):
-            return self._device.is_communicating
-
-    class FlowTest(Test):
-        def __init__(self):
-            super().__init__(moniker='flow')
-
-        def execute(self, is_passing):
-            return None
-
 
 .. _flow_test:
 
 Flow Test
 *********
 
-The development of the flow test will proceed similarly.  Just to change
-the potential use case, we will assume that the ``daq.py`` creates the instance of
-``daq`` that we can utilize directly.  This obviates the need to create the object
-using the ``setup()`` method.  First we add the proper import statement and then
-we utilize the ``daq.flow`` property to return the flow value on test execution.
+The development of the flow test will proceed similarly to the previous test.
 
 .. code-block:: python
-   :emphasize-lines: 3, 10
+   :emphasize-lines: 4, 15
 
+   from time import sleep
    from mats import Test
-   from device import Device
+   from power_supply import PowerSupply
    from daq import daq
+   from device import Device
+
+   ...
 
    class FlowTest(Test):
-      def __init__(self):
+      def __init__(self, daq: Daq):
           super().__init__(moniker='flow')
+          self._daq = daq
 
       def execute(self, is_passing):
-          return daq.flow
+          return self._daq.flow
 
 Next, we will apply minimum and maximum pass/fail criteria to the test:
 
@@ -203,12 +245,13 @@ Next, we will apply minimum and maximum pass/fail criteria to the test:
    :emphasize-lines: 3, 4
 
     class FlowTest(Test):
-        def __init__(self):
+        def __init__(self, daq: Daq):
             super().__init__(moniker='flow',
                              min_value=5.8, max_value=6.2)
+            self._daq = daq
 
         def execute(self, is_passing):
-            return daq.flow
+            return self._daq.flow
 
 Using the ``min_value`` and ``max_value`` parameters allows us to apply quantitative
 pass/fail criteria to the results of the execution step.
@@ -220,27 +263,38 @@ Finally, we have our complete test definition!
 
 .. code-block:: python
 
+    from time import sleep
     from mats import Test
-    from device import Device
+    from power_supply import PowerSupply
     from daq import daq
+    from device import Device
+
+    def setup_hardware(psu: PowerSupply):
+        psu.set_voltage(12.0)
+        psu.set_current(3.0)
+        psu.on()
+        sleep(1.0)  # allow power to stabilize
+
+    def teardown_hardware(psu: PowerSupply):
+        psu.off()
+        sleep(0.1)
 
     class CommunicationTest(Test):
-        def __init__(self):
+        def __init__(self, device: Device):
             super().__init__(moniker='communications', pass_if=True)
-
-        def setup(self, is_passing):
-            self._device = Device()
+            self._device = device
 
         def execute(self, is_passing):
             return self._device.is_communicating
 
     class FlowTest(Test):
-        def __init__(self):
+        def __init__(self, daq: Daq):
             super().__init__(moniker='flow',
                              min_value=5.8, max_value=6.2)
+            self._daq = daq
 
         def execute(self, is_passing):
-            return daq.flow
+            return self._daq.flow
 
 Create Test Sequence
 --------------------
@@ -253,39 +307,74 @@ chosen the order in order to better organize the presentation.
 We will create the ``TestSequence`` within its own file, making our new file structure:
 
 .. code-block:: text
-   :emphasize-lines: 5
+   :emphasize-lines: 6
 
     root/
       automated_tests.py
       daq.py
       device.py
+      power_supply.py
       test_sequence.py
+
+Allocate Hardware
+*****************
+
+Allocate some hardware within ``test_sequence.py``.
+
+.. code-block:: python
+
+    from power_supply import PowerSupply
+    from daq import Daq
+    from device import Device
+
+    # allocate the hardware
+    psu = PowerSupply()
+    daq = Daq()
+    device = Device()
 
 Within ``test_sequence.py``, we will import our ``mats.TestSequence()`` along with
 the ``CommunicationsTest()`` and ``FlowTest()`` that we previously defined:
 
 .. code-block:: python
+   :emphasize-lines: 1, 2, 3
 
     from mats import TestSequence
-    from automated_tests import FlowTest, CommunicationsTest
+    from automated_tests import FlowTest, CommunicationsTest,\
+        setup_hardware, teardown_hardware
+    from power_supply import PowerSupply
+    from daq import Daq
+    from device import Device
+
+    # allocate the hardware
+    psu = PowerSupply()
+    daq = Daq()
+    device = Device()
 
 Now, we create our sequence as the instantiation of the test objects into a list:
 
 .. code-block:: python
 
-    sequence = [CommunicationsTest(), FlowTest()]
+    sequence = [
+        CommunicationsTest(device),
+        FlowTest(daq)
+    ]
 
 It is common to forget to instantiate the objects, so be sure that you include the
 ``()`` so that you are using instances of the test and not the test class.  The
 order of the test sequence is defined by the order of the list, so a re-ordering
 of this list is all that is required to refactor the order of the tests.
 
-Now we create the ``TestSequence`` instance, being sure to capture an object handle
+Now we create the ``TestSequence`` instance, supplying the sequence of tests, the ``setup``,
+and the ``teardown`` functions, being sure to capture an object handle
 for the test sequence:
 
 .. code-block:: python
 
-    ts = TestSequence(sequence=sequence)
+    ts = TestSequence(
+            sequence=sequence,
+            setup=lambda: setup_hardware(psu),
+            teardown=lambda: teardown_hardware(psu)
+        )
 
 Finally, we run the test sequence one time:
 
@@ -300,10 +389,27 @@ The final full form of ``test_sequence.py``:
 .. code-block:: python
 
     from mats import TestSequence
-    from automated_tests import FlowTest, CommunicationsTest
+    from automated_tests import FlowTest, CommunicationsTest,\
+        setup_hardware, teardown_hardware
+    from power_supply import PowerSupply
+    from daq import Daq
+    from device import Device
 
-    sequence = [CommunicationsTest(), FlowTest()]
-    ts = TestSequence(sequence=sequence)
+    # allocate the hardware
+    psu = PowerSupply()
+    daq = Daq()
+    device = Device()
+
+    sequence = [
+        CommunicationsTest(device),
+        FlowTest(daq)
+    ]
+
+    ts = TestSequence(
+        sequence=sequence,
+        setup=lambda: setup_hardware(psu),
+        teardown=lambda: teardown_hardware(psu)
+    )
 
     ts.start()
 
@@ -321,15 +427,33 @@ The most basic implementation of the ``ArchiveManager`` can be easily added to t
 sequence:
 
 .. code-block:: python
-   :emphasize-lines: 2, 3, 6, 7
+   :emphasize-lines: 1, 18, 24
 
-    from mats import TestSequence
-    from automated_tests import FlowTest, \
-                                CommunicationsTest, ArchiveManager
+    from mats import TestSequence, ArchiveManager
+    from automated_tests import FlowTest, CommunicationsTest,\
+        setup_hardware, teardown_hardware
+    from power_supply import PowerSupply
+    from daq import Daq
+    from device import Device
 
-    sequence = [CommunicationsTest(), FlowTest()]
+    # allocate the hardware
+    psu = PowerSupply()
+    daq = Daq()
+    device = Device()
+
+    sequence = [
+        CommunicationsTest(device),
+        FlowTest(daq)
+    ]
+
     am = ArchiveManager()
-    ts = TestSequence(sequence=sequence, archive_manager=am)
+
+    ts = TestSequence(
+        sequence=sequence,
+        setup=lambda: setup_hardware(psu),
+        teardown=lambda: teardown_hardware(psu)
+        archive_manager=am
+    )
 
     ts.start()
 
