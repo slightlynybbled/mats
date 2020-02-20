@@ -6,14 +6,12 @@ Saving Data
 ``ArchiveManager``
 ------------------
 
-The builtin ``ArchiveManager`` is the default class built for saving data.
+The builtin ``ArchiveManager`` is the default class built for saving data.  The ``ArchiveManager``
+really implements one method, ``save()``.  The ``save()`` method accepts a ``dict`` as the parameter
+which contains key: value pairs containing the results of a single test execution.
 
-.. todo::
-
-   Describe default ``ArchiveManager``.
-
-Custom Archive Implementations
-------------------------------
+Custom ArchiveManager Implementations
+-------------------------------------
 
 .. todo::
 
