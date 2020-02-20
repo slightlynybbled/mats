@@ -70,8 +70,8 @@ Future Development
 Features that I foresee:
 
  * More dynamic ``ArchiveManager``
-   * sqlite
-   * excel
+    * sqlite
+    * excel
  * Qt-based GUI
 
 Have `others <https://github.com/slightlynybbled/mats/issues>`_?
