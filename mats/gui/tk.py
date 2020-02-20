@@ -12,14 +12,14 @@ _label_padding = 5
 
 class MatsFrame(Frame):
     """
-    The frame that interacts with the test sequence in order to display the
+    The frame that interacts with the test sequence in order to display the \
     test results as the test is executing.
 
     :param parent: the tk parent frame
     :param sequence: the instance of `TestSequence` to monitor
-    :param vertical: if `True`, will stack tests vertically;
+    :param vertical: if `True`, will stack tests vertically; \
     otherwise, horizontally
-    :param start_btn: if `True`, will populate a start button;
+    :param start_btn: if `True`, will populate a start button; \
     otherwise, will not
     :param loglevel: the logging level, for instance 'logging.INFO'
     """
