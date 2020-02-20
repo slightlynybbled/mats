@@ -64,4 +64,12 @@ Then run the style checker using::
 
     $> flake8 mats
 
+Future Development
+------------------
 
+Features that I foresee:
+
+ * More dynamic ``ArchiveManager``
+ * Qt-based GUI
+
+Have `others <https://github.com/slightlynybbled/mats/issues>`_?
