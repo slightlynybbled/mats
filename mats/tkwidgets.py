@@ -1,7 +1,8 @@
 import logging
 from tkinter.ttk import Frame, Button, Label
 
-from mats import Test, TestSequence
+from mats.test import Test
+from mats.test_sequence import TestSequence
 
 _light_green = '#66ff66'
 _light_red = '#ff6666'
