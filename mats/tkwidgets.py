@@ -19,13 +19,13 @@ class MatsFrame(Frame):
     :param parent: the tk parent frame
     :param sequence: the instance of `TestSequence` to monitor
     :param vertical: if `True`, will stack tests vertically; \
-    otherwise, horizontally
+    otherwise, horizontally; default is vertical, `True`
     :param start_btn: if `True`, will populate a start button; \
-    otherwise, will not
+    otherwise, will not; default is `True`
     :param loglevel: the logging level, for instance 'logging.INFO'
     """
     def __init__(self, parent, sequence: TestSequence,
-                 vertical=False, start_btn=True,
+                 vertical=True, start_btn=True,
                  loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
@@ -59,7 +59,7 @@ class MatsFrame(Frame):
                 _TestLabel(self, test, vertical=vertical)
             )
 
-        for i, tl in enumerate(self._test_status_frames):
+        for tl in self._test_status_frames:
             col += 1 if not vertical else 0
             row += 1 if vertical else 0
 
