@@ -6,13 +6,17 @@
 [![Coverage Status](https://coveralls.io/repos/github/slightlynybbled/ate/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/slightlynybbled/mats?branch=master)
 
 `MATS` is a hardware-oriented test environment intended for production testing in a manufacturing 
-environment.  The `MATS` framework is a test template and test sequence executor only, so there 
-are no considerations for user interaction, meaning that you need to supply your own "start" button.
+environment.  The `MATS` framework is a test template and test sequence executor which includes
+an implementation for basic user input and feedback.
 
 MATS could be considered an automated test framework which imposes a consistent work flow and
 reduces the amount of mind share that you need to dedicate to developing automated device tests.
 
 Checkout the [documentation](https://mats.readthedocs.io/en/latest/index.html) for more details!
+
+# Example GUI
+
+![GUI](docs/images/tkmats-animation.gif)
 
 # Contribution Guidelines
 
