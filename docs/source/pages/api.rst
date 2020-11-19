@@ -25,11 +25,11 @@ API
 .. autoclass:: mats.ArchiveManager
    :members:
 
-.. _classes_mats_gui_tk_matsframe:
+.. _classes_mats_tkwidgets_matsframe:
 
-``gui.tk.MatsFrame``
+``tkwidgets.MatsFrame``
 --------------------
 
-.. autoclass:: mats.tkwidgets
+.. autoclass:: mats.tkwidgets.MatsFrame
    :members:
 

@@ -6,7 +6,7 @@ Often, it is adequate to simply run the production test at startup and it will w
 If you prefer user interaction, you will likely wish to have some sort of GUI elements, including
 the `start` button for the user.
 
-My preference is to use :ref:`classes_mats_gui_tk_matsframe`
+My preference is to use :ref:`classes_mats_tkwidgets_matsframe`
 which will automatically read the entire test sequence and display each test to the user in a
 user friendly manner.  I have been using TkMATS in production for over a year and I'm quite
 pleased with the ease of implementation and by the user feedback.
