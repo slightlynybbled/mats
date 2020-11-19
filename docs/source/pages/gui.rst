@@ -8,7 +8,7 @@ the `start` button for the user.
 
 My preference is to use :ref:`classes_mats_tkwidgets_matsframe`
 which will automatically read the entire test sequence and display each test to the user in a
-user friendly manner.  I have been using TkMATS in production for over a year and I'm quite
+user friendly manner.  I have been using `MatsFrame` in production for over a year and I'm quite
 pleased with the ease of implementation and by the user feedback.
 
 How do you get started?  My workflow generally looks something like this:
@@ -17,7 +17,7 @@ How do you get started?  My workflow generally looks something like this:
  #. Develop the `sequence.py` as a console program until I'm happy with the resulting test,
     including archiving data.
  #. Create a Tkinter root window.
- #. Within the Tkinter root window, create an instance of `tkmats.MatsFrame`, supplying the
+ #. Within the Tkinter root window, create an instance of `tkwidgets.MatsFrame`, supplying the
     test sequence as a list.
 
 The below GUI element is simple, yet powerful.  Note that each test that is executed will
