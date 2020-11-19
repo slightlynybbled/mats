@@ -3,6 +3,7 @@ flake8
 pint
 pytest
 pytest-cov
+pytest-flake8
 python-coveralls
 sphinx
 twine
