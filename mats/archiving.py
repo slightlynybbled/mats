@@ -1,13 +1,14 @@
 from datetime import datetime
 import logging
 from os import remove
+from os.path import splitext
 from pathlib import Path
 from shutil import copy
 
 
 class ArchiveManager:
     def __init__(self,
-                 path='.', fname='data', fextension='.csv',
+                 path='.', fname='data.txt',
                  delimiter='\t', loglevel=logging.INFO):
         """
         The basic save utility bundled into the test sequencer.  The archive \
@@ -17,7 +18,6 @@ class ArchiveManager:
         :param path: the path on which to save the data, not including the \
         file name
         :param fname: the file name
-        :param fextension: the file extension
         :param delimiter: the delimiter or separator between fields
         :param loglevel: the logging level, for instance 'logging.INFO'
         """
@@ -25,7 +25,6 @@ class ArchiveManager:
         self._logger.setLevel(loglevel)
 
         self._fname = fname
-        self._fextension = fextension
         self._path = Path(path)
         self._delimiter = delimiter
 
@@ -58,7 +57,7 @@ class ArchiveManager:
         the data to be saved
         :return: None
         """
-        destination_path = self._path / (self._fname + self._fextension)
+        destination_path = self._path / self._fname
 
         headers = list(point.keys())
         header_string = f'{self._delimiter.join(headers)}\n'
@@ -102,7 +101,10 @@ class ArchiveManager:
             now = str(datetime.now().timestamp())
             now = now.split('.')[0]
 
-            new_path = self._path / (self._fname + now + self._fextension)
+            parts = list(splitext(self._fname))
+            parts.insert(1, now)
+            new_path = self._path / ''.join(parts)
+
             self._logger.info(f'attempting to copy "{destination_path}" '
                               f'to "{new_path}"...')
             copy(destination_path, new_path)

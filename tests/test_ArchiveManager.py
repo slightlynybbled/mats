@@ -38,9 +38,9 @@ def test_am_save(am):
     for _ in range(length):
         am.save(data_point_1)
 
-    assert Path('data.csv').exists
+    assert Path('data.txt').exists
 
-    with open(Path('data.csv'), 'r') as f:
+    with open(Path('data.txt'), 'r') as f:
         assert len(f.readlines()) == (length + 1)
 
 
