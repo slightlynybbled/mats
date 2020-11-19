@@ -30,6 +30,6 @@ API
 ``gui.tk.MatsFrame``
 --------------------
 
-.. autoclass:: mats.gui.tk.MatsFrame
+.. autoclass:: mats.tkwidgets
    :members:
 
