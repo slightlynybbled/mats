@@ -16,7 +16,7 @@ Checkout the [documentation](https://mats.readthedocs.io/en/latest/index.html) f
 
 ## Example GUI
 
-![GUI](/docs/source/images/tkmats-animation.gif)
+![GUI](./docs/source/images/tkmats-animation.gif)
 
 # Contribution Guidelines
 
