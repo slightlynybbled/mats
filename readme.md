@@ -18,7 +18,7 @@ Checkout the [documentation](https://mats.readthedocs.io/en/latest/index.html) f
 
 ![GUI](./docs/source/images/tkmats-animation.gif)
 
-# Contribution Guidelines
+## Contribution Guidelines
 
 Contribution guidelines are outlined in the [documentation](https://mats.readthedocs.io/en/latest/pages/contribution_guidelines.html).
 
