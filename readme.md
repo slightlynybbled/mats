@@ -14,9 +14,9 @@ reduces the amount of mind share that you need to dedicate to developing automat
 
 Checkout the [documentation](https://mats.readthedocs.io/en/latest/index.html) for more details!
 
-# Example GUI
+## Example GUI
 
-![GUI](docs/source/images/tkmats-animation.gif)
+![GUI](/docs/source/images/tkmats-animation.gif)
 
 # Contribution Guidelines
 
