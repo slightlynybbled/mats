@@ -11,7 +11,7 @@ import tkinter as tk
 
 from mats import Test
 from mats import TestSequence
-from mats.gui.tk import MatsFrame
+from mats.tkwidgets import MatsFrame
 
 
 # The CommunicationTest class shows the minimum test structure that might

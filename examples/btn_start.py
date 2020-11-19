@@ -1,3 +1,10 @@
+"""
+Runs a GUI-based test which presents a start button to the user.  On press of
+start button, the test will execute and indicate a pass or fail for each test
+executed along with an overall pass/fail.
+"""
+
+
 import logging
 from random import random, choice
 from time import sleep

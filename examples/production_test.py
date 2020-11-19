@@ -1,3 +1,7 @@
+"""
+Command-line based production test.  Simply run the file and observe the log.
+"""
+
 from time import sleep
 from random import choice, random
 

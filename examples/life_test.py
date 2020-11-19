@@ -1,3 +1,9 @@
+"""
+Implements an example life test which collects and saves data periodically.
+Note that the test sequence does not have to be started by the user as it has
+the `auto_start` and `auto_run` parameters set to `True`.
+"""
+
 from random import choice
 from time import sleep
 

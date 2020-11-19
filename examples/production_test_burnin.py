@@ -1,3 +1,9 @@
+"""
+Executes a command-line production test that has a burn-in
+step implemented with `time.sleep`.  Note, also, that
+the logger is used to show status to the user.
+"""
+
 from time import sleep
 from random import choice
 
@@ -30,9 +36,10 @@ class BurnIn(Test):
     def setup(self, is_passing):
         # just wait for a while, maybe display a bit of a countdown...
         seconds = 0
-        while seconds < 10:
+        count = 10
+        while seconds < count:
             seconds += 1
-            self._logger.info(f'burning in count: {seconds}s')
+            self._logger.info(f'burning in count: {seconds}s of {count}s')
             sleep(1.0)
 
     def execute(self, is_passing):
