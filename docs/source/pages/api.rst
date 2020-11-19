@@ -28,7 +28,7 @@ API
 .. _classes_mats_tkwidgets_matsframe:
 
 ``tkwidgets.MatsFrame``
---------------------
+-----------------------
 
 .. autoclass:: mats.tkwidgets.MatsFrame
    :members:
