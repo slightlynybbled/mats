@@ -2,7 +2,9 @@
 Automated test suite for the Automated Test Environment.  This file focuses
 on testing the ``TestSequence`` class.
 """
+from os import path, remove
 from time import sleep
+
 import pytest
 import mats
 
@@ -16,7 +18,7 @@ class T_normal_1(mats.Test):
 
     def execute(self, is_passing):
         sleep(0.2)
-        return None
+        return 0
 
     def teardown(self, is_passing):
         global test_counter
@@ -28,7 +30,7 @@ class T_normal_2(mats.Test):
         super().__init__('test 2')
 
     def execute(self, is_passing):
-        return None
+        return 0
 
 
 class T_aborted(mats.Test):
@@ -134,6 +136,14 @@ def test_TestSequence_uninstantiated_Tests():
     mats.TestSequence(sequence=[
         T_normal_1, T_normal_2
     ])
+
+
+def test_TestSequence_empty_raises_TE():
+    ts = mats.TestSequence(sequence=[
+        T_normal_1, T_normal_2
+    ])
+    with pytest.raises(KeyError):
+        ts['test 3']
 
 
 def test_TestSequence_retrieve_by_moniker(normal_test_sequence):
@@ -267,6 +277,7 @@ def test_TestSequence_run_failed(failed_test_sequence):
 
     assert ts.is_passing is False
     assert ts.is_aborted is False
+    assert len(ts.failed_tests) == 1
 
 
 def test_TestSequence_auto_start(auto_test_sequence):
@@ -382,3 +393,19 @@ def test_TestSequence_teardown_exception():
         sleep(0.1)
 
     assert counter == 1
+
+
+def test_TestSequence_setup():
+    """ Ensures that the "setup" function is called when specified. """
+    def setup_function():
+        with open('test_data.txt', 'w') as f:
+            f.write('data')
+
+    ts = mats.TestSequence(sequence=[t1, t2],
+                           setup=setup_function)
+    ts.start()
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert path.exists('test_data.txt')
+    remove('test_data.txt')
