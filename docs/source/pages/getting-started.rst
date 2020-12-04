@@ -461,3 +461,5 @@ The only requirement for the object instance supplied to ``archive_manager`` is 
 implement the ``save()`` method which will accept a ``dict`` containing the key: value
 pairs on test completion.  In this way, it is very easy to supply custom archive
 manager objects to extend the functionality of the archiving process.
+
+See :ref:`saving-data-label` for more information about the archive manager.

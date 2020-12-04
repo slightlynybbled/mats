@@ -31,8 +31,26 @@ class ArchiveManager:
     def save(self, point: dict):
         """
         Takes a point of data supplied as a dict and, depending on existing
-        conditions, will archive the data point on the disk.  Three conditions
-        possible at save time:
+        conditions, will archive the data point on the disk.  Each ``point``
+        represents a single row of data representing the execution of a
+        single instance of the test execution.  Each key of the ``dict`` has
+        one of the following formats:
+
+         * When there are no pass/fail criteria, but data are being saved, \
+         then the key will be a string containing the test moniker only.  For \
+         instance, the ``datetime`` moniker will have no pass/fail criteria; \
+         therefore, the key will be ``datetime``.
+         * When there are pass/fail criteria, the the key will have the \
+         the criteria in parenthesis, with multiple criteria separated by \
+         commas.  For instance, if the maximum current criteria is 10.0A, but \
+         there is no minimum criteria, then the key will be \
+         ``current (max=10.0)``.  If the minimum criteria were also specified \
+         in the test constructor, then it might look like \
+         ``current (min=5.0, max=10.0)``.  When pass/fail criteria are set to \
+         equality, the ``pass_if`` will be specified, such as \
+         ``errors reported (pass_if=False)``
+
+        Three conditions possible at save time:
 
          * Data file does not exist
          * Data file exists and is compatible with the current data point \

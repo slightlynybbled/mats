@@ -1,3 +1,5 @@
+.. _saving-data-label:
+
 Saving Data
 ===========
 
@@ -13,6 +15,26 @@ which contains key: value pairs containing the results of a single test executio
 Custom ArchiveManager Implementations
 -------------------------------------
 
-.. todo::
+To create your own custom implementation that will save your data, you must:
 
-   Describe how to create a custom class for the archive manager.
+1. Implement a new class which contains a ``save()`` method which accepts a single ``dict`` as \
+   its parameter.
+2. Create an instance of your new custom class:
+
+.. code-block:: python
+
+    mam = MyArchiveManager()
+
+3. Supply the new instance to your test sequence:
+
+.. code-block:: python
+
+    ts = TestSequence(
+        setup=setup,
+        teardown=teardown,
+        sequence=[T1(), T2()],
+        archive_manager=mam
+    )
+
+On every test execution, your new custom ``save()`` method will be called and supplied with the data
+for one execution of your test sequence.
