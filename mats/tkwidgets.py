@@ -19,13 +19,14 @@ class MatsFrame(Frame):
     :param parent: the tk parent frame
     :param sequence: the instance of `TestSequence` to monitor
     :param vertical: if `True`, will stack tests vertically; \
-    otherwise, horizontally; default is vertical, `True`
+        otherwise, horizontally; default is vertical, `True`
     :param start_btn: if `True`, will populate a start button; \
-    otherwise, will not; default is `True`
+        otherwise, will not; default is `True`
+    :param wrap: the number above which will start the next row or column
     :param loglevel: the logging level, for instance 'logging.INFO'
     """
     def __init__(self, parent, sequence: TestSequence,
-                 vertical=True, start_btn=True,
+                 vertical=True, start_btn=True, wrap: int = 6,
                  loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
@@ -59,21 +60,40 @@ class MatsFrame(Frame):
                 _TestLabel(self, test, vertical=vertical)
             )
 
-        for tl in self._test_status_frames:
-            col += 1 if not vertical else 0
-            row += 1 if vertical else 0
+        start_row = row
+        start_col = col
+        max_row = row
+        max_col = col
+        for i, tl in enumerate(self._test_status_frames):
+            if vertical:
+                tl.grid(row=row, column=col, sticky='news')
 
-            tl.grid(row=row, column=col, sticky='news')
+                row += 1
+                row %= wrap
 
-            if not vertical:
-                col += 1 if not vertical else 0
-                row += 1 if vertical else 0
+                if row == 0:
+                    col += 1
+                    row = start_row
 
-                Label(self, text=arrow, justify='center', anchor='center')\
-                    .grid(row=row, column=col, sticky='news')
+            else:
+                tl.grid(row=row, column=col, sticky='news')
+
+                col += 1
+                col %= wrap
+                if col == 0:
+                    row += 1
+                    col = start_col
+
+            max_row = max(row, max_row)
+            max_col = max(col, max_col)
 
         col += 1 if not vertical else 0
         row += 1 if vertical else 0
+
+        if vertical:
+            row = max_row + 1
+        else:
+            col = max_col + 1
 
         self._complete_label = Label(self, text='-',
                                      anchor='center', justify='center')
