@@ -24,7 +24,8 @@ class Test:
         if pass_if is not None:
             moniker_str = f'{moniker} (pass if={pass_if})'
         elif min_value is not None and max_value is not None:
-            moniker_str = f'{moniker} (min={min_value:.3g}, max={max_value:.3g})'
+            moniker_str = f'{moniker} (min={min_value:.3g}, ' \
+                          f'max={max_value:.3g})'
         elif min_value is not None:
             moniker_str = f'{moniker} (min={min_value:.3g})'
         elif max_value is not None:
