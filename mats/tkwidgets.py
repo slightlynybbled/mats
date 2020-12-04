@@ -64,7 +64,7 @@ class MatsFrame(Frame):
         start_col = col
         max_row = row
         max_col = col
-        for i, tl in enumerate(self._test_status_frames):
+        for tl in self._test_status_frames:
             if vertical:
                 tl.grid(row=row, column=col, sticky='news')
 
