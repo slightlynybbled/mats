@@ -133,10 +133,17 @@ class _TestLabel(Label):
 
         self._test = test
 
-        if not vertical:
-            self._label_text = self._test.moniker.replace(' ', '\n')
-        else:
-            self._label_text = self._test.moniker
+        criteria = self._test.criteria
+        criteria_list = []
+        criteria_string = ''
+        if criteria is not None:
+            for condition, value in criteria.items():
+                cs = f'{condition}={value:.3g}'
+                criteria_list.append(cs)
+            criteria_string = ','.join(criteria_list)
+
+        self._label_text = f'{self._test.moniker}\n{criteria_string}'
+
         self.config(text=self._label_text, relief=_relief,
                     padding=_label_padding)
 
@@ -165,7 +172,7 @@ class _TestLabel(Label):
 
         value = self._test.value
         if isinstance(value, float):
-            value_str = f'{value: .03f}'
+            value_str = f'{value:.3g}'
         else:
             try:
                 value_str = f'{value.magnitude: .03f}'
@@ -173,7 +180,7 @@ class _TestLabel(Label):
                 value_str = f'{value}'
 
         if value_str and len(value_str) < 12:
-            label_text = f'{self._label_text}\n({value_str})'
+            label_text = f'{self._label_text}\n({value_str.strip()})'
         else:
             label_text = self._label_text
 

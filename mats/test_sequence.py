@@ -45,7 +45,7 @@ class TestSequence:
             if not isinstance(test, Test):
                 sequence[i] = test()
 
-        if not self._validate_sequence(sequence):
+        if not self.__validate_sequence(sequence):
             raise ValueError('test monikers are not uniquely identified')
 
         self._sequence = sequence
@@ -58,9 +58,9 @@ class TestSequence:
         self.in_progress = False
         self._aborted = False
         self._test_data = {
-            'datetime': str(datetime.now()),
-            'pass': True,
-            'failed': []
+            'datetime': {'value': str(datetime.now())},
+            'pass': {'value': True},
+            'failed': {'value': []}
         }
 
         self.current_test = None
@@ -129,7 +129,7 @@ class TestSequence:
 
         :return: True or False
         """
-        return self._test_data['pass']
+        return self._test_data['pass'].get('value')
 
     @property
     def is_aborted(self):
@@ -148,7 +148,7 @@ class TestSequence:
 
         :return: list of tests that failed
         """
-        return self._test_data['failed']
+        return self._test_data['failed'].get('value')
 
     @property
     def progress(self):
@@ -161,7 +161,7 @@ class TestSequence:
         return (self._current_test_number,
                 len([test.moniker for test in self._sequence]))
 
-    def _validate_sequence(self, sequence: List[Test]):
+    def __validate_sequence(self, sequence: List[Test]):
         moniker_set = set([t.moniker for t in sequence])
 
         if len(moniker_set) != len(sequence):
@@ -203,9 +203,9 @@ class TestSequence:
         self._logger.info('-' * 80)
         self._aborted = False
         self._test_data = {
-            'datetime': str(datetime.now()),
-            'pass': True,
-            'failed': []
+            'datetime': {'value': str(datetime.now())},
+            'pass': {'value': True},
+            'failed': {'value': []}
         }
 
         self._current_test_number = 0
@@ -254,7 +254,11 @@ class TestSequence:
                 break
 
             if test_result is not None:
-                self._test_data[test.moniker] = test_result
+                self._test_data[test.moniker] = {'value': test_result}
+
+                criteria = test.criteria
+                if criteria is not None:
+                    self._test_data[test.moniker]['criteria'] = criteria
 
             try:
                 test._teardown(is_passing=self.is_passing)
@@ -270,14 +274,14 @@ class TestSequence:
                 break
 
             if not test._test_is_passing:
-                self._test_data['pass'] = False
-                self._test_data['failed'].append(test.moniker)
+                self._test_data['pass']['value'] = False
+                self._test_data['failed']['value'].append(test.moniker)
 
             # if any data was specifically stored within a test,
             # then retrieve it and store it within the sequence
             # test data
             for k, v in test.saved_data.items():
-                self._test_data[k] = v
+                self._test_data[k]['value'] = v
 
         if not self._aborted and self._archive_manager is not None:
             self._archive_manager.save(self._test_data)

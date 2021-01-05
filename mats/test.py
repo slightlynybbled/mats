@@ -21,21 +21,16 @@ class Test:
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
+        criteria = {}
         if pass_if is not None:
-            moniker_str = f'{moniker} (pass if={pass_if})'
-        elif min_value is not None and max_value is not None:
-            moniker_str = f'{moniker} (min={min_value:.3g}, ' \
-                          f'max={max_value:.3g})'
-        elif min_value is not None:
-            moniker_str = f'{moniker} (min={min_value:.3g})'
-        elif max_value is not None:
-            moniker_str = f'{moniker} (max={max_value:.3g})'
-        else:
-            moniker_str = moniker
+            criteria['pass_if'] = pass_if
+        if min_value is not None:
+            criteria['min'] = min_value
+        if max_value is not None:
+            criteria['max'] = max_value
 
-        self.moniker = moniker_str
-        self._max_value, self._min_value = max_value, min_value
-        self._pass_if = pass_if
+        self.moniker = moniker
+        self.__criteria = criteria if criteria else None
 
         self._test_is_passing = None
         self.value = None
@@ -47,6 +42,10 @@ class Test:
     @property
     def is_passing(self):
         return self._test_is_passing
+
+    @property
+    def criteria(self):
+        return self.__criteria
 
     def abort(self):
         self.aborted = True
@@ -86,34 +85,35 @@ class Test:
 
         self.value = self.execute(is_passing=is_passing)
 
-        if self._pass_if is not None:
-            if self.value != self._pass_if:
-                self._logger.warning(
-                    f'"{self.value}" != pass_if requirement '
-                    f'"{self._pass_if}", failing')
-                self.fail()
-            else:
-                self._logger.info(
-                    f'"{self.value}" == pass_if requirement "{self._pass_if}"')
+        if self.__criteria is not None:
+            if self.__criteria.get('pass_if') is not None:
+                if self.value != self.__criteria['pass_if']:
+                    self._logger.warning(
+                        f'"{self.value}" != pass_if requirement '
+                        f'"{self.__criteria["pass_if"]}", failing')
+                    self.fail()
+                else:
+                    self._logger.info(
+                        f'"{self.value}" == pass_if requirement "{self.__criteria["pass_if"]}"')
 
-        if self._min_value is not None:
-            if self.value < self._min_value:
-                self._logger.warning(
-                    f'"{self.value}" is below the minimum '
-                    f'"{self._min_value}", failing')
-                self.fail()
-            else:
-                self._logger.info(
-                    f'"{self.value}" is above the minimum "{self._min_value}"')
+            if self.__criteria.get('min') is not None:
+                if self.value < self.__criteria["min"]:
+                    self._logger.warning(
+                        f'"{self.value}" is below the minimum '
+                        f'"{self.__criteria["min"]}", failing')
+                    self.fail()
+                else:
+                    self._logger.info(
+                        f'"{self.value}" is above the minimum "{self.__criteria["min"]}"')
 
-        if self._max_value is not None:
-            if self.value > self._max_value:
-                self._logger.warning(
-                    f'"{self.value}" is above the maximum "{self._max_value}"')
-                self.fail()
-            else:
-                self._logger.info(
-                    f'"{self.value}" is below the maximum "{self._max_value}"')
+            if self.__criteria.get('max') is not None:
+                if self.value > self.__criteria["max"]:
+                    self._logger.warning(
+                        f'"{self.value}" is above the maximum "{self.__criteria["max"]}"')
+                    self.fail()
+                else:
+                    self._logger.info(
+                        f'"{self.value}" is below the maximum "{self.__criteria["max"]}"')
 
         self.status = 'running' if not self.aborted else 'aborted'
 

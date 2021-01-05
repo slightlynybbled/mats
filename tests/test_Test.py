@@ -129,31 +129,30 @@ def test_Test_creation(blank_Test):
 def test_Test_class_creation_with_pass_if(pass_if_Test):
     t = pass_if_Test
 
-    assert t.moniker == f'test (pass if=True)'
-    assert t._pass_if is True
-    assert t._min_value is None
-    assert t._max_value is None
+    assert t.moniker == f'test'
+    assert t.criteria['pass_if'] is True
 
 
 def test_Test_class_creation_min_only(min_Test):
     t = min_Test
 
-    assert t.moniker == f'test (min=1)'
+    assert t.moniker == f'test'
+    assert t.criteria['min'] == 1
 
 
 def test_Test_class_creation_max_only(max_Test):
     t = max_Test
 
-    assert t.moniker == f'test (max=2)'
+    assert t.moniker == f'test'
+    assert t.criteria['max'] == 2
 
 
 def test_Test_creation_with_min_and_max(bracketed_Test):
     t = bracketed_Test
 
-    assert t.moniker == f'test (min=1, max=2)'
-    assert t._pass_if is None
-    assert t._min_value == 1.0
-    assert t._max_value == 2.0
+    assert t.moniker == f'test'
+    assert t.criteria['min'] == 1
+    assert t.criteria['max'] == 2
 
 
 def test_Test_blank_setup_execute_teardown(blank_Test):

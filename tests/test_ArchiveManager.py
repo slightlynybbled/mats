@@ -13,8 +13,8 @@ import mats
 unit = pint.UnitRegistry()
 
 
-data_point_1 = {'t1': 10, 't2': 10.0, 't3': 'string 10'}
-data_point_2 = {'t1': 10, 't2': 10.0, 't3': 'string 10', 't4': 1 * unit.rpm}
+data_point_1 = {'t1': {'value': 10}, 't2': {'value': 10.0}, 't3': {'value': 'string 10'}}
+data_point_2 = {'t1': {'value': 10}, 't2': {'value': 10.0}, 't3': {'value': 'string 10'}, 't4': {'value': 1 * unit.rpm}}
 
 
 @pytest.fixture
@@ -41,7 +41,7 @@ def test_am_save(am):
     assert Path('data.txt').exists
 
     with open(Path('data.txt'), 'r') as f:
-        assert len(f.readlines()) == (length + 1)
+        assert len(f.readlines()) == (length + 2)
 
 
 def test_am_save_new_header(am):
@@ -58,4 +58,4 @@ def test_am_save_new_header(am):
 
     for p in data_paths:
         with open(p, 'r') as f:
-            assert len(f.readlines()) == (length + 1)
+            assert len(f.readlines()) == (length + 2)

@@ -34,29 +34,15 @@ class ArchiveManager:
         conditions, will archive the data point on the disk.  Each ``point``
         represents a single row of data representing the execution of a
         single instance of the test execution.  Each key of the ``dict`` has
-        one of the following formats:
-
-         * When there are no pass/fail criteria, but data are being saved, \
-         then the key will be a string containing the test moniker only.  For \
-         instance, the ``datetime`` moniker will have no pass/fail criteria; \
-         therefore, the key will be ``datetime``.
-         * When there are pass/fail criteria, the the key will have the \
-         the criteria in parenthesis, with multiple criteria separated by \
-         commas.  For instance, if the maximum current criteria is 10.0A, but \
-         there is no minimum criteria, then the key will be \
-         ``current (max=10.0)``.  If the minimum criteria were also specified \
-         in the test constructor, then it might look like \
-         ``current (min=5.0, max=10.0)``.  When pass/fail criteria are set to \
-         equality, the ``pass_if`` will be specified, such as \
-         ``errors reported (pass_if=False)``
+        will represent the parameter being measured.
 
         Three conditions possible at save time:
 
          * Data file does not exist
          * Data file exists and is compatible with the current data point \
-         (the header strings match)
+         (the headings and header strings match)
          * Data file exists, but is not compatible with the current data \
-         point (the header strings do not match)
+         point (the heading and header strings do not match)
 
         When the data file does not exist, then the ``save()`` method will
         create the new data file at ``<fname>.<extension>``.
@@ -78,22 +64,38 @@ class ArchiveManager:
         destination_path = self._path / self._fname
 
         headers = list(point.keys())
-        header_string = f'{self._delimiter.join(headers)}\n'
+
+        heading_string = ''
+        for header in headers:
+            heading_fragments = []
+            criteria = point[header].get('criteria')
+            if criteria is not None:
+                if 'pass_if' in criteria.keys():
+                    heading_fragments.append(f"pass_if={criteria['pass_if']}")
+                if 'min' in criteria.keys():
+                    heading_fragments.append(f"min={criteria['min']:.3g}")
+                if 'max' in criteria.keys():
+                    heading_fragments.append(f"max={criteria['max']:.3g}")
+
+                heading_string += header + ':' + ','.join(heading_fragments) + '\n'
+
+        header_string = heading_string + f'\n{self._delimiter.join(headers)}\n'
 
         data = []
         for _, value in point.items():
-            if isinstance(value, str):
-                data.append(value)
-            elif isinstance(value, int):
-                data.append(f'{value}')
-            elif isinstance(value, float):
-                data.append(f'{value: .03f}')
+            v = value.get('value')
+            if isinstance(v, str):
+                data.append(v)
+            elif isinstance(v, int):
+                data.append(f'{v}')
+            elif isinstance(v, float):
+                data.append(f'{v: .03f}')
             else:
                 try:
                     # convert from pint-style values
-                    data.append(f'{value.magnitude: .03f}')
+                    data.append(f'{v.magnitude: .03f}')
                 except AttributeError:
-                    data.append(str(value))  # this is the catch-all
+                    data.append(str(v))  # this is the catch-all
 
         data_string = f'{self._delimiter.join(data)}\n'
 
@@ -103,12 +105,12 @@ class ArchiveManager:
             # if the header strings do not match, then set the
             # 'create_new_file' flag
             with open(destination_path, 'r') as f:
-                old_header_string = f.readline()
+                len_new_header_string = len(header_string)
+                old_header_string = f.read(len_new_header_string)
+
                 if old_header_string != header_string:
                     self._logger.info(
-                        f'header strings do not match, '
-                        f'"{old_header_string.strip()}" vs '
-                        f'"{header_string.strip()}"')
+                        'header strings do not match')
                     header_changed = True
         except FileNotFoundError:
             # if the file is not found, then create a new file
@@ -131,7 +133,7 @@ class ArchiveManager:
         # write the header string
         if not destination_path.exists():
             self._logger.info(f'"{destination_path}" does not exist, creating'
-                              f' with new header: "{header_string.strip()}"')
+                              f' with new heading')
             with open(destination_path, 'w') as f:
                 f.write(header_string)
 

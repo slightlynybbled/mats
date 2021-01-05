@@ -10,8 +10,7 @@ from random import random, choice
 from time import sleep
 import tkinter as tk
 
-from mats import Test
-from mats import TestSequence
+from mats import Test, TestSequence, ArchiveManager
 from mats.tkwidgets import MatsFrame
 
 
