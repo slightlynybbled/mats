@@ -58,7 +58,9 @@ class ArchiveManager:
         format is once again detected.
 
         :param point: a ``dict`` containing key: value pairs which specify \
-        the data to be saved
+        the data to be saved in {'heading': {'value': value}}; the inner \
+        dictionary may also contain a ``dict`` called ``criteria`` which \
+        will contain the ``pass_if``, ``min``, or ``max`` values allowed
         :return: None
         """
         destination_path = self._path / self._fname
