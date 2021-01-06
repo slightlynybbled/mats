@@ -94,7 +94,8 @@ class Test:
                     self.fail()
                 else:
                     self._logger.info(
-                        f'"{self.value}" == pass_if requirement "{self.__criteria["pass_if"]}"')
+                        f'"{self.value}" == pass_if requirement '
+                        f'"{self.__criteria["pass_if"]}"')
 
             if self.__criteria.get('min') is not None:
                 if self.value < self.__criteria["min"]:
@@ -104,16 +105,19 @@ class Test:
                     self.fail()
                 else:
                     self._logger.info(
-                        f'"{self.value}" is above the minimum "{self.__criteria["min"]}"')
+                        f'"{self.value}" is above the minimum '
+                        f'"{self.__criteria["min"]}"')
 
             if self.__criteria.get('max') is not None:
                 if self.value > self.__criteria["max"]:
                     self._logger.warning(
-                        f'"{self.value}" is above the maximum "{self.__criteria["max"]}"')
+                        f'"{self.value}" is above the maximum '
+                        f'"{self.__criteria["max"]}"')
                     self.fail()
                 else:
                     self._logger.info(
-                        f'"{self.value}" is below the maximum "{self.__criteria["max"]}"')
+                        f'"{self.value}" is below the maximum '
+                        f'"{self.__criteria["max"]}"')
 
         self.status = 'running' if not self.aborted else 'aborted'
 

@@ -77,7 +77,8 @@ class ArchiveManager:
                 if 'max' in criteria.keys():
                     heading_fragments.append(f"max={criteria['max']:.3g}")
 
-                heading_string += header + ':' + ','.join(heading_fragments) + '\n'
+                heading_string += (header + ':'
+                                   + ','.join(heading_fragments) + '\n')
 
         header_string = heading_string + f'\n{self._delimiter.join(headers)}\n'
 
