@@ -50,7 +50,7 @@ class PumpFlowTest(Test):
         # simulate long-running process, such as
         # several flow measurement/averaging cycles
         sleep(0.1)
-        flow = 5.5 + random()
+        flow = 5.5 + random() * 1.2
 
         # should return a (key, value) tuple which are the results of the test
         return flow
@@ -65,7 +65,9 @@ if __name__ == '__main__':
 
     # create the sequence of test objects
     sequence = [CommunicationTest(), PumpFlowTest()]
-    ts = TestSequence(sequence=sequence, auto_run=False, loglevel=logging.DEBUG)
+    ts = TestSequence(sequence=sequence, auto_run=False,
+                      archive_manager=ArchiveManager(),
+                      loglevel=logging.DEBUG)
 
     window = tk.Tk()
 
