@@ -28,12 +28,15 @@ class TestSequence:
     :param setup: function to call before the test sequence
     :param teardown: function to call after the test sequence is complete, \
     even if there was a problem; common to have safety issues addressed here
+    :param on_close: function to call when the functionality is complete; \
+    for instance, when a GUI closes, test hardware may need to be de-allocated
     :param loglevel: the logging level
     """
     def __init__(self, sequence: Sequence,
                  archive_manager: ArchiveManager = None,
                  auto_start=False, auto_run=False, callback: callable = None,
                  setup: callable = None, teardown: callable = None,
+                 on_close: callable = None,
                  loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
@@ -54,6 +57,7 @@ class TestSequence:
         self._callback = callback
         self._setup = setup
         self._teardown = teardown
+        self._on_close = on_close
 
         self.in_progress = False
         self._aborted = False
@@ -160,6 +164,13 @@ class TestSequence:
         """
         return (self._current_test_number,
                 len([test.moniker for test in self._sequence]))
+
+    def close(self):
+        """
+        Allows higher level code to call the close functionality.
+        """
+        if self._on_close is not None:
+            self._on_close()
 
     def __validate_sequence(self, sequence: List[Test]):
         moniker_set = set([t.moniker for t in sequence])
