@@ -138,11 +138,16 @@ class _TestLabel(Label):
         criteria_string = ''
         if criteria is not None:
             for condition, value in criteria.items():
-                cs = f'{condition}={value:.3g}'
+                if isinstance(value, bool) or isinstance(value, int):
+                    cs = f'{condition}={value}'
+                else:
+                    cs = f'{condition}={value:.3g}'
                 criteria_list.append(cs)
             criteria_string = ','.join(criteria_list)
 
-        self._label_text = f'{self._test.moniker}\n{criteria_string}'
+        self._label_text = f'{self._test.moniker}'
+        if criteria_string:
+            self._label_text += f'\n{criteria_string}'
 
         self.config(text=self._label_text, relief=_relief,
                     padding=_label_padding)
@@ -175,7 +180,7 @@ class _TestLabel(Label):
             value_str = f'{value:.3g}'
         else:
             try:
-                value_str = f'{value.magnitude: .03f}'
+                value_str = f'{value.magnitude: .03g}'
             except AttributeError:
                 value_str = f'{value}'
 

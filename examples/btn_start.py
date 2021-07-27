@@ -60,11 +60,27 @@ class PumpFlowTest(Test):
         sleep(0.1)
 
 
+# A simple data-gathering exercise with no pass/fail criteria
+class PressureTest(Test):
+    def __init__(self, loglevel=logging.INFO):
+        super().__init__(moniker='pressure test',
+                         loglevel=loglevel)
+
+    def execute(self, is_passing):
+        # simulate long-running process, such as
+        # several flow measurement/averaging cycles
+        sleep(0.1)
+        pressure = 10 + random() * 1.2
+
+        # should return a (key, value) tuple which are the results of the test
+        return 0.00000001234
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     # create the sequence of test objects
-    sequence = [CommunicationTest(), PumpFlowTest()]
+    sequence = [CommunicationTest(), PumpFlowTest(), PressureTest()]
     ts = TestSequence(sequence=sequence, auto_run=False,
                       archive_manager=ArchiveManager(),
                       loglevel=logging.DEBUG)
