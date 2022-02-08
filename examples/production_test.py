@@ -58,7 +58,7 @@ if __name__ == '__main__':
     sequence = [CommunicationTest(), FlowTest()]
 
     # create the archive manager
-    am = ArchiveManager()
+    am = ArchiveManager(format=1)
 
     # create the test sequence using the
     # sequence and archive manager objects from above
@@ -67,6 +67,6 @@ if __name__ == '__main__':
                       auto_run=False)
 
     # start the test as many times as you wish!
-    for _ in range(3):
+    for _ in range(10):
         ts.start()
-        sleep(2.0)
+        sleep(0.2)

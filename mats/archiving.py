@@ -9,7 +9,7 @@ from shutil import copy
 class ArchiveManager:
     def __init__(self,
                  path='.', fname='data.txt',
-                 delimiter='\t', loglevel=logging.INFO):
+                 delimiter='\t', format: int = 0, loglevel=logging.INFO):
         """
         The basic save utility bundled into the test sequencer.  The archive \
         manager is geared towards common manufacturing environments in which \
@@ -19,6 +19,8 @@ class ArchiveManager:
         file name
         :param fname: the file name
         :param delimiter: the delimiter or separator between fields
+        :param format: an integer indicating the format which is to be \
+        utilized when saving data
         :param loglevel: the logging level, for instance 'logging.INFO'
         """
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -27,6 +29,7 @@ class ArchiveManager:
         self._fname = fname
         self._path = Path(path)
         self._delimiter = delimiter
+        self._format = format
 
     def save(self, point: dict):
         """
@@ -63,8 +66,14 @@ class ArchiveManager:
         will contain the ``pass_if``, ``min``, or ``max`` values allowed
         :return: None
         """
-        destination_path = self._path / self._fname
+        if self._format == 0:
+            self._save_fmt0(point)
+        elif self._format == 1:
+            self._save_fmt1(point)
+        else:
+            raise ValueError(f'format "{self._format}" invalid')
 
+    def _save_fmt0(self, point: dict):
         headers = list(point.keys())
 
         heading_string = ''
@@ -101,6 +110,63 @@ class ArchiveManager:
                     data.append(str(v))  # this is the catch-all
 
         data_string = f'{self._delimiter.join(data)}\n'
+
+        self._save_file(header_string, data_string)
+
+    def _save_fmt1(self, point: dict):
+        headers = list(point.keys())
+
+        header_string = ''
+        for header in headers:
+            header_string += f'{header}\t'
+            criteria = point[header].get('criteria')
+
+            if criteria is not None:
+                if 'pass_if' in criteria.keys():
+                    header_string += f'{header} =\t'
+                if 'min' in criteria.keys():
+                    header_string += f'{header} >=\t'
+                if 'max' in criteria.keys():
+                    header_string += f'{header} <=\t'
+
+        header_string = header_string.strip() + '\n'
+
+        data = []
+        for header, value in point.items():
+            v = value.get('value')
+            if header == 'failed':
+                # when header is "failed", then save each failed value into
+                # its own special semicolon-separated format
+                data.append(';'.join(v))
+            else:
+                if isinstance(v, str):
+                    data.append(v)
+                elif isinstance(v, int):
+                    data.append(f'{v}')
+                elif isinstance(v, float):
+                    data.append(f'{v: .03g}')
+                else:
+                    try:
+                        # convert from pint-style values
+                        data.append(f'{v.magnitude: .03g}')
+                    except AttributeError:
+                        data.append(str(v))  # this is the catch-all
+
+                criteria = point[header].get('criteria')
+                if criteria is not None:
+                    if 'pass_if' in criteria.keys():
+                        data.append(f'{criteria["pass_if"]}')
+                    if 'min' in criteria.keys():
+                        data.append(f'{criteria["min"]}')
+                    if 'max' in criteria.keys():
+                        data.append(f'{criteria["max"]}')
+
+        data_string = f'{self._delimiter.join(data)}\n'
+
+        self._save_file(header_string, data_string)
+
+    def _save_file(self, header_string: str, data_string: str):
+        destination_path = self._path / self._fname
 
         # check for the header string
         header_changed = False
@@ -144,3 +210,7 @@ class ArchiveManager:
         self._logger.info(f'appending data: "{data_string.strip()}"')
         with open(destination_path, 'a') as f:
             f.write(data_string)
+
+
+
+
