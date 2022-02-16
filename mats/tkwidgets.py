@@ -138,7 +138,7 @@ class _TestLabel(Label):
         criteria_string = ''
         if criteria is not None:
             for condition, value in criteria.items():
-                if isinstance(value, bool) or isinstance(value, int):
+                if isinstance(value, bool) or isinstance(value, int) or isinstance(value, str):
                     cs = f'{condition}={value}'
                 else:
                     cs = f'{condition}={value:.3g}'
