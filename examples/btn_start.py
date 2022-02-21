@@ -14,6 +14,15 @@ from mats import Test, TestSequence, ArchiveManager
 from mats.tkwidgets import MatsFrame
 
 
+def setup():
+    print('some kind of sequence setup function to occur here, like turning on power supplies')
+
+
+def teardown():
+    print('some kind of sequence teardown function to occur here, '
+          'like turning off power supplies or putting the fixture into a safe state')
+
+
 # The CommunicationTest class shows the minimum test structure that might
 # be reasonably be implemented.  Only the `execute()` method is implemented.
 class CommunicationTest(Test):
@@ -81,7 +90,9 @@ if __name__ == '__main__':
 
     # create the sequence of test objects
     sequence = [CommunicationTest(), PumpFlowTest(), PressureTest()]
-    ts = TestSequence(sequence=sequence, auto_run=False,
+    ts = TestSequence(setup=lambda: setup(),
+                      teardown=lambda: teardown(),
+                      sequence=sequence, auto_run=False,
                       archive_manager=ArchiveManager(),
                       loglevel=logging.DEBUG)
 

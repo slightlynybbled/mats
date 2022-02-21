@@ -1,3 +1,4 @@
+import atexit
 from datetime import datetime
 import logging
 from threading import Thread
@@ -69,6 +70,9 @@ class TestSequence:
 
         self.current_test = None
         self._current_test_number = 0
+
+        if self._teardown is not None:
+            atexit.register(lambda: self._teardown_function())
 
         if auto_start:
             self._logger.info('"auto_start" flag is set, '
@@ -203,6 +207,16 @@ class TestSequence:
         self.in_progress = True
         thread = Thread(target=self._run_test)
         thread.start()
+
+    def _teardown_function(self):
+        self._logger.info('tearing down test sequence by executing sequence teardown function')
+
+        try:
+            self._teardown()
+        except Exception as e:
+            self._logger.critical(f'critical error during '
+                                  f'test teardown: {e}')
+            self._logger.critical(str(traceback.format_exc()))
 
     def _run_test(self):
         """
