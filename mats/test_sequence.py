@@ -315,12 +315,19 @@ class TestSequence:
         self._logger.debug(f'test results: {self._test_data}')
 
         if self._teardown is not None:
-            self._teardown()
+            try:
+                self._teardown()
+            except Exception as e:
+                self._logger.critical(f'an exception has occurred which may result '
+                                      f'in an unsafe condition during sequence teardown: {e}')
 
         if self._callback is not None:
             self._logger.info(f'executing user-supplied callback function '
                               f'"{self._callback}"')
-            self._callback(self._test_data)
+            try:
+                self._callback(self._test_data)
+            except Exception as e:
+                self._logger.warning(f'an exception occurred during the callback sequence: {e}')
 
         self.in_progress = False
 
