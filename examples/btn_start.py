@@ -23,6 +23,11 @@ def teardown():
           'like turning off power supplies or putting the fixture into a safe state')
 
 
+def test_complete_callback(data, string):
+    print(f'this is the data that gets passed to a callback: {data}')
+    print(f'added some other string: {string}')
+
+
 # The CommunicationTest class shows the minimum test structure that might
 # be reasonably be implemented.  Only the `execute()` method is implemented.
 class CommunicationTest(Test):
@@ -94,6 +99,7 @@ if __name__ == '__main__':
                       teardown=lambda: teardown(),
                       sequence=sequence, auto_run=False,
                       archive_manager=ArchiveManager(),
+                      callback=lambda data: test_complete_callback(data, 'my string!'),
                       loglevel=logging.DEBUG)
 
     window = tk.Tk()
