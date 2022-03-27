@@ -1,7 +1,7 @@
 # Manufacturing Automated Test System (MATS)
 
 [![Documentation Status](https://readthedocs.org/projects/mats/badge/?version=latest)](https://mats.readthedocs.io/en/latest/?badge=latest)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5a1c34e3898a43ebbdecc1b78c4cad4d)](https://www.codacy.com/app/slightlynybbled/mats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slightlynybbled/ate&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge]([![Codacy Badge](https://app.codacy.com/project/badge/Grade/4b8a81bf06eb48279531756d90fe598f)](https://www.codacy.com/gh/slightlynybbled/mats/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slightlynybbled/mats&amp;utm_campaign=Badge_Grade))](https://www.codacy.com/app/slightlynybbled/mats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slightlynybbled/ate&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/slightlynybbled/mats.svg?branch=master)](https://travis-ci.org/slightlynybbled/mats)
 [![Coverage Status](https://coveralls.io/repos/github/slightlynybbled/ate/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/slightlynybbled/mats?branch=master)
 
