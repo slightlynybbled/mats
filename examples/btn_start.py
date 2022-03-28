@@ -10,6 +10,8 @@ from random import random, choice
 from time import sleep
 import tkinter as tk
 
+import coloredlogs
+
 from mats import Test, TestSequence, ArchiveManager
 from mats.tkwidgets import MatsFrame
 
@@ -91,7 +93,7 @@ class PressureTest(Test):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    coloredlogs.install(level=logging.DEBUG)
 
     # create the sequence of test objects
     sequence = [CommunicationTest(), PumpFlowTest(), PressureTest()]
