@@ -12,13 +12,13 @@ basic user input and feedback.
 
 ## Features
 
-  - Test runner
-  - Auto-start option
-  - Triggered-start option (i.e. "Start Button")
-  - Auto-save of data
-  - Hardware Setup / Teardown
-  - Automatic teardown on exception
-  - Automatic GUI integration
+- Test runner
+- Auto-start option
+- Triggered-start option (i.e. "Start Button")
+- Auto-save of data
+- Hardware Setup / Teardown
+- Automatic teardown on exception
+- Automatic GUI integration
 
 MATS could be considered an automated test framework which imposes a 
 consistent work flow and reduces the amount of mind share that you need 
