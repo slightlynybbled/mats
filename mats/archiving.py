@@ -10,7 +10,8 @@ class ArchiveManager:
     def __init__(self,
                  path='.', fname='data.txt',
                  delimiter='\t', format: int = 0, loglevel=logging.INFO):
-        """
+        """Primary data archiving mechanism.
+
         The basic save utility bundled into the test sequencer.  The archive \
         manager is geared towards common manufacturing environments in which \
         tab-delimited text files are common.
@@ -32,7 +33,8 @@ class ArchiveManager:
         self._format = format
 
     def save(self, point: dict):
-        """
+        """Data save function
+
         Takes a point of data supplied as a dict and, depending on existing
         conditions, will archive the data point on the disk.  Each ``point``
         represents a single row of data representing the execution of a
@@ -74,6 +76,8 @@ class ArchiveManager:
             raise ValueError(f'format "{self._format}" invalid')
 
     def _save_fmt0(self, point: dict):
+        """Saves data with pass/fail criteria embedded into each header.
+        """
         headers = list(point.keys())
 
         heading_string = ''
@@ -114,6 +118,8 @@ class ArchiveManager:
         self._save_file(header_string, data_string)
 
     def _save_fmt1(self, point: dict):
+        """Saves data with pass/fail criteria archived within each column.
+        """
         headers = list(point.keys())
 
         header_string = ''
@@ -166,6 +172,8 @@ class ArchiveManager:
         self._save_file(header_string, data_string)
 
     def _save_file(self, header_string: str, data_string: str):
+        """Saves a new file if header has changed or appends to the old file.
+        """
         destination_path = self._path / self._fname
 
         # check for the header string
@@ -210,7 +218,3 @@ class ArchiveManager:
         self._logger.info(f'appending data: "{data_string.strip()}"')
         with open(destination_path, 'a') as f:
             f.write(data_string)
-
-
-
-
