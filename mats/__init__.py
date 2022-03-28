@@ -1,3 +1,15 @@
+"""Manufacturing Automated Test System (MATS)
+
+MATS takes care of all of the low-level tedium that every
+manufacturing automated test must implement, such as:
+
+ - test runner
+ - test definition
+ - auto saving of data
+ - hardware setup / teardown
+ - automatic GUI integration
+"""
+
 import coloredlogs
 import logging
 

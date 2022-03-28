@@ -2,10 +2,11 @@ import logging
 
 
 class Test:
-    """
-    A test is the most basic unit of an executing test sequence.  Within
-    a test, we may have a setup(), execute(), and teardown() method.  Only the
-    `execute()` method is required to be overridden.
+    """The most basic unit of an executing test sequence.
+
+    Within a test, we may have a setup(), execute(), and \
+    teardown() method.  Only the `execute()` method is required \
+    to be overridden.
 
     :param moniker: a shortcut name for this particular test
     :param min_value: the minimum value that is to be considered a pass, \

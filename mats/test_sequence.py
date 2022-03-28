@@ -13,7 +13,8 @@ Sequence = List[Test]
 
 
 class TestSequence:
-    """
+    """The sequence or stack of ``Test`` objects to execute.
+
     The TestSequence will "knit" the sequence together by taking the test \
     objects and appropriately passing them through the automated testing \
     process.
@@ -80,6 +81,11 @@ class TestSequence:
             self.start()
 
     def __getitem__(self, test_element: (str, Test)):
+        """Returns the ``Test`` instance within the \
+        sequence named ``test_element``.
+
+        :param test_element: a string that matches the moniker
+        """
         test = None
 
         if isinstance(test_element, str):
