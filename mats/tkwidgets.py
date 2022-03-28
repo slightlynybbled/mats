@@ -60,7 +60,7 @@ class MatsFrame(Frame):
         self._test_status_frames = []
         for test in self._sequence.tests:
             self._test_status_frames.append(
-                _TestLabel(status_frame, test, vertical=vertical)
+                _TestLabel(status_frame, test)
             )
 
         row, col = 0, 0
