@@ -116,11 +116,11 @@ class MatsFrame(Frame):
 
 
 class _TestLabel(Label):
+
     """
     A single instance of a test label frame.
     """
-    def __init__(self, parent, test: Test, vertical: bool,
-                 loglevel=logging.INFO):
+    def __init__(self, parent, test: Test, loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 

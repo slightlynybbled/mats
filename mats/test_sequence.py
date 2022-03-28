@@ -52,7 +52,7 @@ class TestSequence:
             if not isinstance(test, Test):
                 sequence[i] = test()
 
-        if not self.__validate_sequence(sequence):
+        if not TestSequence.__validate_sequence(sequence):
             raise ValueError('test monikers are not uniquely identified')
 
         self._sequence = sequence
@@ -75,7 +75,7 @@ class TestSequence:
         self._current_test_number = 0
 
         if self._teardown is not None:
-            atexit.register(lambda: self._teardown_function())
+            atexit.register(self._teardown_function)
 
         if auto_start:
             self._logger.info('"auto_start" flag is set, '
@@ -185,7 +185,8 @@ class TestSequence:
         if self._on_close is not None:
             self._on_close()
 
-    def __validate_sequence(self, sequence: List[Test]):
+    @staticmethod
+    def __validate_sequence(sequence: List[Test]):
         moniker_set = set([t.moniker for t in sequence])
 
         if len(moniker_set) != len(sequence):

@@ -1,6 +1,7 @@
 """
-Automated test suite for the Automated Test Environment.  This file focuses
-on testing the ``ArchiveManager`` class.
+Automated test suite for the Automated Test Environment.
+
+This file focuses on testing the ``ArchiveManager`` class.
 """
 from pathlib import Path
 from os import remove
