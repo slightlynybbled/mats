@@ -43,13 +43,15 @@ class MatsFrame(Frame):
 
         if start_btn:
             Button(self, text='Start', command=sequence.start)\
-                .grid(row=row, column=col, sticky='news')
+                .grid(row=0, column=0, sticky='news')
 
-        if not vertical:
-            col += 1 if not vertical else 0
-            row += 1 if vertical else 0
+        status_frame = Frame(self)
+        if vertical:
+            status_frame.grid(row=1, column=0)
+        else:
             Label(self, text=arrow, justify='center', anchor='center')\
-                .grid(row=row, column=col, sticky='news')
+                .grid(row=0, column=1, sticky='news')
+            status_frame.grid(row=0, column=2)
 
         col += 1 if not vertical else 0
         row += 1 if vertical else 0
@@ -57,11 +59,10 @@ class MatsFrame(Frame):
         self._test_status_frames = []
         for test in self._sequence.tests:
             self._test_status_frames.append(
-                _TestLabel(self, test, vertical=vertical)
+                _TestLabel(status_frame, test, vertical=vertical)
             )
 
-        start_row = row
-        start_col = col
+        row, col = 0, 0
         max_row = row
         max_col = col
         for tl in self._test_status_frames:
@@ -70,11 +71,8 @@ class MatsFrame(Frame):
 
                 row += 1
                 row %= wrap
-
                 if row == 0:
                     col += 1
-                    row = start_row
-
             else:
                 tl.grid(row=row, column=col, sticky='news')
 
@@ -82,7 +80,6 @@ class MatsFrame(Frame):
                 col %= wrap
                 if col == 0:
                     row += 1
-                    col = start_col
 
             max_row = max(row, max_row)
             max_col = max(col, max_col)
@@ -90,14 +87,12 @@ class MatsFrame(Frame):
         col += 1 if not vertical else 0
         row += 1 if vertical else 0
 
-        if vertical:
-            row = max_row + 1
-        else:
-            col = max_col + 1
-
         self._complete_label = Label(self, text='-',
                                      anchor='center', justify='center')
-        self._complete_label.grid(row=row, column=col, sticky='news')
+        if vertical:
+            self._complete_label.grid(row=2, column=0, sticky='news')
+        else:
+            self._complete_label.grid(row=0, column=3, sticky='news')
         self._complete_label.config(relief=_relief, padding=_label_padding)
 
         self._update()
