@@ -396,7 +396,7 @@ def test_TestSequence_teardown_exception():
 
 
 def test_TestSequence_setup():
-    """ Ensures that the "setup" function is called when specified. """
+    """Ensures that the "setup" function is called when specified."""
     def setup_function():
         with open('test_data.txt', 'w') as f:
             f.write('data')

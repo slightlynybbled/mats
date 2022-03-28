@@ -2,7 +2,9 @@ import logging
 
 
 class Test:
-    """The most basic unit of an executing test sequence.
+
+    """
+    The most basic unit of an executing test sequence.
 
     Within a test, we may have a setup(), execute(), and \
     teardown() method.  Only the `execute()` method is required \

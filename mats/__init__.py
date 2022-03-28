@@ -1,4 +1,5 @@
-"""Manufacturing Automated Test System (MATS)
+"""
+Manufacturing Automated Test System (MATS)
 
 MATS takes care of all of the low-level tedium that every
 manufacturing automated test must implement, such as:

@@ -10,7 +10,9 @@ class ArchiveManager:
     def __init__(self,
                  path='.', fname='data.txt',
                  delimiter='\t', format: int = 0, loglevel=logging.INFO):
-        """Primary data archiving mechanism.
+
+        """
+        Primary data archiving mechanism.
 
         The basic save utility bundled into the test sequencer.  The archive \
         manager is geared towards common manufacturing environments in which \

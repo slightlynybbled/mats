@@ -12,7 +12,9 @@ _label_padding = 5
 
 
 class MatsFrame(Frame):
-    """The frame that interacts with the test sequence to display the \
+
+    """
+    The frame that interacts with the test sequence to display the \
     test results as the test is executing.
 
     :param parent: the tk parent frame
