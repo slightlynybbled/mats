@@ -2,6 +2,7 @@
 
 [![Documentation Status](https://readthedocs.org/projects/mats/badge/?version=latest)](https://mats.readthedocs.io/en/latest/)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4b8a81bf06eb48279531756d90fe598f)](https://www.codacy.com/gh/slightlynybbled/mats/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slightlynybbled/mats&amp;utm_campaign=Badge_Grade)
+[![Unit Tests](https://github.com/slightlynybbled/mats/actions/workflows/unittest.yml/badge.svg)](https://github.com/slightlynybbled/mats/actions/workflows/unittest.yml)
 
 `MATS` is a hardware-oriented test environment intended for production 
 testing in a manufacturing environment.  The `MATS` framework is a test 
