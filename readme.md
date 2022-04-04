@@ -1,7 +1,7 @@
 # Manufacturing Automated Test System (MATS)
 
-![Documentation Status](https://readthedocs.org/projects/mats/badge/?version=latest)
-![Codacy Badge](https://app.codacy.com/project/badge/Grade/4b8a81bf06eb48279531756d90fe598f)
+[![Documentation Status](https://readthedocs.org/projects/mats/badge/?version=latest)](https://mats.readthedocs.io/en/latest/)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/4b8a81bf06eb48279531756d90fe598f)](https://www.codacy.com/gh/slightlynybbled/mats/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slightlynybbled/mats&amp;utm_campaign=Badge_Grade)
 ![Build Status](https://travis-ci.org/slightlynybbled/mats.svg?branch=master)
 ![Coverage Status](https://coveralls.io/repos/github/slightlynybbled/ate/badge.svg?branch=master&kill_cache=1)
 
