@@ -1,4 +1,4 @@
-name: Publish 📦 to PyPI and TestPyPI
+name: Publish 📦 to PyPI
 on:
   push:
     tags:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-n-publish:
-    name: Build and publish Python distributions to PyPI and TestPyPI
+    name: Build and publish Python distributions to PyPI
     runs-on: ubuntu-latest
 
     steps:
