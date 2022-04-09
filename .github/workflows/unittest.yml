@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Install `xvfb`
-        run: sudo apt install xvfb
+        run: sudo apt install xvfb & export DISPLAY=':99.0'
 
       - name: Check out repo
         uses: actions/checkout@v2
