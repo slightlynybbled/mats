@@ -9,7 +9,7 @@ from shutil import copy
 class ArchiveManager:
     def __init__(self,
                  path='.', fname='data.txt',
-                 delimiter='\t', format: int = 0, loglevel=logging.INFO):
+                 delimiter='\t', data_format: int = 0, loglevel=logging.INFO):
 
         """
         Primary data archiving mechanism.
@@ -22,7 +22,7 @@ class ArchiveManager:
         file name
         :param fname: the file name
         :param delimiter: the delimiter or separator between fields
-        :param format: an integer indicating the format which is to be \
+        :param data_format: an integer indicating the format which is to be \
         utilized when saving data
         :param loglevel: the logging level, for instance 'logging.INFO'
         """
@@ -32,7 +32,7 @@ class ArchiveManager:
         self._fname = fname
         self._path = Path(path)
         self._delimiter = delimiter
-        self._format = format
+        self._format = data_format
 
     def save(self, point: dict):
         """Data save function
@@ -56,13 +56,13 @@ class ArchiveManager:
 
         When the data file exists at ``<fname>.<extension>`` and is compatible
         with the current data point, then the ``save()`` method will simply
-        append the new data point to previous data in a tabular format.
+        append the new data point to previous data in a tabular data_format.
 
         Finally, when the current data point is deemed incompatible with the
         previous data, then the ``save()`` method will copy the old file to
         ``<fname>_<datetime>.<extension>`` and then create a new file at
         ``<fname>.<extension>`` under which data will be collected until a new
-        format is once again detected.
+        data_format is once again detected.
 
         :param point: a ``dict`` containing key: value pairs which specify \
         the data to be saved in {'heading': {'value': value}}; the inner \
@@ -75,12 +75,12 @@ class ArchiveManager:
         elif self._format == 1:
             self._save_fmt1(point)
         else:
-            raise ValueError(f'format "{self._format}" invalid')
+            raise ValueError(f'data_format "{self._format}" invalid')
 
     def _save_fmt0(self, point: dict):
         """
         Saves data with pass/fail criteria embedded into each header according
-        to "format 0"
+        to "data_format 0"
 
         :param point: a dict containing the name, value, and pass/fail \
         criteria.
@@ -127,7 +127,7 @@ class ArchiveManager:
     def _save_fmt1(self, point: dict):
         """
         Saves data with pass/fail criteria embedded into each header according
-        to "format 1"
+        to "data_format 1"
 
         :param point: a dict containing the name, value, and pass/fail \
         criteria.
@@ -154,7 +154,7 @@ class ArchiveManager:
             v = value.get('value')
             if header == 'failed':
                 # when header is "failed", then save each failed value into
-                # its own special semicolon-separated format
+                # its own special semicolon-separated data_format
                 data.append(';'.join(v))
             else:
                 if isinstance(v, str):

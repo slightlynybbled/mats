@@ -58,7 +58,7 @@ if __name__ == '__main__':
     sequence = [CommunicationTest(), FlowTest()]
 
     # create the archive manager
-    am = ArchiveManager(format=1)
+    am = ArchiveManager(data_format=1)
 
     # create the test sequence using the
     # sequence and archive manager objects from above

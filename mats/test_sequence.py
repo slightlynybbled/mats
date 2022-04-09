@@ -23,7 +23,7 @@ class TestSequence:
 
     :param sequence: a list of Tests
     :param archive_manager: an instance of ``ArchiveManager`` which will \
-    contain the path and format-specific information
+    contain the path and data_format-specific information
     :param auto_start: True if test is to be automatically started
     :param auto_run: True if the test is to be continually executed
     :param callback: function to call on each test sequence completion; \
