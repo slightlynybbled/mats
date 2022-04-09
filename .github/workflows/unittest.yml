@@ -10,6 +10,9 @@ jobs:
     timeout-minutes: 10
 
     steps:
+      - name: Install `xvfb`
+        run: sudo apt install xvfb
+
       - name: Check out repo
         uses: actions/checkout@v2
 
