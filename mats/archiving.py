@@ -78,7 +78,12 @@ class ArchiveManager:
             raise ValueError(f'format "{self._format}" invalid')
 
     def _save_fmt0(self, point: dict):
-        """Saves data with pass/fail criteria embedded into each header.
+        """
+        Saves data with pass/fail criteria embedded into each header according
+        to "format 0"
+
+        :param point: a dict containing the name, value, and pass/fail \
+        criteria.
         """
         headers = list(point.keys())
 
@@ -120,7 +125,12 @@ class ArchiveManager:
         self._save_file(header_string, data_string)
 
     def _save_fmt1(self, point: dict):
-        """Saves data with pass/fail criteria archived within each column.
+        """
+        Saves data with pass/fail criteria embedded into each header according
+        to "format 1"
+
+        :param point: a dict containing the name, value, and pass/fail \
+        criteria.
         """
         headers = list(point.keys())
 
