@@ -180,9 +180,12 @@ class _TestLabel(Label):
             except AttributeError:
                 value_str = f'{value}'
 
-        if value_str and len(value_str) < 12:
+        max_length = 12
+        if value_str and len(value_str) <= max_length:
             label_text = f'{self._label_text}\n({value_str.strip()})'
         else:
+            self._logger.warning('the value string length is greater than '
+                                 f'{max_length} and, thus, will not be shown on the GUI')
             label_text = self._label_text
 
         self.config(background=color, text=label_text)
