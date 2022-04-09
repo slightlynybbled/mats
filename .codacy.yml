@@ -1,0 +1,13 @@
+---
+engines:
+  rubocop:
+    base_sub_dir: "test/baseDir"
+  duplication:
+    config:
+      languages:
+        - "python"
+
+exclude_paths:
+  - "docs/**"
+  - "examples/**"
+  - "tests/**"
