@@ -10,14 +10,8 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Install `xvfb`
-        run: sudo apt install xvfb
-
-      - name: Export DISPLAY var
-        run: export DISPLAY=':99.0' & xvfb-run
-
-      - name: Setup Screen
-        run: "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &"
+      - name: gabrielbb/xvfb-action
+        uses: GabrielBB/xvfb-action@v1
 
       - name: Check out repo
         uses: actions/checkout@v2
