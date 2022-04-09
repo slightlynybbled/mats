@@ -6,7 +6,10 @@ from os import path, remove
 from time import sleep
 
 import pytest
+
 import mats
+from mats.tkwidgets import MatsFrame
+from tests import root
 
 
 test_counter = 0  # use this to keep track of some test execution counts
@@ -14,7 +17,7 @@ test_counter = 0  # use this to keep track of some test execution counts
 
 class T_normal_1(mats.Test):
     def __init__(self):
-        super().__init__('test 1')
+        super().__init__('test 1', pass_if=0)
 
     def execute(self, is_passing):
         sleep(0.2)
@@ -27,10 +30,10 @@ class T_normal_1(mats.Test):
 
 class T_normal_2(mats.Test):
     def __init__(self):
-        super().__init__('test 2')
+        super().__init__('test 2', min_value=-1.0, max_value=1.0)
 
     def execute(self, is_passing):
-        return 0
+        return 0.0
 
 
 class T_aborted(mats.Test):
@@ -38,6 +41,7 @@ class T_aborted(mats.Test):
         super().__init__('test aborting')
 
     def execute(self, is_passing):
+        sleep(0.1)
         self.abort()
         return None
 
@@ -94,7 +98,7 @@ def normal_test_sequence():
 @pytest.fixture
 def aborted_test_sequence():
     global test_counter
-    yield mats.TestSequence(sequence=[ta])
+    yield mats.TestSequence(sequence=[t1, ta, t2])
     test_counter = 0
 
 
@@ -167,9 +171,6 @@ def test_TestSequence_retrieve_by_integer_should_error(normal_test_sequence):
 def test_TestSequence_run():
     """
     Checking a normal test sequence.
-
-    :param normal_test_sequence:
-    :return:
     """
     ts = mats.TestSequence(sequence=[t1, t2])
 
@@ -185,6 +186,61 @@ def test_TestSequence_run():
         sleep(0.1)
 
     assert ts.in_progress is False
+
+
+def test_MatsFrame_run_default(root):
+    """
+    Same as a normal test sequence, but uses
+    a MatsFrame with default parameters.
+    """
+    ts = mats.TestSequence(sequence=[t1, t2])
+    mf = MatsFrame(parent=root, sequence=ts)
+    mf.grid()
+    sleep(0.5)
+
+    assert ts.ready
+    ts.start()
+
+    # wait a small amount of time, ensure that the test sequence has
+    # begun and is in progress
+    sleep(0.1)
+    assert ts.in_progress is True
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert ts.in_progress is False
+
+    # wait for some of the frame to update so that frames may be exercised
+    sleep(1.0)
+    root.destroy()
+
+
+def test_MatsFrame_run_horizontal(root):
+    """
+    Same as a normal test sequence, vertical orientation
+    """
+    ts = mats.TestSequence(sequence=[t1, t2])
+    mf = MatsFrame(parent=root, sequence=ts, vertical=False)
+    mf.grid()
+    sleep(0.5)
+
+    assert ts.ready
+    ts.start()
+
+    # wait a small amount of time, ensure that the test sequence has
+    # begun and is in progress
+    sleep(0.1)
+    assert ts.in_progress is True
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert ts.in_progress is False
+
+    # wait for some of the frame to update so that frames may be exercised
+    sleep(1.0)
+    root.destroy()
 
 
 def test_TestSequence_run_attempted_interrupt():
@@ -257,6 +313,35 @@ def test_TestSequence_run_aborted(aborted_test_sequence):
     assert aborted_test.aborted is True
 
     assert ts.is_aborted is True
+
+
+def test_MatsFrame_run_aborted(root):
+    """
+    Same as a normal test sequence, but uses
+    a MatsFrame with default parameters.
+    """
+    ts = mats.TestSequence(sequence=[t1, ta, t2])
+    mf = MatsFrame(parent=root, sequence=ts)
+    mf.grid()
+    sleep(0.5)
+
+    assert ts.ready
+    ts.start()
+
+    # wait a small amount of time, ensure that the test sequence has
+    # begun and is in progress
+    sleep(0.1)
+    assert ts.in_progress is True
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    aborted_test = ts['test aborting']
+    assert aborted_test.aborted is True
+
+    assert ts.is_aborted is True
+    sleep(1.0)
+    root.destroy()
 
 
 def test_TestSequence_run_failed(failed_test_sequence):
@@ -362,30 +447,6 @@ def test_TestSequence_execute_exception():
         counter += 1
 
     ts = mats.TestSequence(sequence=[T_execute_exception()],
-                           teardown=on_test_exception)
-    ts.start()
-
-    while ts.in_progress is True:
-        sleep(0.1)
-
-    assert counter == 1
-
-
-def test_TestSequence_teardown_exception():
-    """
-    Tests the case in which there is some exception that occurs during \
-    the teardown phase of the test.  THe test should execute the teardown \
-    sequence.
-
-    :return: None
-    """
-    counter = 0
-
-    def on_test_exception():
-        nonlocal counter
-        counter += 1
-
-    ts = mats.TestSequence(sequence=[T_teardown_exception()],
                            teardown=on_test_exception)
     ts.start()
 
