@@ -1,5 +1,9 @@
 name: Publish 📦 to TestPyPI
-on: push
+on:
+  push:
+    tags:
+      - v[12].[0-9]+.[0-9]+.alpha*
+      - v[12].[0-9]+.[0-9]+.beta*
 
 jobs:
   build-n-publish:
