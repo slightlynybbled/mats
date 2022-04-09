@@ -184,7 +184,11 @@ class ArchiveManager:
         self._save_file(header_string, data_string)
 
     def _save_file(self, header_string: str, data_string: str):
-        """Saves a new file if header has changed or appends to the old file.
+        """
+        Saves a new file if header has changed or appends to the old file.
+
+        :param header_string: the string containing the header
+        :param data_string: the string containing the data
         """
         destination_path = self._path / self._fname
 
