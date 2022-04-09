@@ -14,7 +14,7 @@ jobs:
         run: sudo apt install xvfb
 
       - name: Export DISPLAY var
-        run: export DISPLAY=':99.0' & xhost +
+        run: export DISPLAY=':99.0' & xvfb-run x.org_application_binary
 
       - name: Setup Screen
         run: "Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &"
