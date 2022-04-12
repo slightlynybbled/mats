@@ -16,11 +16,18 @@ unit = pint.UnitRegistry()
 
 data_point_1 = {'t1': {'value': 10},
                 't2': {'value': 10.0},
-                't3': {'value': 'string 10'}}
+                't3': {'value': 'string 10'},
+                't5': {'value': True}}
 data_point_2 = {'t1': {'value': 10},
                 't2': {'value': 10.0},
                 't3': {'value': 'string 10'},
-                't4': {'value': 1 * unit.rpm}}
+                't4': {'value': 1 * unit.rpm},
+                't5': {'value': True}}
+data_point_3 = {'t1': {'value': 10},
+                't2': {'value': 10.0, 'criteria': {'min': 9.0, 'max': 11.0}},
+                't3': {'value': 'string 10'},
+                't4': {'value': 1 * unit.rpm},
+                't5': {'value': True, 'criteria': {'pass_if': True}}}
 
 
 @pytest.fixture
@@ -91,6 +98,28 @@ def test_am2_save(am2):
     for _ in range(length):
         with pytest.raises(ValueError):
             am2.save(data_point_1)
+
+
+def test_am0_save_with_criteria(am0):
+    am0.save(data_point_3)
+
+    data = data_point_3.copy()
+    data['t5']['value'] = False
+    am0.save(data_point_3)
+
+    with Path('data.txt').open('r') as f:
+        assert len(f.readlines()) == 6
+
+
+def test_am1_save_with_criteria(am1):
+    am1.save(data_point_3)
+
+    data = data_point_3.copy()
+    data['t5']['value'] = False
+    am1.save(data_point_3)
+
+    with Path('data.txt').open('r') as f:
+        assert len(f.readlines()) == 3
 
 
 def test_am0_save_new_header(am0):
