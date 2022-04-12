@@ -25,7 +25,6 @@ class TestSequence:
     :param archive_manager: an instance of ``ArchiveManager`` which will \
     contain the path and data_format-specific information
     :param auto_start: True if test is to be automatically started
-    :param auto_run: True if the test is to be continually executed
     :param callback: function to call on each test sequence completion; \
     callback will be required to accept one parameter, which is the \
     dictionary of values collected over that test iteration
@@ -38,7 +37,7 @@ class TestSequence:
     """
     def __init__(self, sequence: Sequence,
                  archive_manager: ArchiveManager = None,
-                 auto_start=False, auto_run=False, callback: callable = None,
+                 auto_start=False, callback: callable = None,
                  setup: callable = None, teardown: callable = None,
                  on_close: callable = None,
                  loglevel=logging.INFO):
@@ -57,7 +56,6 @@ class TestSequence:
 
         self._sequence = sequence
         self._archive_manager = archive_manager
-        self._auto_run = auto_run
         self._callback = callback
         self._setup = setup
         self._teardown = teardown
@@ -215,8 +213,8 @@ class TestSequence:
             return
 
         self.in_progress = True
-        thread = Thread(target=self._run_test)
-        thread.start()
+        self._thread = Thread(target=self._run_test)
+        self._thread.start()
 
     def _teardown_function(self):
         self._logger.info('tearing down test sequence by executing sequence teardown function')
@@ -230,8 +228,7 @@ class TestSequence:
 
     def _run_test(self):
         """
-        Runs one instance of the test sequence.  Executes continually if the \
-        auto_run flag was set on initialization.
+        Runs one instance of the test sequence.
 
         :return: None
         """
@@ -341,11 +338,3 @@ class TestSequence:
 
         self.in_progress = False
 
-        if self._auto_run:
-            if not self._aborted:
-                self._logger.info('"auto_run" flag is set, looping')
-                thread = Thread(target=self._run_test)
-                thread.start()
-            else:
-                self._logger.warning('"auto_run" flag is set, but the test '
-                                     'sequence was prematurely aborted')

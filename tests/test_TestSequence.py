@@ -2,6 +2,7 @@
 Automated test suite for the Automated Test Environment.  This file focuses
 on testing the ``TestSequence`` class.
 """
+from datetime import datetime
 from os import path, remove
 from time import sleep
 
@@ -116,6 +117,14 @@ def auto_test_sequence():
     test_counter = 0
 
 
+@pytest.fixture
+def auto_run_sequence():
+    global test_counter
+    yield mats.TestSequence(sequence=[t1, t2],
+                            auto_start=True, auto_run=True)
+    test_counter = 0
+
+
 def test_TestSequence_creation(normal_test_sequence):
     ts = normal_test_sequence
 
@@ -179,6 +188,30 @@ def test_TestSequence_run():
         sleep(0.1)
 
     assert ts.in_progress is False
+
+
+def test_TestSequence_close():
+    """
+    Checking a normal test sequence.
+    """
+    close_events = 0
+
+    def on_close():
+        nonlocal close_events
+        close_events += 1
+
+    ts = mats.TestSequence(sequence=[t1, t2], on_close=on_close)
+
+    assert ts.ready
+    ts.start()
+
+    sleep(0.1)
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    assert close_events == 0
+    ts.close()
+    assert  close_events == 1
 
 
 def test_MatsFrame_run_default(root):
@@ -259,6 +292,7 @@ def test_TestSequence_run_attempted_interrupt():
         sleep(0.1)
 
     assert ts.in_progress is False
+    assert ts.progress == (1, 2, )
 
 
 def test_TestSequence_run_with_callback():
@@ -376,10 +410,6 @@ def test_TestSequence_auto_start(auto_test_sequence):
         sleep(0.1)
 
     assert ts.ready
-
-
-# todo: figure out how to test the "auto-run" feature as threading
-# is causing issues with pytest
 
 
 def test_TestSequence_setup_exception():
