@@ -36,8 +36,8 @@ class TestSequence:
     :param loglevel: the logging level
     """
     def __init__(self, sequence: Sequence,
-                 archive_manager: ArchiveManager = None,
-                 auto_start=False, callback: callable = None,
+                 archive_manager: (ArchiveManager, None) = None,
+                 auto_start: bool = False, callback: callable = None,
                  setup: callable = None, teardown: callable = None,
                  on_close: callable = None,
                  loglevel=logging.INFO):
