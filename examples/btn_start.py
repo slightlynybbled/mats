@@ -6,6 +6,7 @@ executed along with an overall pass/fail.
 
 
 import logging
+import json
 from random import random, choice
 from time import sleep
 import tkinter as tk
@@ -26,7 +27,7 @@ def teardown():
 
 
 def test_complete_callback(data, string):
-    print(f'this is the data that gets passed to a callback: {data}')
+    print(f'this is the data that gets passed to a callback:\n{json.dumps(data, indent=2)}')
     print(f'added some other string: {string}')
 
 
@@ -99,7 +100,7 @@ if __name__ == '__main__':
     sequence = [CommunicationTest(), PumpFlowTest(), PressureTest()]
     ts = TestSequence(setup=lambda: setup(),
                       teardown=lambda: teardown(),
-                      sequence=sequence, auto_run=False,
+                      sequence=sequence,
                       archive_manager=ArchiveManager(),
                       callback=lambda data: test_complete_callback(data, 'my string!'),
                       loglevel=logging.DEBUG)
