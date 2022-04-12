@@ -61,7 +61,6 @@ class TestSequence:
         self._teardown = teardown
         self._on_close = on_close
 
-        self.in_progress = False
         self._aborted = False
         self._test_data = {
             'datetime': {'value': str(datetime.now())},
@@ -74,6 +73,8 @@ class TestSequence:
 
         if self._teardown is not None:
             atexit.register(self._teardown_function)
+
+        self._thread = Thread(target=self._run_sequence)
 
         if auto_start:
             self._logger.info('"auto_start" flag is set, '
@@ -176,6 +177,10 @@ class TestSequence:
         return (self._current_test_number,
                 len([test.moniker for test in self._sequence]))
 
+    @property
+    def in_progress(self):
+        return self._thread.is_alive()
+
     def close(self):
         """
         Allows higher level code to call the close functionality.
@@ -212,8 +217,7 @@ class TestSequence:
                                  'currently in progress')
             return
 
-        self.in_progress = True
-        self._thread = Thread(target=self._run_test)
+        self._thread = Thread(target=self._run_sequence)
         self._thread.start()
 
     def _teardown_function(self):
@@ -226,11 +230,11 @@ class TestSequence:
                                   f'test teardown: {e}')
             self._logger.critical(str(traceback.format_exc()))
 
-    def _run_test(self):
+    def _reset_sequence(self):
         """
-        Runs one instance of the test sequence.
-
-        :return: None
+        Initializes the test sequence data, initializes each \
+        `Test` in preparation for the next single execution \
+        of the sequence.
         """
         self._logger.info('-' * 80)
         self._aborted = False
@@ -244,6 +248,14 @@ class TestSequence:
 
         for test in self._sequence:
             test.reset()
+
+    def _run_sequence(self):
+        """
+        Runs one instance of the test sequence.
+
+        :return: None
+        """
+        self._reset_sequence()
 
         if self._setup is not None:
             self._setup()
@@ -315,6 +327,14 @@ class TestSequence:
             for k, v in test.saved_data.items():
                 self._test_data[k]['value'] = v
 
+        self._complete_sequence()
+
+    def _complete_sequence(self):
+        """
+        Finishes up a test sequence by saving data, executing teardown \
+        sequence, along with user callbacks.
+        :return:
+        """
         if not self._aborted and self._archive_manager is not None:
             self._archive_manager.save(self._test_data)
 
@@ -335,6 +355,3 @@ class TestSequence:
                 self._callback(self._test_data)
             except Exception as e:
                 self._logger.warning(f'an exception occurred during the callback sequence: {e}')
-
-        self.in_progress = False
-
