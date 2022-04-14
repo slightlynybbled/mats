@@ -37,8 +37,8 @@ class TestSequence:
     :param sequence: a list of Tests
     :param archive_manager: an instance of ``ArchiveManager`` which will \
     contain the path and data_format-specific information
-    :param auto_run: True if test is to be re-started automatically after \
-    the previous sequence has completed
+    :param auto_run: an integer that determines how many times a test \
+    sequence will be executed before stopping
     :param callback: function to call on each test sequence completion; \
     callback will be required to accept one parameter, which is the \
     dictionary of values collected over that test iteration
@@ -51,7 +51,7 @@ class TestSequence:
     """
     def __init__(self, sequence: List[Test],
                  archive_manager: (ArchiveManager, None) = None,
-                 auto_run: bool = False,
+                 auto_run: (int, None) = None,
                  callback: callable = None,
                  setup: callable = None, teardown: callable = None,
                  on_close: callable = None,
@@ -76,7 +76,7 @@ class TestSequence:
         self._teardown = teardown
         self._on_close = on_close
         self._auto_run = auto_run
-        self._state = 'ready'
+        self._state = 'ready' if not auto_run else 'starting'
 
         self._test_data = {
             'datetime': {'value': str(datetime.now())},
@@ -261,7 +261,6 @@ class TestSequence:
 
         :return: None
         """
-        sleep(0.1)
         while self._state != 'exiting':
             # wait at the ready (unless in auto-run mode)
             while 'ready' in self._state:
@@ -279,6 +278,9 @@ class TestSequence:
             self._sequence_setup()
             self._sequence_executing_tests()
             self._sequence_teardown()
+
+            if self._auto_run:
+                self._auto_run -= 1
 
             if 'abort' in self._state:
                 self._state = 'aborted / ready'

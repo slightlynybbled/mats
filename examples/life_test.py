@@ -35,17 +35,11 @@ if __name__ == '__main__':
     ts = TestSequence(
         sequence=[LifeTest()],
         archive_manager=ArchiveManager(path='.'),
-        auto_run=True,   # run the test automatically after every iteration
+        auto_run=3,   # run the test automatically after every iteration
     )
 
-    # allow the test to run for a complete minute, then abort
+    # allow the test to run until it has completed
     start_dt = datetime.now()
-    end_dt = start_dt + timedelta(minutes=1)
-    while datetime.now() < end_dt:
-        sleep(0.1)
-
-    logger.warning('TIME IS UP!')
-    ts.abort()
     while ts.in_progress:
         sleep(0.1)
 
