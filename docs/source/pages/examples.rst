@@ -252,7 +252,7 @@ A test that simulates on-off cycles and keeps chugging... forever... and ever...
             sleep(0.1)
 
         def execute(self, is_passing):
-            sleep(0.25)
+            sleep(0.5)
 
             # simulate the collection of some data, then return it so
             # that the 'pass-if' condition may be applied
@@ -266,9 +266,19 @@ A test that simulates on-off cycles and keeps chugging... forever... and ever...
 
 
     if __name__ == '__main__':
+        from datetime import datetime, timedelta
+
+        logger = logging.getLogger(__name__)
+
         ts = TestSequence(
             sequence=[LifeTest()],
             archive_manager=ArchiveManager(path='.'),
-            auto_run=True,   # run the test automatically after every iteration
-            auto_start=True  # automatically start the sequence
+            auto_run=3,   # run the test automatically after every iteration
         )
+
+        # allow the test to run until it has completed
+        start_dt = datetime.now()
+        while ts.in_progress:
+            sleep(0.1)
+
+        logger.info(f'test time: {datetime.now() - start_dt}')
