@@ -36,9 +36,9 @@ if __name__ == '__main__':
         sequence=[LifeTest()],
         archive_manager=ArchiveManager(path='.'),
         auto_run=True,   # run the test automatically after every iteration
-        auto_start=True  # automatically start the sequence
     )
 
+    # allow the test to run for a complete minute, then abort
     start_dt = datetime.now()
     end_dt = start_dt + timedelta(minutes=1)
     while datetime.now() < end_dt:

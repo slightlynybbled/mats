@@ -111,17 +111,10 @@ def failed_test_sequence():
 
 
 @pytest.fixture
-def auto_test_sequence():
-    global test_counter
-    yield mats.TestSequence(sequence=[t1, t2], auto_start=True)
-    test_counter = 0
-
-
-@pytest.fixture
 def auto_run_sequence():
     global test_counter
     yield mats.TestSequence(sequence=[t1, t2],
-                            auto_start=True, auto_run=True)
+                            auto_run=True)
     test_counter = 0
 
 
@@ -390,26 +383,6 @@ def test_TestSequence_run_failed(failed_test_sequence):
     assert ts.is_passing is False
     assert ts.is_aborted is False
     assert len(ts.failed_tests) == 1
-
-
-def test_TestSequence_auto_start(auto_test_sequence):
-    """
-    Test to ensure that the auto-start flag will actually start and run the \
-    test sequence.
-
-    :param auto_test_sequence:
-    :return: None
-    """
-    ts = auto_test_sequence
-
-    assert ts.in_progress is True
-    assert ts.ready is False
-
-    # wait for test to complete
-    while ts.in_progress is True:
-        sleep(0.1)
-
-    assert ts.ready
 
 
 def test_TestSequence_setup_exception():

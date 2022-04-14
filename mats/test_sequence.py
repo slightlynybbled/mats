@@ -37,7 +37,6 @@ class TestSequence:
     :param sequence: a list of Tests
     :param archive_manager: an instance of ``ArchiveManager`` which will \
     contain the path and data_format-specific information
-    :param auto_start: True if test is to be automatically started
     :param auto_run: True if test is to be re-started automatically after \
     the previous sequence has completed
     :param callback: function to call on each test sequence completion; \
@@ -52,7 +51,7 @@ class TestSequence:
     """
     def __init__(self, sequence: List[Test],
                  archive_manager: (ArchiveManager, None) = None,
-                 auto_start: bool = False, auto_run: bool = False,
+                 auto_run: bool = False,
                  callback: callable = None,
                  setup: callable = None, teardown: callable = None,
                  on_close: callable = None,
@@ -262,11 +261,12 @@ class TestSequence:
 
         :return: None
         """
+        sleep(0.1)
         while self._state != 'exiting':
             # wait at the ready (unless in auto-run mode)
             while 'ready' in self._state:
                 if self._auto_run and 'abort' not in self._state:
-                    self._logger.info('"auto_start" flag is set, '
+                    self._logger.info('"auto_run" flag is set, '
                                       'beginning test sequence')
                     self.start()
                 else:
