@@ -32,6 +32,9 @@ At this time, the automatic GUI is only built within `tkinter`; however, the
 techniques used to create the `MatsFrame` should be applicable to any other
 GUI framework.  Contributions welcome!
 
+Below is a screenshot created on Windows, but the linux version behaves
+identically.
+
 ![GUI](./docs/source/images/tkmats-animation.gif)
 
 ## Contribution Guidelines
