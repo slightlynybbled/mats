@@ -45,6 +45,8 @@ class CommunicationTest(Test):
         # are implementing a random value here simply for illustrative purposes
         passing = choice([True] * 3 + [False])
 
+        sleep(0.5)  # delay to simulate processing time
+
         # should return a (key, value) which are the results of the test
         return passing
 
@@ -90,7 +92,7 @@ class PressureTest(Test):
         pressure = 10 + random() * 1.2
 
         # should return a (key, value) tuple which are the results of the test
-        return 0.00000001234
+        return pressure
 
 
 if __name__ == '__main__':
