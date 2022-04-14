@@ -9,7 +9,11 @@ from typing import List
 from mats.test import Test
 from mats.archiving import ArchiveManager
 
-# state machine states:
+# State Machine - Using strings b/c we can relatively easily look
+# for valid substrings to give more information in a concise way.
+# For instance, one may be looking for the substring 'ready', but
+# another function may look for the substring 'abort'.
+# valid states:
 #  - ready
 #  - starting
 #  - setting up
@@ -187,6 +191,11 @@ class TestSequence:
 
     @property
     def in_progress(self):
+        """
+        Returns True if the test sequence is currently in progress, else False.
+
+        :return: True if the test sequence is currently in progress, else False
+        """
         return 'ready' not in self._state
 
     def close(self):
