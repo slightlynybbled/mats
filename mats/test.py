@@ -44,13 +44,28 @@ class Test:
 
     @property
     def is_passing(self):
+        """
+        Returns `True` if test is currently passing, else `False`
+
+        :return: `True` if passing, else `False`
+        """
         return self._test_is_passing
 
     @property
     def criteria(self):
+        """
+        Returns the test criteria as a `dict`
+
+        :return: test criteria as a `dict`
+        """
         return self.__criteria
 
     def abort(self):
+        """
+        Causes current test status to abort
+
+        :return: None
+        """
         self.aborted = True
 
     def _setup(self, is_passing):
