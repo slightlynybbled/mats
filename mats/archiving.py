@@ -35,7 +35,8 @@ class ArchiveManager:
         self._format = data_format
 
     def save(self, point: dict):
-        """Data save function
+        """
+        Data save function
 
         Takes a point of data supplied as a dict and, depending on existing
         conditions, will archive the data point on the disk.  Each ``point``
