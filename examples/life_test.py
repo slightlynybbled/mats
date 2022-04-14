@@ -28,7 +28,7 @@ class LifeTest(Test):
 
 
 if __name__ == '__main__':
-    from datetime import datetime, timedelta
+    from datetime import datetime
 
     logger = logging.getLogger(__name__)
 
