@@ -9,7 +9,7 @@ from typing import List
 from mats.test import Test
 from mats.archiving import ArchiveManager
 
-# state machine
+# state machine states:
 #  - ready
 #  - starting
 #  - setting up
@@ -34,6 +34,8 @@ class TestSequence:
     :param archive_manager: an instance of ``ArchiveManager`` which will \
     contain the path and data_format-specific information
     :param auto_start: True if test is to be automatically started
+    :param auto_run: True if test is to be re-started automatically after \
+    the previous sequence has completed
     :param callback: function to call on each test sequence completion; \
     callback will be required to accept one parameter, which is the \
     dictionary of values collected over that test iteration
@@ -46,7 +48,8 @@ class TestSequence:
     """
     def __init__(self, sequence: List[Test],
                  archive_manager: (ArchiveManager, None) = None,
-                 auto_start: bool = False, callback: callable = None,
+                 auto_start: bool = False, auto_run: bool = False,
+                 callback: callable = None,
                  setup: callable = None, teardown: callable = None,
                  on_close: callable = None,
                  loglevel=logging.INFO):
@@ -69,6 +72,7 @@ class TestSequence:
         self._setup = setup
         self._teardown = teardown
         self._on_close = on_close
+        self._auto_run = auto_run
         self._state = 'ready'
 
         self._test_data = {
@@ -85,11 +89,6 @@ class TestSequence:
 
         self._thread = Thread(target=self._run_sequence, daemon=True)
         self._thread.start()
-
-        if auto_start:
-            self._logger.info('"auto_start" flag is set, '
-                              'beginning test sequence')
-            self.start()
 
     def __getitem__(self, test_element: (str, Test)):
         """
@@ -255,9 +254,15 @@ class TestSequence:
         :return: None
         """
         while self._state != 'exiting':
-            # wait at the ready
+            # wait at the ready (unless in auto-run mode)
             while 'ready' in self._state:
-                sleep(0.1)
+                if self._auto_run and 'abort' not in self._state:
+                    self._logger.info('"auto_start" flag is set, '
+                                      'beginning test sequence')
+                    self.start()
+                else:
+                    sleep(0.1)
+
             if self._state == 'exiting':
                 self._sequence_teardown()
                 return
