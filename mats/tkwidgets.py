@@ -1,5 +1,5 @@
 import logging
-from tkinter.ttk import Frame, Button, Label
+from tkinter import Frame, Button, Label
 
 from mats.test import Test
 from mats.test_sequence import TestSequence
@@ -23,12 +23,15 @@ class MatsFrame(Frame):
         otherwise, horizontally; default is vertical, `True`
     :param start_btn: if `True`, will populate a start button; \
         otherwise, will not; default is `True`
+    :param abort_btn: if `True`, will populate an abort button; \
+        otherwise, will not; default is `True`
     :param wrap: the number above which will start the next row or column
     :param loglevel: the logging level, for instance 'logging.INFO'
     """
     def __init__(self, parent, sequence: TestSequence,
-                 vertical=True, start_btn=True, wrap: int = 6,
-                 loglevel=logging.INFO):
+                 vertical: bool = True,
+                 start_btn: bool = True, abort_btn: bool = True,
+                 wrap: int = 6, loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -42,9 +45,19 @@ class MatsFrame(Frame):
         row = 0
         col = 0
 
-        if start_btn:
-            Button(self, text='Start', command=sequence.start)\
-                .grid(row=0, column=0, sticky='news')
+        if start_btn or abort_btn:
+            btn_frame = Frame(self)
+            btn_frame.grid(row=0, column=0, sticky='news')
+            btn_frame.columnconfigure(0, weight=1)
+            r = 0
+            if start_btn:
+                Button(btn_frame, text='Start', command=sequence.start)\
+                    .grid(row=r, column=0, sticky='news')
+                r += 1
+
+            if abort_btn:
+                Button(btn_frame, text='ABORT', command=sequence.abort, fg='red')\
+                    .grid(row=r, column=0, sticky='news')
 
         status_frame = Frame(self)
         if vertical:
@@ -94,7 +107,9 @@ class MatsFrame(Frame):
             self._complete_label.grid(row=2, column=0, sticky='news')
         else:
             self._complete_label.grid(row=0, column=3, sticky='news')
-        self._complete_label.config(relief=_relief, padding=_label_padding)
+        self._complete_label.config(relief=_relief,
+                                    padx=_label_padding,
+                                    pady=_label_padding)
 
         self._update()
 
@@ -146,7 +161,7 @@ class _TestLabel(Label):
             self._label_text += f'\n{criteria_string}'
 
         self.config(text=self._label_text, relief=_relief,
-                    padding=_label_padding)
+                    padx=_label_padding, pady=_label_padding)
 
         self._label_bg_color = self.cget('background')
 

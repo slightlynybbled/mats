@@ -107,9 +107,6 @@ if __name__ == '__main__':
 
     window = tk.Tk()
 
-    tk.Button(window, text='ABORT', command=ts.abort,
-              font=('Arial', 12), fg='red').grid(sticky='ew')
-
     tkate_frame = MatsFrame(window, ts, vertical=True)
     tkate_frame.grid(sticky='news')
 
