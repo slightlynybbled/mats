@@ -413,6 +413,11 @@ The final full form of ``test_sequence.py``:
 
     ts.start()
 
+    # wait for sequence to complete before exiting this thread
+    while ts.in_progress:
+        sleep(0.1)
+
+
 Save the Data
 -------------
 
@@ -456,6 +461,10 @@ sequence:
     )
 
     ts.start()
+
+    # wait for sequence to complete before exiting this thread
+    while ts.in_progress:
+        sleep(0.1)
 
 The only requirement for the object instance supplied to ``archive_manager`` is to
 implement the ``save()`` method which will accept a ``dict`` containing the key: value
