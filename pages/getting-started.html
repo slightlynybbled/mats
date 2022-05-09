@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting Started &#8212; Manufacturing Automated Test System  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Saving Data" href="saving-data.html" />
+    <link rel="prev" title="Introduction" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<section id="define-requirements">
+<h2>Define Requirements<a class="headerlink" href="#define-requirements" title="Permalink to this headline">¶</a></h2>
+<p>First, we must define a set of requirements for our production test, which has nothing
+to do with the code itself.  This will assist us in developing each test and, finally,
+defining the test sequence.</p>
+<p>The first test is a simple communication test.  Is the device communicating, True or
+False?</p>
+<p>The second test is a flow test in which the test communicates with an instrument
+and reads the flow, applying a minimum and maximum flow.</p>
+<p>In addition to the test requirements, it turns out that most hardware requires a power supply
+or other physical component to be turned on or initialized.  We will deal with this in
+our setup and teardown.</p>
+</section>
+<section id="develop-hardware-api">
+<h2>Develop Hardware API<a class="headerlink" href="#develop-hardware-api" title="Permalink to this headline">¶</a></h2>
+<p>Based on the test requirements, it is useful to create some hardware abstractions which
+expose some of the functionality that we are interested in.  The hardware API development
+effort is independent of the test, but will be necessary to most testing efforts and,
+thus, we will cover a basic implementation.</p>
+<p>Our first object will be a power supply.  During the test, we will wish to control
+a power supply on and off, perhaps even setting different voltages and current limits,
+depending on the test.  For this example, we will only wish to turn on the power supply
+at the beginning of the test and turn it off at the end of the test <strong>or</strong> if there
+is some test fault.  We will call our power supply class <code class="docutils literal notranslate"><span class="pre">PowerSupply</span></code> and we will
+store the <code class="docutils literal notranslate"><span class="pre">PowerSupply</span></code> class within <code class="docutils literal notranslate"><span class="pre">power_supply.py</span></code>.</p>
+<p>The next abstraction communicates with the device and provides a property exposing
+whether the device is communicating or not.  The development of this abstraction is
+beyond the scope of this document; however, it is possible to assume a simple API
+has been provided using a class called <code class="docutils literal notranslate"><span class="pre">Device</span></code> which has the property
+<code class="docutils literal notranslate"><span class="pre">is_communicating</span></code>.</p>
+<p>The last abstraction communicates with data acquisition hardware to determine the
+flow of the system in liters / minute.  The simple api that we are assuming is
+embodied in a class called <code class="docutils literal notranslate"><span class="pre">Daq</span></code> and exposed on a property <code class="docutils literal notranslate"><span class="pre">flow</span></code>.</p>
+<p>At this point, our directory structure has a couple of files in it which contain
+the abstractions.  We will call these <code class="docutils literal notranslate"><span class="pre">daq.py</span></code> and <code class="docutils literal notranslate"><span class="pre">device.py</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>root/
+  daq.py
+  device.py
+  power_supply.py
+</pre></div>
+</div>
+</section>
+<section id="create-automated-test-file">
+<h2>Create Automated Test File<a class="headerlink" href="#create-automated-test-file" title="Permalink to this headline">¶</a></h2>
+<p>We will now create an <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code> which will contain all of the automated
+tests that we wish to execute, setup function, and teardown function.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> root/
+<span class="hll">   automated_tests.py
+</span>   daq.py
+   device.py
+   power_supply.py
+</pre></div>
+</div>
+<p>Within <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code>, we create our setup, teardown, and individual tests.</p>
+</section>
+<section id="setup-and-teardown">
+<h2><code class="docutils literal notranslate"><span class="pre">setup()</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown()</span></code><a class="headerlink" href="#setup-and-teardown" title="Permalink to this headline">¶</a></h2>
+<p>For each test, we want to start in a known condition.  Use <code class="docutils literal notranslate"><span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown</span></code>
+functions supplied to execute commands without saving any data.  The primary difference
+between these functions and a <code class="docutils literal notranslate"><span class="pre">Test</span></code> is that the <code class="docutils literal notranslate"><span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown</span></code> functions
+do not save data.</p>
+<p>In our case, the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> function will turn on the power supply and the <code class="docutils literal notranslate"><span class="pre">teardown()</span></code>
+funciton will turn the power supply off.  If there is a critical error during the test,
+the <code class="docutils literal notranslate"><span class="pre">teardown()</span></code> function will be executed, making it especially convenient for test
+environments in which the safe must end in a guaranteed safe condition.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+
+<span class="k">def</span> <span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">set_voltage</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># allow power to stabilize</span>
+
+<span class="k">def</span> <span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+   <span class="n">psu</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+   <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that our setup and teardown functions accept instances of hardware classes.  This
+method makes it fairly easy to modularize and develop each function and <code class="docutils literal notranslate"><span class="pre">Test</span></code> class
+efficiently.</p>
+</section>
+<section id="develop-individual-tests">
+<h2>Develop Individual Tests<a class="headerlink" href="#develop-individual-tests" title="Permalink to this headline">¶</a></h2>
+<section id="communications-test">
+<h3>Communications Test<a class="headerlink" href="#communications-test" title="Permalink to this headline">¶</a></h3>
+<p>Within <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code>, import <code class="docutils literal notranslate"><span class="pre">mats.Test</span></code> and subclass our custom tests.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
+</span> <span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+
+ <span class="k">def</span> <span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+     <span class="n">psu</span><span class="o">.</span><span class="n">set_voltage</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
+     <span class="n">psu</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+     <span class="n">psu</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+     <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># allow power to stabilize</span>
+
+ <span class="k">def</span> <span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+     <span class="n">psu</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+     <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="hll"> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+</span><span class="hll">     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">)</span>
+</span><span class="hll">
+</span><span class="hll">     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+</span><span class="hll">         <span class="k">return</span> <span class="kc">None</span>
+</span>
+<span class="hll"> <span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+</span><span class="hll">     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
+</span><span class="hll">
+</span><span class="hll">     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+</span><span class="hll">         <span class="k">return</span> <span class="kc">None</span>
+</span></pre></div>
+</div>
+<p>At this point, our tests don’t do anything but implement the test class.  If this test
+were executed within a sequence that saved data, it would end up applying no pass/fail
+criteria and would save <code class="docutils literal notranslate"><span class="pre">None</span></code> to the headers fields <code class="docutils literal notranslate"><span class="pre">communications</span></code> and
+<code class="docutils literal notranslate"><span class="pre">flow</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">moniker</span></code> of all test sequences must be unique or the test sequence will raise
+an error!</p>
+</div>
+<p>First, we will focus on the communications test.  We will modify our imports to add
+<code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">device</span> <span class="pre">import</span> <span class="pre">Device</span></code> which gives us access to the device class.  In some
+cases, the device will be instantiated already, in which case it might be more
+appropriate to import the instance of the class rather than the class itself.  In most
+cases, it is worth it to externally allocate hardware and execute the test by passing
+the class instance.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
+<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>Next, we will store an instance of the hardware within the <code class="docutils literal notranslate"><span class="pre">CommunicationTest</span></code>
+and so that we can utilize it during development.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+<span class="hll">     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+</span>         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">)</span>
+<span class="hll">         <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+</span>
+     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+         <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>Now, it is time to acquire a bit of data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">)</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+
+     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+<span class="hll">         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">is_communicating</span>
+</span></pre></div>
+</div>
+<p>If the test sequence were executed at this point, there would be no pass/fail
+criteria applied, but a <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code> value would be saved under the
+<code class="docutils literal notranslate"><span class="pre">communications</span></code> header in the data file.</p>
+<p>In order to apply criteria, we will use the <code class="docutils literal notranslate"><span class="pre">pass_if</span></code> parameter of
+<code class="docutils literal notranslate"><span class="pre">Test.__init__()</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+<span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">,</span> <span class="n">pass_if</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+
+     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">is_communicating</span>
+</pre></div>
+</div>
+</section>
+<section id="flow-test">
+<span id="id1"></span><h3>Flow Test<a class="headerlink" href="#flow-test" title="Permalink to this headline">¶</a></h3>
+<p>The development of the flow test will proceed similarly to the previous test.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
+<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">daq</span>
+</span><span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+<span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
+       <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span> <span class="o">=</span> <span class="n">daq</span>
+
+   <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+<span class="hll">       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span><span class="o">.</span><span class="n">flow</span>
+</span></pre></div>
+</div>
+<p>Next, we will apply minimum and maximum pass/fail criteria to the test:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
+<span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">,</span>
+</span><span class="hll">                          <span class="n">min_value</span><span class="o">=</span><span class="mf">5.8</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">6.2</span><span class="p">)</span>
+</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span> <span class="o">=</span> <span class="n">daq</span>
+
+     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span><span class="o">.</span><span class="n">flow</span>
+</pre></div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">min_value</span></code> and <code class="docutils literal notranslate"><span class="pre">max_value</span></code> parameters allows us to apply quantitative
+pass/fail criteria to the results of the execution step.</p>
+</section>
+<section id="complete-test-definition">
+<h3>Complete Test Definition<a class="headerlink" href="#complete-test-definition" title="Permalink to this headline">¶</a></h3>
+<p>Finally, we have our complete test definition!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
+<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">daq</span>
+<span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+<span class="k">def</span> <span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">set_voltage</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># allow power to stabilize</span>
+
+<span class="k">def</span> <span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+    <span class="n">psu</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">,</span> <span class="n">pass_if</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">is_communicating</span>
+
+<span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">,</span>
+                         <span class="n">min_value</span><span class="o">=</span><span class="mf">5.8</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">6.2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span> <span class="o">=</span> <span class="n">daq</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span><span class="o">.</span><span class="n">flow</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="create-test-sequence">
+<h2>Create Test Sequence<a class="headerlink" href="#create-test-sequence" title="Permalink to this headline">¶</a></h2>
+<p>Up to this point, we have created some tests using the framework, but we haven’t
+actually done anything with them.  It would be wise to creat the <code class="docutils literal notranslate"><span class="pre">TestSequence</span></code>
+instance earlier than this point in most development processes; however, we have
+chosen the order in order to better organize the presentation.</p>
+<p>We will create the <code class="docutils literal notranslate"><span class="pre">TestSequence</span></code> within its own file, making our new file structure:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> root/
+   automated_tests.py
+   daq.py
+   device.py
+   power_supply.py
+<span class="hll">   test_sequence.py
+</span></pre></div>
+</div>
+<section id="allocate-hardware">
+<h3>Allocate Hardware<a class="headerlink" href="#allocate-hardware" title="Permalink to this headline">¶</a></h3>
+<p>Allocate some hardware within <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
+<span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+<span class="c1"># allocate the hardware</span>
+<span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
+<span class="n">daq</span> <span class="o">=</span> <span class="n">Daq</span><span class="p">()</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Within <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>, we will import our <code class="docutils literal notranslate"><span class="pre">mats.TestSequence()</span></code> along with
+the <code class="docutils literal notranslate"><span class="pre">CommunicationsTest()</span></code> and <code class="docutils literal notranslate"><span class="pre">FlowTest()</span></code> that we previously defined:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">TestSequence</span>
+</span><span class="hll"> <span class="kn">from</span> <span class="nn">automated_tests</span> <span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
+</span><span class="hll">     <span class="n">setup_hardware</span><span class="p">,</span> <span class="n">teardown_hardware</span>
+</span> <span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+ <span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
+ <span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+ <span class="c1"># allocate the hardware</span>
+ <span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
+ <span class="n">daq</span> <span class="o">=</span> <span class="n">Daq</span><span class="p">()</span>
+ <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, we create our sequence as the instantiation of the test objects into a list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">CommunicationsTest</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+    <span class="n">FlowTest</span><span class="p">(</span><span class="n">daq</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>It is common to forget to instantiate the objects, so be sure that you include the
+<code class="docutils literal notranslate"><span class="pre">()</span></code> so that you are using instances of the test and not the test class.  The
+order of the test sequence is defined by the order of the list, so a re-ordering
+of this list is all that is required to refactor the order of the tests.</p>
+<p>Now we create the <code class="docutils literal notranslate"><span class="pre">TestSequence</span></code> instance, supplying the sequence of tests, the <code class="docutils literal notranslate"><span class="pre">setup</span></code>,
+and the <code class="docutils literal notranslate"><span class="pre">teardown</span></code> functions, being sure to capture an object handle
+for the test sequence:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">TestSequence</span><span class="p">(</span>
+        <span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+        <span class="n">setup</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">),</span>
+        <span class="n">teardown</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we run the test sequence one time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The test will run to completion and output log data to the terminal.</p>
+<p>The final full form of <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">TestSequence</span>
+<span class="kn">from</span> <span class="nn">automated_tests</span> <span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
+    <span class="n">setup_hardware</span><span class="p">,</span> <span class="n">teardown_hardware</span>
+<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
+<span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+<span class="c1"># allocate the hardware</span>
+<span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
+<span class="n">daq</span> <span class="o">=</span> <span class="n">Daq</span><span class="p">()</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+
+<span class="n">sequence</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">CommunicationsTest</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+    <span class="n">FlowTest</span><span class="p">(</span><span class="n">daq</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">TestSequence</span><span class="p">(</span>
+    <span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+    <span class="n">setup</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">),</span>
+    <span class="n">teardown</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1"># wait for sequence to complete before exiting this thread</span>
+<span class="k">while</span> <span class="n">ts</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="save-the-data">
+<h2>Save the Data<a class="headerlink" href="#save-the-data" title="Permalink to this headline">¶</a></h2>
+<p>At this point, we run the test and collect the data, but do not save it anywhere.
+There are a couple of options for saving.  The first - and easiest - is to use the
+built-in <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code>, which creates the most common formats of csv and csv-like
+files common in manufacturing environments.  It also does some basic test change
+detection in order to keep file headers separated as the test evolves over the life
+of the project.</p>
+<p>The most basic implementation of the <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code> can be easily added to the
+sequence:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">TestSequence</span><span class="p">,</span> <span class="n">ArchiveManager</span>
+</span> <span class="kn">from</span> <span class="nn">automated_tests</span> <span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
+     <span class="n">setup_hardware</span><span class="p">,</span> <span class="n">teardown_hardware</span>
+ <span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+ <span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
+ <span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+
+ <span class="c1"># allocate the hardware</span>
+ <span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
+ <span class="n">daq</span> <span class="o">=</span> <span class="n">Daq</span><span class="p">()</span>
+ <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+
+ <span class="n">sequence</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="n">CommunicationsTest</span><span class="p">(</span><span class="n">device</span><span class="p">),</span>
+     <span class="n">FlowTest</span><span class="p">(</span><span class="n">daq</span><span class="p">)</span>
+ <span class="p">]</span>
+
+<span class="hll"> <span class="n">am</span> <span class="o">=</span> <span class="n">ArchiveManager</span><span class="p">()</span>
+</span>
+ <span class="n">ts</span> <span class="o">=</span> <span class="n">TestSequence</span><span class="p">(</span>
+     <span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+     <span class="n">setup</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">),</span>
+     <span class="n">teardown</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">)</span>
+<span class="hll">     <span class="n">archive_manager</span><span class="o">=</span><span class="n">am</span>
+</span> <span class="p">)</span>
+
+ <span class="n">ts</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+ <span class="c1"># wait for sequence to complete before exiting this thread</span>
+ <span class="k">while</span> <span class="n">ts</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
+     <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The only requirement for the object instance supplied to <code class="docutils literal notranslate"><span class="pre">archive_manager</span></code> is to
+implement the <code class="docutils literal notranslate"><span class="pre">save()</span></code> method which will accept a <code class="docutils literal notranslate"><span class="pre">dict</span></code> containing the key: value
+pairs on test completion.  In this way, it is very easy to supply custom archive
+manager objects to extend the functionality of the archiving process.</p>
+<p>See <a class="reference internal" href="saving-data.html#saving-data-label"><span class="std std-ref">Saving Data</span></a> for more information about the archive manager.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#define-requirements">Define Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#develop-hardware-api">Develop Hardware API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-automated-test-file">Create Automated Test File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-and-teardown"><code class="docutils literal notranslate"><span class="pre">setup()</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#develop-individual-tests">Develop Individual Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-test-sequence">Create Test Sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#save-the-data">Save the Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="saving-data.html">Saving Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dealing-with-hardware.html">Dealing with Hardware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribution_guidelines.html">Contribution Guidelines</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="saving-data.html" title="next chapter">Saving Data</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Jason R. Jones.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/pages/getting-started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

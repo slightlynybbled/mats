@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction &#8212; Manufacturing Automated Test System  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="pages/getting-started.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The Manufacturing Automated Test System (MATS) is a framework for automating production testing suitable for manufacturing and
+industrial environments.  The MATS will assist the user in defining the tests clearly and concisely and will execute the
+written tests in the same sequence over and over, saving the production data from each run as the test sequence
+is executed.</p>
+</section>
+<section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>For most, simply <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mats</span></code> should do the trick.  You may wish to stroll over to the
+<a class="reference external" href="https://github.com/slightlynybbled/mats">github repository</a>, clone it, and <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code> if you prefer.</p>
+</section>
+<section id="key-concepts">
+<h1>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">¶</a></h1>
+<p>There are two primary classes to pay attention to within the MATS:
+<a class="reference internal" href="pages/api.html#classes-mats-test"><span class="std std-ref">Test</span></a> and <a class="reference internal" href="pages/api.html#classes-mats-testsequence"><span class="std std-ref">TestSequence</span></a>.  The <code class="docutils literal notranslate"><span class="pre">TestSequence</span></code>
+consists of a series of <code class="docutils literal notranslate"><span class="pre">Tests</span></code>.  One complete run through the entire sequence
+is initiated on utilization of the <code class="docutils literal notranslate"><span class="pre">start()</span></code> method.</p>
+<img alt="_images/flow-diagram.jpg" src="_images/flow-diagram.jpg" />
+<p>After each test sequence is completed, then there is an opportunity to save data using the
+<a class="reference internal" href="pages/api.html#classes-mats-archivemanager"><span class="std std-ref">ArchiveManager</span></a> or other object that implements the same <code class="docutils literal notranslate"><span class="pre">save()</span></code> method.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pages/getting-started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#define-requirements">Define Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#develop-hardware-api">Develop Hardware API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#create-automated-test-file">Create Automated Test File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#setup-and-teardown"><code class="docutils literal notranslate"><span class="pre">setup()</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#develop-individual-tests">Develop Individual Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#create-test-sequence">Create Test Sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/getting-started.html#save-the-data">Save the Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages/saving-data.html">Saving Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/saving-data.html#archivemanager"><code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/saving-data.html#data-formats">Data Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/saving-data.html#custom-archivemanager-implementations">Custom ArchiveManager Implementations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages/dealing-with-hardware.html">Dealing with Hardware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/dealing-with-hardware.html#allocation-within-test">Allocation within <code class="docutils literal notranslate"><span class="pre">Test</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/dealing-with-hardware.html#one-time-allocation">One-Time Allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/examples.html#simple-production-test">Simple Production Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/examples.html#simple-production-test-revisited">Simple Production Test (revisited)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/examples.html#production-test-with-burn-in">Production Test with Burn-In</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/examples.html#life-test">Life Test</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages/api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/api.html#test"><code class="docutils literal notranslate"><span class="pre">Test</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/api.html#testsequence"><code class="docutils literal notranslate"><span class="pre">TestSequence</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/api.html#archivemanager"><code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/api.html#tkwidgets-matsframe"><code class="docutils literal notranslate"><span class="pre">tkwidgets.MatsFrame</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages/gui.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/contribution_guidelines.html">Contribution Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/contribution_guidelines.html#guidelines-for-new-issues">Guidelines for new Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/contribution_guidelines.html#guidelines-for-pull-requests">Guidelines for Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/contribution_guidelines.html#executing-automated-testing">Executing Automated Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/contribution_guidelines.html#future-development">Future Development</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pages/getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/saving-data.html">Saving Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/dealing-with-hardware.html">Dealing with Hardware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/gui.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/contribution_guidelines.html">Contribution Guidelines</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="pages/getting-started.html" title="next chapter">Getting Started</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Jason R. Jones.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
