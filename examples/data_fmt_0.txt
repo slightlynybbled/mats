@@ -1,0 +1,20 @@
+communications test:pass_if=True
+pump flow test:min=5.6,max=6.4
+
+datetime	pass	failed	communications test	pump flow test	pressure test
+2022-05-09 06:38:56.407843	True	[]	True	 5.83	 10.9
+2022-05-09 06:39:01.309872	True	[]	True	 5.99	 10.1
+2022-05-09 06:39:05.270405	False	['communications test']	False	 6.16	 10.7
+2022-05-09 06:51:53.956300	True	[]	True	 6.07	 10.9
+2022-05-09 06:51:57.469505	False	['communications test']	False	 5.85	 11.1
+2022-05-09 06:52:02.635320	True	[]	True	 5.9	 10.5
+2022-05-09 06:52:06.264720	False	['communications test', 'pump flow test']	False	 5.54	 10.4
+2022-05-09 06:52:09.785895	False	['pump flow test']	True	 6.6	 10.4
+2022-05-09 06:52:13.187374	True	[]	True	 6.11	 11.1
+2022-05-09 06:52:16.486124	True	[]	True	 5.82	 10.9
+2022-05-09 06:52:19.897574	False	['pump flow test']	True	 6.53	 10.4
+2022-05-09 06:52:23.405616	False	['pump flow test']	True	 5.58	 11.1
+2022-05-09 06:52:26.805101	False	['pump flow test']	True	 5.57	 10
+2022-05-09 06:52:30.205086	True	[]	True	 5.95	 10.4
+2022-05-09 06:52:33.721257	True	[]	True	 5.87	 10.6
+2022-05-09 06:52:37.237447	True	[]	True	 6.37	 10
