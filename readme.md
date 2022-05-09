@@ -35,7 +35,7 @@ GUI framework.  Contributions welcome!
 Below is a screenshot created on Windows, but the linux version behaves
 identically.
 
-![GUI](./docs/source/images/tkmats-animation.gif)
+![GUI](docs/images/tkmats-animation.gif)
 
 ## Contribution Guidelines
 
