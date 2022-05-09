@@ -23,7 +23,7 @@ MATS could be considered an automated test framework which imposes a
 consistent work flow and reduces the amount of mind share that you need 
 to dedicate to developing automated device tests.
 
-Checkout the [documentation](https://mats.readthedocs.io/en/latest/index.html) 
+Checkout the [documentation](https://slightlynybbled.github.io/mats/) 
 for more details!
 
 ## Example GUI
