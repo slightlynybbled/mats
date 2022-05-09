@@ -19,10 +19,27 @@ jobs:
           python-version: 3.x
 
       - name: Install packages
-        run: python -m pip install -r requirements.txt & python -m pip install wheel
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install -r test_requirements
 
       - name: Build wheel file in `dist/`
         run: python setup.py bdist_wheel
+
+      - name: Build docs
+        run: |
+          mkdir gh-pages
+          touch gh-pages/.nojekyll
+          cd docs/
+          poetry run sphinx-build -b html . _build
+          cp -r _build/* ../gh-pages/
+
+      - name: Deploy documentation
+        if: ${{ github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: gh-pages
 
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.ref, 'refs/tags')
