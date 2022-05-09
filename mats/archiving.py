@@ -7,25 +7,25 @@ from shutil import copy
 
 
 class ArchiveManager:
+    """
+    Primary data archiving mechanism.
+
+    The basic save utility bundled into the test sequencer.  The archive \
+    manager is geared towards common manufacturing environments in which \
+    tab-delimited text files are common.
+
+    :param path: the path on which to save the data, not including the \
+    file name
+    :param fname: the file name
+    :param delimiter: the delimiter or separator between fields
+    :param data_format: an integer indicating the format which is to be \
+    utilized when saving data
+    :param loglevel: the logging level, for instance 'logging.INFO'
+    """
     def __init__(self,
                  path='.', fname='data.txt',
                  delimiter='\t', data_format: int = 0, loglevel=logging.INFO):
 
-        """
-        Primary data archiving mechanism.
-
-        The basic save utility bundled into the test sequencer.  The archive \
-        manager is geared towards common manufacturing environments in which \
-        tab-delimited text files are common.
-
-        :param path: the path on which to save the data, not including the \
-        file name
-        :param fname: the file name
-        :param delimiter: the delimiter or separator between fields
-        :param data_format: an integer indicating the format which is to be \
-        utilized when saving data
-        :param loglevel: the logging level, for instance 'logging.INFO'
-        """
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
