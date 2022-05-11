@@ -61,7 +61,7 @@ class ArchiveManager:
 
         Finally, when the current data point is deemed incompatible with the
         previous data, then the ``save()`` method will copy the old file to
-        ``<fname>_<datetime>.<extension>`` and then create a new file at
+        ``<fname>_<date>.<extension>`` and then create a new file at
         ``<fname>.<extension>`` under which data will be collected until a new
         data_format is once again detected.
 
@@ -211,13 +211,13 @@ class ArchiveManager:
             self._logger.info(f'file "{destination_path}" not found...')
 
         if header_changed:
-            # rename the old file using a timestamp
-            now = str(datetime.now().timestamp())
-            now = now.split('.')[0]
+            now = datetime.now().strftime('%Y-%m-%dT%H%M%S')
 
-            parts = list(splitext(self._fname))
-            parts.insert(1, now)
-            new_path = self._path / ''.join(parts)
+            # rename the old file using ISO8601 timestamp
+            parts = self._fname.split('.')
+            parts[0] = f'{parts[0]}_{now}'
+            new_path = self._path / '.'.join(parts)
+
 
             self._logger.info(f'attempting to copy "{destination_path}" '
                               f'to "{new_path}"...')
