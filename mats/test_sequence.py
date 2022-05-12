@@ -279,6 +279,10 @@ class TestSequence:
             self._sequence_executing_tests()
             self._sequence_teardown()
 
+            if 'abort' not in self._state:
+                if self._archive_manager is not None:
+                    self._archive_manager.save(self._test_data)
+
             if self._auto_run:
                 self._auto_run -= 1
 
@@ -388,9 +392,6 @@ class TestSequence:
         """
         if 'abort' not in self._state:
             self._state = 'tearing down'
-
-            if self._archive_manager is not None:
-                self._archive_manager.save(self._test_data)
 
         self._logger.info('test sequence complete')
         self._logger.debug(f'test results: {self._test_data}')
