@@ -24,4 +24,4 @@ jobs:
       - name: Execute Tests
         uses: GabrielBB/xvfb-action@v1
         with:
-          run: pytest -v tests/ --cov=mats
+          run: pytest -v test/ --cov=mats
