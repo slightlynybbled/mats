@@ -163,11 +163,11 @@ class ArchiveManager:
                 elif isinstance(v, int):
                     data.append(f'{v}')
                 elif isinstance(v, float):
-                    data.append(f'{v: .03g}')
+                    data.append(f'{v:.03g}')
                 else:
                     try:
                         # convert from pint-style values
-                        data.append(f'{v.magnitude: .03g}')
+                        data.append(f'{v.magnitude:.03g}')
                     except AttributeError:
                         data.append(str(v))  # this is the catch-all
 
