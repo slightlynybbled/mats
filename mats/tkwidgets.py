@@ -73,7 +73,7 @@ class MatsFrame(Frame):
         self._test_status_frames = []
         for test in self._sequence.tests:
             self._test_status_frames.append(
-                _TestLabel(status_frame, test)
+                _TestLabel(status_frame, test, loglevel=self._logger.getEffectiveLevel())
             )
 
         row, col = 0, 0
@@ -199,7 +199,7 @@ class _TestLabel(Label):
         if value_str and len(value_str) <= max_length:
             label_text = f'{self._label_text}\n({value_str.strip()})'
         else:
-            self._logger.warning('the value string length is greater than '
+            self._logger.info('the value string length is greater than '
                                  f'{max_length} and, thus, will not be shown on the GUI')
             label_text = self._label_text
 
