@@ -101,9 +101,9 @@ class ArchiveManager:
                 if "pass_if" in criteria.keys():
                     heading_fragments.append(f"pass_if={criteria['pass_if']}")
                 if "min" in criteria.keys():
-                    heading_fragments.append(f"min={criteria['min']:.3g}")
+                    heading_fragments.append(f"min={criteria['min']}")
                 if "max" in criteria.keys():
-                    heading_fragments.append(f"max={criteria['max']:.3g}")
+                    heading_fragments.append(f"max={criteria['max']}")
 
                 heading_string += header + ":" + ",".join(heading_fragments) + "\n"
 
@@ -117,11 +117,11 @@ class ArchiveManager:
             elif isinstance(v, int):
                 data.append(f"{v}")
             elif isinstance(v, float):
-                data.append(f"{v:.03g}")
+                data.append(f"{v}")
             else:
                 try:
                     # convert from pint-style values
-                    data.append(f"{v.magnitude:.03g}")
+                    data.append(f"{v.magnitude}")
                 except AttributeError:
                     data.append(str(v))  # this is the catch-all
 
@@ -167,11 +167,11 @@ class ArchiveManager:
                 elif isinstance(v, int):
                     data.append(f"{v}")
                 elif isinstance(v, float):
-                    data.append(f"{v:.03g}")
+                    data.append(f"{v}")
                 else:
                     try:
                         # convert from pint-style values
-                        data.append(f"{v.magnitude:.03g}")
+                        data.append(f"{v.magnitude}")
                     except AttributeError:
                         data.append(str(v))  # this is the catch-all
 
