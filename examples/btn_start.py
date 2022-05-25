@@ -4,7 +4,7 @@ start button, the test will execute and indicate a pass or fail for each test
 executed along with an overall pass/fail.
 """
 
-
+from datetime import datetime, timedelta
 import logging
 import json
 from random import random, choice
@@ -91,15 +91,37 @@ class PressureTest(Test):
         sleep(0.1)
         pressure = 10 + random() * 1.2
 
-        # should return a (key, value) tuple which are the results of the test
+        # should return the results of the test
         return pressure
+
+
+# A simple data-gathering exercise with no pass/fail criteria
+class BurnInTest(Test):
+    def __init__(self, loglevel=logging.INFO):
+        super().__init__(moniker='burn in',
+                         loglevel=loglevel)
+
+    def execute(self, is_passing):
+        # this is how you might check the abort status so that
+        # a long-running process might be short-circuited
+        if not is_passing and not self.aborted:
+            return 0.0
+
+        start_time = datetime.now()
+        end_time = start_time + timedelta(seconds=10)
+        while datetime.now() < end_time and not self.aborted:
+            sleep(0.1)
+
+        # return the amount of burn-in time
+        return (end_time - start_time).total_seconds()
 
 
 if __name__ == '__main__':
     coloredlogs.install(level=logging.DEBUG)
 
     # create the sequence of test objects
-    sequence = [CommunicationTest(), PumpFlowTest(), PressureTest()]
+    sequence = [CommunicationTest(), PumpFlowTest(),
+                PressureTest(), BurnInTest()]
     ts = TestSequence(setup=lambda: setup(),
                       teardown=lambda: teardown(),
                       sequence=sequence,

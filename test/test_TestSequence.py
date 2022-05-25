@@ -9,6 +9,7 @@ from time import sleep
 import pytest
 
 import mats
+from test import root
 
 
 test_counter = 0  # use this to keep track of some test execution counts
@@ -335,34 +336,34 @@ def test_TestSequence_run_aborted(aborted_test_sequence):
 
     assert ts.is_aborted is True
 
-# testing GUI elements appears to make automated testing unstable
-# def test_MatsFrame_run_aborted(root):
-#     """
-#     Same as a normal test sequence, but uses
-#     a MatsFrame with default parameters.
-#     """
-#     ts = mats.TestSequence(sequence=[t1, ta, t2])
-#     mf = MatsFrame(parent=root, sequence=ts)
-#     mf.grid()
-#     sleep(0.5)
-#
-#     assert ts.ready
-#     ts.start()
-#
-#     # wait a small amount of time, ensure that the test sequence has
-#     # begun and is in progress
-#     sleep(0.1)
-#     assert ts.in_progress is True
-#
-#     while ts.in_progress is True:
-#         sleep(0.1)
-#
-#     aborted_test = ts['test aborting']
-#     assert aborted_test.aborted is True
-#
-#     assert ts.is_aborted is True
-#     sleep(1.0)
-#     root.destroy()
+#testing GUI elements appears to make automated testing unstable
+def test_MatsFrame_run_aborted(root):
+    """
+    Same as a normal test sequence, but uses
+    a MatsFrame with default parameters.
+    """
+    ts = mats.TestSequence(sequence=[t1, ta, t2])
+    mf = mats.MatsFrame(parent=root, sequence=ts)
+    mf.grid()
+    sleep(0.5)
+
+    assert ts.ready
+    ts.start()
+
+    # wait a small amount of time, ensure that the test sequence has
+    # begun and is in progress
+    sleep(0.1)
+    assert ts.in_progress is True
+
+    while ts.in_progress is True:
+        sleep(0.1)
+
+    aborted_test = ts['test aborting']
+    assert aborted_test.aborted is True
+
+    assert ts.is_aborted is True
+    sleep(1.0)
+    root.destroy()
 
 
 def test_TestSequence_run_failed(failed_test_sequence):

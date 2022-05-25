@@ -222,6 +222,7 @@ class TestSequence:
         """
         if 'ready' not in self._state:
             self._state = 'aborting'
+            [test.abort() for test in self._sequence]
 
     def start(self):
         """
