@@ -19,18 +19,24 @@ class Test:
     :param loglevel: the logging level to apply such as `logging.INFO`
     """
 
-    def __init__(self, moniker, min_value=None, max_value=None, pass_if=None,
-                 loglevel=logging.INFO):
+    def __init__(
+        self,
+        moniker,
+        min_value=None,
+        max_value=None,
+        pass_if=None,
+        loglevel=logging.INFO,
+    ):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
         criteria = {}
         if pass_if is not None:
-            criteria['pass_if'] = pass_if
+            criteria["pass_if"] = pass_if
         if min_value is not None:
-            criteria['min'] = min_value
+            criteria["min"] = min_value
         if max_value is not None:
-            criteria['max'] = max_value
+            criteria["max"] = max_value
 
         self.moniker = moniker
         self.__criteria = criteria if criteria else None
@@ -38,7 +44,7 @@ class Test:
         self._test_is_passing = None
         self.value = None
         self.aborted = False
-        self.status = 'waiting'
+        self.status = "waiting"
 
         self.saved_data = {}
 
@@ -80,11 +86,11 @@ class Test:
 
         self._test_is_passing = True
         self.value = None
-        self.status = 'running' if not self.aborted else 'aborted'
+        self.status = "running" if not self.aborted else "aborted"
 
         self.aborted = False
         self.setup(is_passing=is_passing)
-        self.status = 'running' if not self.aborted else 'aborted'
+        self.status = "running" if not self.aborted else "aborted"
 
     def _execute(self, is_passing):
         """
@@ -94,9 +100,9 @@ class Test:
         point, else False
         :return:
         """
-        self.status = 'running' if not self.aborted else 'aborted'
+        self.status = "running" if not self.aborted else "aborted"
         if self.aborted:
-            self._logger.warning('aborted, not executing')
+            self._logger.warning("aborted, not executing")
             return
 
         self._logger.info(f'executing test "{self.moniker}"')
@@ -104,40 +110,46 @@ class Test:
         self.value = self.execute(is_passing=is_passing)
 
         if self.__criteria is not None:
-            if self.__criteria.get('pass_if') is not None:
-                if self.value != self.__criteria['pass_if']:
+            if self.__criteria.get("pass_if") is not None:
+                if self.value != self.__criteria["pass_if"]:
                     self._logger.warning(
                         f'"{self.value}" != pass_if requirement '
-                        f'"{self.__criteria["pass_if"]}", failing')
+                        f'"{self.__criteria["pass_if"]}", failing'
+                    )
                     self.fail()
                 else:
                     self._logger.info(
                         f'"{self.value}" == pass_if requirement '
-                        f'"{self.__criteria["pass_if"]}"')
+                        f'"{self.__criteria["pass_if"]}"'
+                    )
 
-            if self.__criteria.get('min') is not None:
+            if self.__criteria.get("min") is not None:
                 if self.value < self.__criteria["min"]:
                     self._logger.warning(
                         f'"{self.value}" is below the minimum '
-                        f'"{self.__criteria["min"]}", failing')
+                        f'"{self.__criteria["min"]}", failing'
+                    )
                     self.fail()
                 else:
                     self._logger.info(
                         f'"{self.value}" is above the minimum '
-                        f'"{self.__criteria["min"]}"')
+                        f'"{self.__criteria["min"]}"'
+                    )
 
-            if self.__criteria.get('max') is not None:
+            if self.__criteria.get("max") is not None:
                 if self.value > self.__criteria["max"]:
                     self._logger.warning(
                         f'"{self.value}" is above the maximum '
-                        f'"{self.__criteria["max"]}"')
+                        f'"{self.__criteria["max"]}"'
+                    )
                     self.fail()
                 else:
                     self._logger.info(
                         f'"{self.value}" is below the maximum '
-                        f'"{self.__criteria["max"]}"')
+                        f'"{self.__criteria["max"]}"'
+                    )
 
-        self.status = 'running' if not self.aborted else 'aborted'
+        self.status = "running" if not self.aborted else "aborted"
 
         return self.value
 
@@ -150,21 +162,21 @@ class Test:
         :return:
         """
         if self.aborted:
-            self.status = 'aborted'
-            self._logger.warning('aborted, not executing')
+            self.status = "aborted"
+            self._logger.warning("aborted, not executing")
             return
 
         self._logger.info(f'tearing down "{self.moniker}"')
 
         self.teardown(is_passing)
-        self.status = 'complete'
+        self.status = "complete"
 
     def reset(self):
         """
         Reset the test status
         :return: None
         """
-        self.status = 'waiting'
+        self.status = "waiting"
 
     def save_dict(self, data: dict):
         """

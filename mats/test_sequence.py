@@ -49,13 +49,18 @@ class TestSequence:
     for instance, when a GUI closes, test hardware may need to be de-allocated
     :param loglevel: the logging level
     """
-    def __init__(self, sequence: List[Test],
-                 archive_manager: (ArchiveManager, None) = None,
-                 auto_run: (int, None) = None,
-                 callback: callable = None,
-                 setup: callable = None, teardown: callable = None,
-                 on_close: callable = None,
-                 loglevel=logging.INFO):
+
+    def __init__(
+        self,
+        sequence: List[Test],
+        archive_manager: (ArchiveManager, None) = None,
+        auto_run: (int, None) = None,
+        callback: callable = None,
+        setup: callable = None,
+        teardown: callable = None,
+        on_close: callable = None,
+        loglevel=logging.INFO,
+    ):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -67,7 +72,7 @@ class TestSequence:
                 sequence[i] = test()
 
         if not TestSequence.__validate_sequence(sequence):
-            raise ValueError('test monikers are not uniquely identified')
+            raise ValueError("test monikers are not uniquely identified")
 
         self._sequence = sequence
         self._archive_manager = archive_manager
@@ -76,12 +81,12 @@ class TestSequence:
         self._teardown = teardown
         self._on_close = on_close
         self._auto_run = auto_run
-        self._state = 'ready' if not auto_run else 'starting'
+        self._state = "ready" if not auto_run else "starting"
 
         self._test_data = {
-            'datetime': {'value': str(datetime.now())},
-            'pass': {'value': True},
-            'failed': {'value': []}
+            "datetime": {"value": str(datetime.now())},
+            "pass": {"value": True},
+            "failed": {"value": []},
         }
 
         self.current_test = None
@@ -115,7 +120,8 @@ class TestSequence:
         else:
             raise TypeError(
                 f'"{test_element}" is of type "{type(test_element)}"; '
-                f'expected "str" or "Test"')
+                f'expected "str" or "Test"'
+            )
 
         if test is not None:
             return test
@@ -148,7 +154,7 @@ class TestSequence:
 
         :return: True or False
         """
-        return 'ready' in self._state
+        return "ready" in self._state
 
     @property
     def is_passing(self):
@@ -157,7 +163,7 @@ class TestSequence:
 
         :return: True or False
         """
-        return self._test_data['pass'].get('value')
+        return self._test_data["pass"].get("value")
 
     @property
     def is_aborted(self):
@@ -166,7 +172,7 @@ class TestSequence:
 
         :return: True or False
         """
-        return 'abort' in self._state
+        return "abort" in self._state
 
     @property
     def failed_tests(self):
@@ -175,7 +181,7 @@ class TestSequence:
 
         :return: list of tests that failed
         """
-        return self._test_data['failed'].get('value')
+        return self._test_data["failed"].get("value")
 
     @property
     def progress(self):
@@ -185,8 +191,10 @@ class TestSequence:
 
         :return: tuple containing (current_test_number, total_tests)
         """
-        return (self._current_test_number,
-                len([test.moniker for test in self._sequence]))
+        return (
+            self._current_test_number,
+            len([test.moniker for test in self._sequence]),
+        )
 
     @property
     def in_progress(self):
@@ -195,13 +203,13 @@ class TestSequence:
 
         :return: True if the test sequence is currently in progress, else False
         """
-        return 'ready' not in self._state
+        return "ready" not in self._state
 
     def close(self):
         """
         Allows higher level code to call the close functionality.
         """
-        self._state = 'exiting'
+        self._state = "exiting"
         if self._on_close is not None:
             self._on_close()
 
@@ -220,8 +228,8 @@ class TestSequence:
 
         :return: None
         """
-        if 'ready' not in self._state:
-            self._state = 'aborting'
+        if "ready" not in self._state:
+            self._state = "aborting"
             [test.abort() for test in self._sequence]
 
     def start(self):
@@ -232,21 +240,22 @@ class TestSequence:
         :return: None
         """
         if self.in_progress:
-            self._logger.warning('cannot begin another test when test is '
-                                 'currently in progress')
+            self._logger.warning(
+                "cannot begin another test when test is " "currently in progress"
+            )
             return
 
-        self._state = 'starting'
+        self._state = "starting"
 
     def _teardown_function(self):
-        self._logger.info('tearing down test sequence by '
-                          'executing sequence teardown function')
+        self._logger.info(
+            "tearing down test sequence by " "executing sequence teardown function"
+        )
 
         try:
             self._teardown()
         except Exception as e:
-            self._logger.critical(f'critical error during '
-                                  f'test teardown: {e}')
+            self._logger.critical(f"critical error during " f"test teardown: {e}")
             self._logger.critical(str(traceback.format_exc()))
 
     def _reset_sequence(self):
@@ -262,17 +271,18 @@ class TestSequence:
 
         :return: None
         """
-        while self._state != 'exiting':
+        while self._state != "exiting":
             # wait at the ready (unless in auto-run mode)
-            while 'ready' in self._state:
-                if self._auto_run and 'abort' not in self._state:
-                    self._logger.info('"auto_run" flag is set, '
-                                      'beginning test sequence')
+            while "ready" in self._state:
+                if self._auto_run and "abort" not in self._state:
+                    self._logger.info(
+                        '"auto_run" flag is set, ' "beginning test sequence"
+                    )
                     self.start()
                 else:
                     sleep(0.1)
 
-            if self._state == 'exiting':
+            if self._state == "exiting":
                 self._sequence_teardown()
                 return
 
@@ -280,28 +290,28 @@ class TestSequence:
             self._sequence_executing_tests()
             self._sequence_teardown()
 
-            if 'abort' not in self._state:
+            if "abort" not in self._state:
                 if self._archive_manager is not None:
                     self._archive_manager.save(self._test_data)
 
             if self._auto_run:
                 self._auto_run -= 1
 
-            if 'abort' in self._state:
-                self._state = 'aborted / ready'
+            if "abort" in self._state:
+                self._state = "aborted / ready"
             else:
-                self._state = 'complete / ready'
+                self._state = "complete / ready"
 
     def _sequence_setup(self):
-        if 'abort' in self._state:
+        if "abort" in self._state:
             return
 
-        self._state = 'setting up'
-        self._logger.info('-' * 80)
+        self._state = "setting up"
+        self._logger.info("-" * 80)
         self._test_data = {
-            'datetime': {'value': str(datetime.now())},
-            'pass': {'value': True},
-            'failed': {'value': []}
+            "datetime": {"value": str(datetime.now())},
+            "pass": {"value": True},
+            "failed": {"value": []},
         }
 
         self._current_test_number = 0
@@ -313,16 +323,17 @@ class TestSequence:
             self._setup()
 
     def _sequence_executing_tests(self):
-        if 'abort' in self._state:
+        if "abort" in self._state:
             return
 
         # begin the test sequence
         for i, test in enumerate(self._sequence):
             self._current_test_number = i
 
-            if 'abort' in self._state:
-                self._logger.warning(f'abort detected on test '
-                                     f'{i}, exiting test sequence')
+            if "abort" in self._state:
+                self._logger.warning(
+                    f"abort detected on test " f"{i}, exiting test sequence"
+                )
                 break
 
             self.current_test = test.moniker
@@ -330,8 +341,9 @@ class TestSequence:
             try:
                 test._setup(is_passing=self.is_passing)
             except Exception as e:
-                self._logger.critical(f'critical error during '
-                                      f'setup of "{test}": {e}')
+                self._logger.critical(
+                    f"critical error during " f'setup of "{test}": {e}'
+                )
                 self._logger.critical(str(traceback.format_exc()))
                 self.abort()
                 test.fail()
@@ -344,8 +356,9 @@ class TestSequence:
                 test_result = test._execute(is_passing=self.is_passing)
             except Exception as e:
                 test_result = None
-                self._logger.critical(f'critical error during '
-                                      f'execution of "{test}": {e}')
+                self._logger.critical(
+                    f"critical error during " f'execution of "{test}": {e}'
+                )
                 self._logger.critical(str(traceback.format_exc()))
                 self.abort()
                 test.fail()
@@ -356,17 +369,18 @@ class TestSequence:
                 break
 
             if test_result is not None:
-                self._test_data[test.moniker] = {'value': test_result}
+                self._test_data[test.moniker] = {"value": test_result}
 
                 criteria = test.criteria
                 if criteria is not None:
-                    self._test_data[test.moniker]['criteria'] = criteria
+                    self._test_data[test.moniker]["criteria"] = criteria
 
             try:
                 test._teardown(is_passing=self.is_passing)
             except Exception as e:
-                self._logger.critical(f'critical error during '
-                                      f'teardown of "{test}": {e}')
+                self._logger.critical(
+                    f"critical error during " f'teardown of "{test}": {e}'
+                )
                 self._logger.critical(str(traceback.format_exc()))
                 self.abort()
                 test.fail()
@@ -376,14 +390,14 @@ class TestSequence:
                 break
 
             if not test._test_is_passing:
-                self._test_data['pass']['value'] = False
-                self._test_data['failed']['value'].append(test.moniker)
+                self._test_data["pass"]["value"] = False
+                self._test_data["failed"]["value"].append(test.moniker)
 
             # if any data was specifically stored within a test,
             # then retrieve it and store it within the sequence
             # test data
             for k, v in test.saved_data.items():
-                self._test_data[k]['value'] = v
+                self._test_data[k]["value"] = v
 
     def _sequence_teardown(self):
         """
@@ -391,24 +405,29 @@ class TestSequence:
         sequence, along with user callbacks.
         :return:
         """
-        if 'abort' not in self._state:
-            self._state = 'tearing down'
+        if "abort" not in self._state:
+            self._state = "tearing down"
 
-        self._logger.info('test sequence complete')
-        self._logger.debug(f'test results: {self._test_data}')
+        self._logger.info("test sequence complete")
+        self._logger.debug(f"test results: {self._test_data}")
 
         if self._teardown is not None:
             try:
                 self._teardown()
             except Exception as e:
-                self._logger.critical(f'an exception has occurred which '
-                                      f'may result in an unsafe condition '
-                                      f'during sequence teardown: {e}')
+                self._logger.critical(
+                    f"an exception has occurred which "
+                    f"may result in an unsafe condition "
+                    f"during sequence teardown: {e}"
+                )
 
         if self._callback is not None:
-            self._logger.info(f'executing user-supplied callback function '
-                              f'"{self._callback}"')
+            self._logger.info(
+                f"executing user-supplied callback function " f'"{self._callback}"'
+            )
             try:
                 self._callback(self._test_data)
             except Exception as e:
-                self._logger.warning(f'an exception occurred during the callback sequence: {e}')
+                self._logger.warning(
+                    f"an exception occurred during the callback sequence: {e}"
+                )
