@@ -20,6 +20,7 @@ jobs:
 
       - name: Install Requirements
         run: |
+          whoami
           sudo apt install libxkbcommon-x11-0 xvfb
           export DISPLAY=:0.0
           python -m pip install -r requirements.txt & python -m pip install -r test_requirements.txt
