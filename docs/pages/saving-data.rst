@@ -54,23 +54,24 @@ initialization, then specify during object instantiation ``ArchiveManager(data_f
     communications test:pass_if=True
     pump flow test:min=5.6,max=6.4
 
-    datetime	pass	failed	communications test	pump flow test
-    2021-01-05 22:07:26.181921	True	[]	True	 6.281
-    2021-01-05 22:07:29.033729	True	[]	True	 6.028
-    2021-01-05 22:07:32.447883	False	['communications test']	False	 6.200
-    2021-01-05 22:07:35.525927	True	[]	True	 5.807
-    2021-01-05 22:07:38.908803	True	[]	True	 6.377
-    2021-01-05 22:07:42.471502	False	['communications test']	False	 6.100
-    2021-01-05 22:07:46.206077	True	[]	True	 6.365
-    2021-01-05 22:07:49.471290	False	['pump flow test']	True	 5.513
-    2021-01-05 22:07:54.478150	False	['pump flow test']	True	 5.543
-    2021-01-05 22:07:58.579855	False	['pump flow test']	True	 5.501
-    2021-01-05 22:08:09.002198	True	[]	True	 5.747
-    2021-01-05 22:08:12.868371	False	['communications test']	False	 5.926
-    2021-01-05 22:08:16.376207	True	[]	True	 6.326
-    2021-01-05 22:08:20.470113	True	[]	True	 6.063
-    2021-01-05 22:08:57.587181	False	['pump flow test']	True	 6.612
-    2021-01-05 22:09:01.960731	False	['pump flow test']	True	 5.569
+    datetime	pass	failed	communications test	pump flow test	pressure test	burn in
+    2022-05-26 01:04:17.221758	True	[]	True	6.234937183550046	10.498043011788305	10.0
+    2022-05-26 01:04:31.565157	True	[]	True	5.9284197594696995	10.632408003984718	10.0
+    2022-05-26 01:04:45.412396	True	[]	True	5.7448645640071545	10.085557361977978	10.0
+    2022-05-26 01:04:59.559855	True	[]	True	5.691701511660488	11.142466478165602	10.0
+    2022-05-26 01:05:15.406028	True	[]	True	6.278969944766333	10.974425457541233	10.0
+    2022-05-26 01:05:29.553041	False	['pump flow test']	True	5.578744885226942	10.790385077321618	0.0
+    2022-05-26 01:05:33.966749	True	[]	True	5.6133786548679705	10.896157851285196	10.0
+    2022-05-26 01:05:47.914753	True	[]	True	5.728775166386706	10.001698218511283	10.0
+    2022-05-26 01:06:10.674928	True	[]	True	6.243161490314319	10.859695255126715	10.0
+    2022-05-26 01:06:27.231931	False	['pump flow test']	True	6.45646463351756	10.457709567667866	0.0
+    2022-05-26 01:06:31.847073	True	[]	True	6.318803734234656	10.122658792283671	10.0
+    2022-05-26 01:06:46.087559	False	['communications test']	False	5.608288967343877	10.62535894035169	0.0
+    2022-05-26 01:06:53.212328	False	['pump flow test']	True	5.505826601915402	10.166725158164468	0.0
+
+When imported into common spreadsheet software:
+
+.. image:: ../_static/data-fmt-0.png
 
 Note that the spacing is a bit off because the tabs are not aligned well.  This file will
 import into packages such as pandas easily using::
@@ -88,25 +89,24 @@ greater than the contents of the column.
 
 .. code-block::
 
-    datetime	pass	failed	communications test	communications test =	pump flow test	pump flow test >=	pump flow test <=	pressure test
-    2022-05-09 06:49:10.689560	True		True	True	 6.22	5.6	6.4	 10.4
-    2022-05-09 06:49:14.194518	True		True	True	 5.94	5.6	6.4	 10.4
-    2022-05-09 06:49:17.922168	True		True	True	 6.02	5.6	6.4	 10.1
-    2022-05-09 06:49:21.659276	False	pump flow test	True	True	 6.46	5.6	6.4	 10
-    2022-05-09 06:49:25.167991	False	pump flow test	True	True	 5.53	5.6	6.4	 10.1
-    2022-05-09 06:49:28.675185	False	communications test	False	True	 6.02	5.6	6.4	 10.5
-    2022-05-09 06:49:32.628712	False	communications test	False	True	 6.03	5.6	6.4	 11.2
-    2022-05-09 06:49:58.689147	False	pump flow test	True	True	 6.57	5.6	6.4	 10.5
-    2022-05-09 06:50:02.204322	False	communications test	False	True	 6.16	5.6	6.4	 10.2
-    2022-05-09 06:50:05.725033	False	pump flow test	True	True	 6.44	5.6	6.4	 11.1
-    2022-05-09 06:50:09.246196	True		True	True	 6.34	5.6	6.4	 10.1
-    2022-05-09 06:50:12.865606	True		True	True	 5.72	5.6	6.4	 10.6
-    2022-05-09 06:50:16.603413	False	pump flow test	True	True	 6.6	5.6	6.4	 10.2
-    2022-05-09 06:50:20.227297	True		True	True	 6.14	5.6	6.4	 11.1
-    2022-05-09 06:50:23.853710	True		True	True	 6.02	5.6	6.4	 10
-    2022-05-09 06:50:27.366909	False	communications test;pump flow test	False	True	 6.42	5.6	6.4	 10.2
-    2022-05-09 06:50:30.866149	True		True	True	 6.36	5.6	6.4	 10
-    2022-05-09 06:50:34.383827	False	pump flow test	True	True	 6.65	5.6	6.4	 10.8
+    datetime	pass	failed	communications test	communications test =	pump flow test	pump flow test >=	pump flow test <=	pressure test	burn in
+    2022-05-26 01:11:07.438015	False	communications test;pump flow test	False	True	5.563650972683107	5.6	6.4	10.82187687902628	0.0
+    2022-05-26 01:11:12.556014	True		True	True	5.817794862061415	5.6	6.4	11.168768575591445	10.0
+    2022-05-26 01:11:26.999502	True		True	True	6.074734973459303	5.6	6.4	10.99464370058688	10.0
+    2022-05-26 01:11:43.454512	False	pump flow test	True	True	5.500480152077348	5.6	6.4	10.951231240139677	0.0
+    2022-05-26 01:11:49.571188	False	communications test	False	True	5.9925109838472705	5.6	6.4	10.436606957851806	0.0
+    2022-05-26 01:11:53.984736	True		True	True	5.92373372158945	5.6	6.4	11.120449608800289	10.0
+    2022-05-26 01:12:08.228702	False	communications test	False	True	6.316824147945569	5.6	6.4	10.34188193105997	0.0
+    2022-05-26 01:12:13.445538	True		True	True	6.197759870616618	5.6	6.4	11.13824928764989	10.0
+    2022-05-26 01:12:28.087345	False	pump flow test	True	True	5.5571398544363655	5.6	6.4	10.184419378895864	0.0
+    2022-05-26 01:12:33.001862	False	communications test;pump flow test	False	True	6.482597219255007	5.6	6.4	10.857472738275735	0.0
+    2022-05-26 01:12:37.718260	True		True	True	5.760492756749475	5.6	6.4	10.305291970715277	10.0
+    2022-05-26 01:12:52.273177	True		True	True	6.37323148835527	5.6	6.4	11.046572285769773	10.0
+    2022-05-26 01:13:06.723091	True		True	True	6.390018928525916	5.6	6.4	10.68566676303048	10.0
+
+When imported into popular spreadsheet software:
+
+.. image:: ../_static/data-fmt-1.png
 
 Note that `failed` column contains strings which, when multiple failures are present, are separated by semicolons.
 This format allows easy plotting of values vs. constraints over time.
