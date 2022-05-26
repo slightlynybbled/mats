@@ -4,7 +4,7 @@ import logging
 from threading import Thread
 import traceback
 from time import sleep
-from typing import List
+from typing import List, Optional
 
 from mats.test import Test
 from mats.archiving import ArchiveManager
@@ -53,12 +53,12 @@ class TestSequence:
     def __init__(
         self,
         sequence: List[Test],
-        archive_manager: (ArchiveManager, None) = None,
-        auto_run: (int, None) = None,
-        callback: callable = None,
-        setup: callable = None,
-        teardown: callable = None,
-        on_close: callable = None,
+        archive_manager: Optional[ArchiveManager] = None,
+        auto_run: Optional[int] = None,
+        callback: Optional[callable] = None,
+        setup: Optional[callable] = None,
+        teardown: Optional[callable] = None,
+        on_close: Optional[callable] = None,
         loglevel=logging.INFO,
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
