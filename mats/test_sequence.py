@@ -368,12 +368,11 @@ class TestSequence:
                 test.fail()
                 break
 
-            if test_result is not None:
-                self._test_data[test.moniker] = {"value": test_result}
+            self._test_data[test.moniker] = {"value": test_result}
 
-                criteria = test.criteria
-                if criteria is not None:
-                    self._test_data[test.moniker]["criteria"] = criteria
+            criteria = test.criteria
+            if criteria is not None:
+                self._test_data[test.moniker]["criteria"] = criteria
 
             try:
                 test._teardown(is_passing=self.is_passing)
