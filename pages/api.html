@@ -308,19 +308,25 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="mats.ArchiveManager">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mats.</span></span><span class="sig-name descname"><span class="pre">ArchiveManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loglevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mats.ArchiveManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Primary data archiving mechanism.</p>
-<p>The basic save utility bundled into the test sequencer.  The archive     manager is geared towards common manufacturing environments in which     tab-delimited text files are common.</p>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="mats.ArchiveManager.aggregate">
+<span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_passing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tests</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#mats.Test" title="mats.test.Test"><span class="pre">mats.test.Test</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mats.ArchiveManager.aggregate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects data set from provided information and from the tests         and organizes the data into a dict in preparation for saving         a row of data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – the path on which to save the data, not including the     file name</p></li>
-<li><p><strong>fname</strong> – the file name</p></li>
-<li><p><strong>delimiter</strong> – the delimiter or separator between fields</p></li>
-<li><p><strong>data_format</strong> – an integer indicating the format which is to be     utilized when saving data</p></li>
-<li><p><strong>loglevel</strong> – the logging level, for instance ‘logging.INFO’</p></li>
+<li><p><strong>datetime</strong> – the datetime that the test started</p></li>
+<li><p><strong>is_passing</strong> – True/False/None indicating if the test passed,         failed, or was aborted</p></li>
+<li><p><strong>failed</strong> – a list of test monikers that failed</p></li>
+<li><p><strong>tests</strong> – a list of tests representing the test sequence</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
 </dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="mats.ArchiveManager.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mats.ArchiveManager.save" title="Permalink to this definition">¶</a></dt>
