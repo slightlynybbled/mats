@@ -25,7 +25,7 @@ setup_attributes = {
     'install_requires': requirements,
     'classifiers': [
         'License :: OSI Approved :: MIT License',
-        'Development Status :: 3 - Beta',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
@@ -33,6 +33,8 @@ setup_attributes = {
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: Implementation :: CPython',
+        'Intended Audience :: Manufacturing',
+        'Natural Language :: English',
     ],
     'zip_safe': False
 }
