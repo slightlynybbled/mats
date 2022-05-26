@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Requirements
         run: |
-          sudo apt-get install xvfb
+          sudo apt install libxkbcommon-x11-0 xvfb
           python -m pip install -r requirements.txt & python -m pip install -r test_requirements.txt
 
       - name: Execute Tests
