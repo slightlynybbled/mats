@@ -25,8 +25,13 @@ class ArchiveManager:
         self._delimiter = delimiter
         self._format = data_format
 
-    def aggregate(self, datetime: datetime, is_passing: bool, failed: List['str'],
-             tests: List[Test]):
+    def aggregate(
+        self,
+        datetime: datetime,
+        is_passing: bool,
+        failed: List["str"],
+        tests: List[Test],
+    ):
         """
         Collects data set from provided information and from the tests \
         and organizes the data into a dict in preparation for saving \
@@ -40,17 +45,17 @@ class ArchiveManager:
         :return:
         """
         test_data = {
-            'datetime': {'value': datetime},
-            'pass': {'value': is_passing},
-            'failed': {'value': failed.copy()}
+            "datetime": {"value": datetime},
+            "pass": {"value": is_passing},
+            "failed": {"value": failed.copy()},
         }
 
         for t in tests:
-            test_data[t.moniker] = {'value': t.value}
+            test_data[t.moniker] = {"value": t.value}
             if t.criteria is not None:
-                test_data[t.moniker]['criteria'] = t.criteria
+                test_data[t.moniker]["criteria"] = t.criteria
             for k, v in t.saved_data.items():
-                test_data[k]['value'] = v
+                test_data[k]["value"] = v
 
         self.save(test_data)
 

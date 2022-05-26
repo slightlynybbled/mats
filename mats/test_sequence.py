@@ -293,10 +293,10 @@ class TestSequence:
             if "abort" not in self._state:
                 if self._archive_manager is not None:
                     self._archive_manager.aggregate(
-                        datetime=self._test_data['datetime'],
-                        is_passing=self._test_data['pass'],
-                        failed=self._test_data['failed'],
-                        tests=self._sequence
+                        datetime=self._test_data["datetime"],
+                        is_passing=self._test_data["pass"],
+                        failed=self._test_data["failed"],
+                        tests=self._sequence,
                     )
 
             if self._auto_run:
@@ -390,8 +390,8 @@ class TestSequence:
                 self._test_data["pass"] = False
                 self._test_data["failed"].append(test.moniker)
 
-        if 'abort' in self._state:
-            self._test_data['pass'] = None
+        if "abort" in self._state:
+            self._test_data["pass"] = None
 
     def _sequence_teardown(self):
         """
