@@ -20,8 +20,8 @@ jobs:
 
       - name: Install Requirements
         run: |
-          - sudo apt-get install xvfb
-          - python -m pip install -r requirements.txt & python -m pip install -r test_requirements.txt
+          sudo apt-get install xvfb
+          python -m pip install -r requirements.txt & python -m pip install -r test_requirements.txt
 
       - name: Execute Tests
         run: pytest -v test/ --cov=mats
