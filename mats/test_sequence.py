@@ -84,9 +84,9 @@ class TestSequence:
         self._state = "ready" if not auto_run else "starting"
 
         self._test_data = {
-            "datetime": {"value": str(datetime.now())},
-            "pass": {"value": True},
-            "failed": {"value": []},
+            "datetime": str(datetime.now()),
+            "pass": True,
+            "failed": [],
         }
 
         self.current_test = None
@@ -163,7 +163,7 @@ class TestSequence:
 
         :return: True or False
         """
-        return self._test_data["pass"].get("value")
+        return self._test_data.get("pass")
 
     @property
     def is_aborted(self):
@@ -181,7 +181,7 @@ class TestSequence:
 
         :return: list of tests that failed
         """
-        return self._test_data["failed"].get("value")
+        return self._test_data.get("failed")
 
     @property
     def progress(self):
@@ -292,7 +292,12 @@ class TestSequence:
 
             if "abort" not in self._state:
                 if self._archive_manager is not None:
-                    self._archive_manager.save(self._test_data)
+                    self._archive_manager.aggregate(
+                        datetime=self._test_data['datetime'],
+                        is_passing=self._test_data['pass'],
+                        failed=self._test_data['failed'],
+                        tests=self._sequence
+                    )
 
             if self._auto_run:
                 self._auto_run -= 1
@@ -309,9 +314,9 @@ class TestSequence:
         self._state = "setting up"
         self._logger.info("-" * 80)
         self._test_data = {
-            "datetime": {"value": str(datetime.now())},
-            "pass": {"value": True},
-            "failed": {"value": []},
+            "datetime": str(datetime.now()),
+            "pass": True,
+            "failed": [],
         }
 
         self._current_test_number = 0
@@ -353,9 +358,8 @@ class TestSequence:
                 break
 
             try:
-                test_result = test._execute(is_passing=self.is_passing)
+                test._execute(is_passing=self.is_passing)
             except Exception as e:
-                test_result = None
                 self._logger.critical(
                     f"critical error during " f'execution of "{test}": {e}'
                 )
@@ -367,12 +371,6 @@ class TestSequence:
                 self.abort()
                 test.fail()
                 break
-
-            self._test_data[test.moniker] = {"value": test_result}
-
-            criteria = test.criteria
-            if criteria is not None:
-                self._test_data[test.moniker]["criteria"] = criteria
 
             try:
                 test._teardown(is_passing=self.is_passing)
@@ -389,14 +387,11 @@ class TestSequence:
                 break
 
             if not test._test_is_passing:
-                self._test_data["pass"]["value"] = False
-                self._test_data["failed"]["value"].append(test.moniker)
+                self._test_data["pass"] = False
+                self._test_data["failed"].append(test.moniker)
 
-            # if any data was specifically stored within a test,
-            # then retrieve it and store it within the sequence
-            # test data
-            for k, v in test.saved_data.items():
-                self._test_data[k]["value"] = v
+        if 'abort' in self._state:
+            self._test_data['pass'] = None
 
     def _sequence_teardown(self):
         """

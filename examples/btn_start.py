@@ -13,7 +13,8 @@ import tkinter as tk
 
 import coloredlogs
 
-from mats import Test, TestSequence, ArchiveManager
+from mats import Test, TestSequence
+from mats.archiving import ArchiveManagerNew as ArchiveManager
 from mats.tkwidgets import MatsFrame
 
 

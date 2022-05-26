@@ -3,25 +3,12 @@ import logging
 from os import remove
 from pathlib import Path
 from shutil import copy
+from typing import List
+
+from mats.test import Test
 
 
 class ArchiveManager:
-    """
-    Primary data archiving mechanism.
-
-    The basic save utility bundled into the test sequencer.  The archive \
-    manager is geared towards common manufacturing environments in which \
-    tab-delimited text files are common.
-
-    :param path: the path on which to save the data, not including the \
-    file name
-    :param fname: the file name
-    :param delimiter: the delimiter or separator between fields
-    :param data_format: an integer indicating the format which is to be \
-    utilized when saving data
-    :param loglevel: the logging level, for instance 'logging.INFO'
-    """
-
     def __init__(
         self,
         path=".",
@@ -30,7 +17,6 @@ class ArchiveManager:
         data_format: int = 0,
         loglevel=logging.INFO,
     ):
-
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
@@ -38,6 +24,35 @@ class ArchiveManager:
         self._path = Path(path)
         self._delimiter = delimiter
         self._format = data_format
+
+    def aggregate(self, datetime: datetime, is_passing: bool, failed: List['str'],
+             tests: List[Test]):
+        """
+        Collects data set from provided information and from the tests \
+        and organizes the data into a dict in preparation for saving \
+        a row of data.
+
+        :param datetime: the datetime that the test started
+        :param is_passing: True/False/None indicating if the test passed, \
+        failed, or was aborted
+        :param failed: a list of test monikers that failed
+        :param tests: a list of tests representing the test sequence
+        :return:
+        """
+        test_data = {
+            'datetime': {'value': datetime},
+            'pass': {'value': is_passing},
+            'failed': {'value': failed.copy()}
+        }
+
+        for t in tests:
+            test_data[t.moniker] = {'value': t.value}
+            if t.criteria is not None:
+                test_data[t.moniker]['criteria'] = t.criteria
+            for k, v in t.saved_data.items():
+                test_data[k]['value'] = v
+
+        self.save(test_data)
 
     def save(self, point: dict):
         """
