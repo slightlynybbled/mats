@@ -164,7 +164,7 @@ class _TestLabel(Label):
                 ):
                     cs = f"{condition}={value}"
                 else:
-                    cs = f"{condition}={value:.3g}"
+                    cs = f"{condition}={value}"
                 criteria_list.append(cs)
             criteria_string = ",".join(criteria_list)
 
@@ -204,10 +204,10 @@ class _TestLabel(Label):
 
         value = self._test.value
         if isinstance(value, float):
-            value_str = f"{value:.3g}"
+            value_str = f"{value}"
         else:
             try:
-                value_str = f"{value.magnitude: .03g}"
+                value_str = f"{value.magnitude}"
             except AttributeError:
                 value_str = f"{value}"
 
