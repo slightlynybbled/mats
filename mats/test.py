@@ -1,4 +1,9 @@
+from decimal import Decimal
 import logging
+from numbers import Number
+from typing import Optional, Union
+
+from sigfig import round
 
 
 class Test:
@@ -16,15 +21,17 @@ class Test:
     :param max_value: the maximum value that is to be considered a pass, \
     if defined
     :param pass_if: the value that must be present in order to pass, if defined
+    :param significant_figures: the number of significant figures appropriate to the measurement
     :param loglevel: the logging level to apply such as `logging.INFO`
     """
 
     def __init__(
         self,
-        moniker,
-        min_value=None,
-        max_value=None,
-        pass_if=None,
+        moniker: str,
+        min_value: Optional[Number] = None,
+        max_value: Optional[Number] = None,
+        pass_if: Optional[Union[str, bool, int]] = None,
+        significant_figures=4,
         loglevel=logging.INFO,
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -40,6 +47,7 @@ class Test:
 
         self.moniker = moniker
         self.__criteria = criteria if criteria else None
+        self._significant_figures = significant_figures
 
         self._test_is_passing = None
         self.value = None
@@ -107,7 +115,14 @@ class Test:
 
         self._logger.info(f'executing test "{self.moniker}"')
 
-        self.value = self.execute(is_passing=is_passing)
+        # execute the test and perform appropriate rounding
+        value = self.execute(is_passing=is_passing)
+        if value is not None:
+            try:
+                value = round(value, self._significant_figures)
+            except ValueError:
+                self._logger.debug(f'could not apply significant digits to "{value}"')
+        self.value = value
 
         if self.__criteria is not None:
             if self.__criteria.get("pass_if") is not None:

@@ -229,7 +229,7 @@ def test_Test_min_should_fail(bracketed_Test):
     t = bracketed_Test
 
     def execute(is_passing):
-        return 0.999999
+        return 0.9991
 
     t.execute = execute
 
@@ -257,7 +257,7 @@ def test_Test_max_should_fail(bracketed_Test):
     t = bracketed_Test
 
     def execute(is_passing):
-        return 2.00001
+        return 2.001
 
     t.execute = execute
 

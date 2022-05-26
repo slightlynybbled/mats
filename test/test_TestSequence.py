@@ -17,7 +17,7 @@ test_counter = 0  # use this to keep track of some test execution counts
 
 class T_normal_1(mats.Test):
     def __init__(self):
-        super().__init__('test 1', pass_if=0)
+        super().__init__('test 1', pass_if=0, significant_figures=1)
 
     def execute(self, is_passing):
         sleep(0.2)
@@ -30,10 +30,15 @@ class T_normal_1(mats.Test):
 
 class T_normal_2(mats.Test):
     def __init__(self):
-        super().__init__('test 2', min_value=-1.0, max_value=1.0)
+        super().__init__('test 2',
+                         min_value=-1.0,
+                         max_value=1.0,
+                         significant_figures=2)
 
     def execute(self, is_passing):
-        return 0.0
+        # provide a dummy number that
+        # will definitely pass the criteria
+        return 0.0121
 
 
 class T_aborted(mats.Test):
