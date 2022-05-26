@@ -73,7 +73,7 @@ initialization, then specify during object instantiation ``ArchiveManager(data_f
     2021-01-05 22:09:01.960731	False	['pump flow test']	True	 5.569
 
 Note that the spacing is a bit off because the tabs are not aligned well.  This file will
-import into packages such as pandas quite well using::
+import into packages such as pandas easily using::
 
     pd.read_csv('./path/to/file.txt', delimiter='\t', skiprows=3)
 
@@ -116,15 +116,26 @@ Custom ArchiveManager Implementations
 
 To create your own custom implementation that will save your data, you must:
 
-1. Implement a new class which contains a ``save()`` method which accepts a single ``dict`` as \
+1. Subclass ``ArchiveManager``
+2. Implement a new ``save()`` method which accepts a single ``dict`` as \
    its parameter.
-2. Create an instance of your new custom class:
+
+.. code-block:: python
+
+    from mats import ArchiveManager
+
+    class MyArchiveManager(ArchiveManager)
+        def save(point: dict) -> None:
+           # your custom save method
+           ...
+
+3. Create an instance of your new custom class:
 
 .. code-block:: python
 
     mam = MyArchiveManager()
 
-3. Supply the new instance to your test sequence:
+4. Supply the new instance to your test sequence:
 
 .. code-block:: python
 
@@ -132,7 +143,7 @@ To create your own custom implementation that will save your data, you must:
         setup=setup,
         teardown=teardown,
         sequence=[T1(), T2()],
-        archive_manager=mam
+        archive_manager=mam  # <--- this is your ArchiveManager
     )
 
 On every test execution, your new custom ``save()`` method will be called and supplied with the data
