@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Dealing with Hardware &#8212; Manufacturing Automated Test System  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +35,7 @@
           <div class="body" role="main">
             
   <section id="dealing-with-hardware">
-<h1>Dealing with Hardware<a class="headerlink" href="#dealing-with-hardware" title="Permalink to this headline">¶</a></h1>
+<h1>Dealing with Hardware<a class="headerlink" href="#dealing-with-hardware" title="Permalink to this heading">¶</a></h1>
 <p>As this test is dedicated to hardware testing, we have to deal with hardware!  There
 are basically two ways to connect to hardware for your test environment:</p>
 <blockquote>
@@ -49,13 +50,13 @@ sequence will likely contain multiple <code class="docutils literal notranslate"
 hardware.  In these cases, hardware may be allocated to global variables.  Often it is
 more practical to allocate the hardware one time and simply pass around the instances.</p>
 <section id="allocation-within-test">
-<h2>Allocation within <code class="docutils literal notranslate"><span class="pre">Test</span></code><a class="headerlink" href="#allocation-within-test" title="Permalink to this headline">¶</a></h2>
+<h2>Allocation within <code class="docutils literal notranslate"><span class="pre">Test</span></code><a class="headerlink" href="#allocation-within-test" title="Permalink to this heading">¶</a></h2>
 <p>The allocation of hardware within the test is simple, but it may have a time impact
 that may or may not be acceptable in the application.  An example of this may be
 found within the <a class="reference internal" href="examples.html#examples-simple-production-test"><span class="std std-ref">Simple Production Test</span></a>.</p>
 </section>
 <section id="one-time-allocation">
-<h2>One-Time Allocation<a class="headerlink" href="#one-time-allocation" title="Permalink to this headline">¶</a></h2>
+<h2>One-Time Allocation<a class="headerlink" href="#one-time-allocation" title="Permalink to this heading">¶</a></h2>
 <p>Hardware is allocated one time at the beginning of the program and the references
 to the hardware are passed into each test sequence.  This saves quite a bit of
 time on fast-running tests.  Hardware allocation is generally completed at the
@@ -126,7 +127,7 @@ not connected or powered?), making overall code structure simpler.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -143,7 +144,7 @@ not connected or powered?), making overall code structure simpler.</p>
       &copy;2019, Jason R. Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

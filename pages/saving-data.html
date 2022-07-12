@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Saving Data &#8212; Manufacturing Automated Test System  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,10 +35,10 @@
           <div class="body" role="main">
             
   <section id="saving-data">
-<span id="saving-data-label"></span><h1>Saving Data<a class="headerlink" href="#saving-data" title="Permalink to this headline">¶</a></h1>
+<span id="saving-data-label"></span><h1>Saving Data<a class="headerlink" href="#saving-data" title="Permalink to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">MATS</span></code> provides a very flexible module for saving data.</p>
 <section id="archivemanager">
-<h2><code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code><a class="headerlink" href="#archivemanager" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code><a class="headerlink" href="#archivemanager" title="Permalink to this heading">¶</a></h2>
 <p>The builtin <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code> is the default class built for saving data.  The <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code>
 really implements one method, <code class="docutils literal notranslate"><span class="pre">save()</span></code>.  The <code class="docutils literal notranslate"><span class="pre">save()</span></code> method accepts a <code class="docutils literal notranslate"><span class="pre">dict</span></code> as the parameter
 which contains key: value pairs containing the results of a single test execution.</p>
@@ -64,11 +65,11 @@ contain the “pass_if”, “min” and “max” criteria, also as a dict.  An
 would need to support this data format.</p>
 </section>
 <section id="data-formats">
-<h2>Data Formats<a class="headerlink" href="#data-formats" title="Permalink to this headline">¶</a></h2>
+<h2>Data Formats<a class="headerlink" href="#data-formats" title="Permalink to this heading">¶</a></h2>
 <p>At this time, the <code class="docutils literal notranslate"><span class="pre">mats.ArchiveManager</span></code> supports two different output formats, both of which are
 tab-delimited text files.</p>
 <section id="data-format-0">
-<h3>Data Format 0<a class="headerlink" href="#data-format-0" title="Permalink to this headline">¶</a></h3>
+<h3>Data Format 0<a class="headerlink" href="#data-format-0" title="Permalink to this heading">¶</a></h3>
 <p>The default <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code> output format is in the form of a tab-separated values file with the
 pass-fail criteria placed at the top of the file.  To specify this data format unambigously during
 initialization, then specify during object instantiation <code class="docutils literal notranslate"><span class="pre">ArchiveManager(data_format=0)</span></code>.</p>
@@ -100,7 +101,7 @@ import into packages such as pandas easily using:</p>
 </div>
 </section>
 <section id="data-format-1">
-<h3>Data Format 1<a class="headerlink" href="#data-format-1" title="Permalink to this headline">¶</a></h3>
+<h3>Data Format 1<a class="headerlink" href="#data-format-1" title="Permalink to this heading">¶</a></h3>
 <p>This data format intents to represent pass/fail constraints in the form of columns, meaning that
 each column name that has a constraint will have one or more additional columns which specify that
 column name with an additional modifier which describes the contraint.  For instance, if the column
@@ -129,7 +130,7 @@ This format allows easy plotting of values vs. constraints over time.</p>
 </section>
 </section>
 <section id="custom-archivemanager-implementations">
-<h2>Custom ArchiveManager Implementations<a class="headerlink" href="#custom-archivemanager-implementations" title="Permalink to this headline">¶</a></h2>
+<h2>Custom ArchiveManager Implementations<a class="headerlink" href="#custom-archivemanager-implementations" title="Permalink to this heading">¶</a></h2>
 <p>To create your own custom implementation that will save your data, you must:</p>
 <ol class="arabic simple">
 <li><p>Subclass <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code></p></li>
@@ -221,7 +222,7 @@ for one execution of your test sequence.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -238,7 +239,7 @@ for one execution of your test sequence.</p>
       &copy;2019, Jason R. Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

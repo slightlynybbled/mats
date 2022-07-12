@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Examples &#8212; Manufacturing Automated Test System  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h1>
 <section id="simple-production-test">
-<span id="examples-simple-production-test"></span><h2>Simple Production Test<a class="headerlink" href="#simple-production-test" title="Permalink to this headline">¶</a></h2>
+<span id="examples-simple-production-test"></span><h2>Simple Production Test<a class="headerlink" href="#simple-production-test" title="Permalink to this heading">¶</a></h2>
 <p>The standard production test consists of running the same test consistently on
 every <code class="docutils literal notranslate"><span class="pre">start()</span></code> of the <a class="reference internal" href="api.html#classes-mats-testsequence"><span class="std std-ref">TestSequence</span></a>.  In this sequence,
 the hardware is allocated on-the-fly within each test.</p>
@@ -116,7 +117,7 @@ the hardware is allocated on-the-fly within each test.</p>
 </div>
 </section>
 <section id="simple-production-test-revisited">
-<span id="examples-simple-production-test-revisited"></span><h2>Simple Production Test (revisited)<a class="headerlink" href="#simple-production-test-revisited" title="Permalink to this headline">¶</a></h2>
+<span id="examples-simple-production-test-revisited"></span><h2>Simple Production Test (revisited)<a class="headerlink" href="#simple-production-test-revisited" title="Permalink to this heading">¶</a></h2>
 <p>The production test could also be done by allocating the hardware at the beginning
 of the sequence and realizing some time-saving on each test execution of the test.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
@@ -184,7 +185,7 @@ of the sequence and realizing some time-saving on each test execution of the tes
 </div>
 </section>
 <section id="production-test-with-burn-in">
-<h2>Production Test with Burn-In<a class="headerlink" href="#production-test-with-burn-in" title="Permalink to this headline">¶</a></h2>
+<h2>Production Test with Burn-In<a class="headerlink" href="#production-test-with-burn-in" title="Permalink to this heading">¶</a></h2>
 <p>This test is similar to the above production test.  We use the setup method to provide a burn-in and provide a count.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span><span class="p">,</span> <span class="n">random</span>
@@ -254,7 +255,7 @@ of the sequence and realizing some time-saving on each test execution of the tes
 </div>
 </section>
 <section id="life-test">
-<h2>Life Test<a class="headerlink" href="#life-test" title="Permalink to this headline">¶</a></h2>
+<h2>Life Test<a class="headerlink" href="#life-test" title="Permalink to this heading">¶</a></h2>
 <p>A test that simulates on-off cycles and keeps chugging… forever… and ever…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
@@ -363,7 +364,7 @@ of the sequence and realizing some time-saving on each test execution of the tes
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -380,7 +381,7 @@ of the sequence and realizing some time-saving on each test execution of the tes
       &copy;2019, Jason R. Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

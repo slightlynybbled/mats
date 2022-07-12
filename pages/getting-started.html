@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Getting Started &#8212; Manufacturing Automated Test System  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,6 +12,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +35,9 @@
           <div class="body" role="main">
             
   <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
 <section id="define-requirements">
-<h2>Define Requirements<a class="headerlink" href="#define-requirements" title="Permalink to this headline">¶</a></h2>
+<h2>Define Requirements<a class="headerlink" href="#define-requirements" title="Permalink to this heading">¶</a></h2>
 <p>First, we must define a set of requirements for our production test, which has nothing
 to do with the code itself.  This will assist us in developing each test and, finally,
 defining the test sequence.</p>
@@ -49,7 +50,7 @@ or other physical component to be turned on or initialized.  We will deal with t
 our setup and teardown.</p>
 </section>
 <section id="develop-hardware-api">
-<h2>Develop Hardware API<a class="headerlink" href="#develop-hardware-api" title="Permalink to this headline">¶</a></h2>
+<h2>Develop Hardware API<a class="headerlink" href="#develop-hardware-api" title="Permalink to this heading">¶</a></h2>
 <p>Based on the test requirements, it is useful to create some hardware abstractions which
 expose some of the functionality that we are interested in.  The hardware API development
 effort is independent of the test, but will be necessary to most testing efforts and,
@@ -78,7 +79,7 @@ the abstractions.  We will call these <code class="docutils literal notranslate"
 </div>
 </section>
 <section id="create-automated-test-file">
-<h2>Create Automated Test File<a class="headerlink" href="#create-automated-test-file" title="Permalink to this headline">¶</a></h2>
+<h2>Create Automated Test File<a class="headerlink" href="#create-automated-test-file" title="Permalink to this heading">¶</a></h2>
 <p>We will now create an <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code> which will contain all of the automated
 tests that we wish to execute, setup function, and teardown function.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span> root/
@@ -91,7 +92,7 @@ tests that we wish to execute, setup function, and teardown function.</p>
 <p>Within <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code>, we create our setup, teardown, and individual tests.</p>
 </section>
 <section id="setup-and-teardown">
-<h2><code class="docutils literal notranslate"><span class="pre">setup()</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown()</span></code><a class="headerlink" href="#setup-and-teardown" title="Permalink to this headline">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">setup()</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown()</span></code><a class="headerlink" href="#setup-and-teardown" title="Permalink to this heading">¶</a></h2>
 <p>For each test, we want to start in a known condition.  Use <code class="docutils literal notranslate"><span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown</span></code>
 functions supplied to execute commands without saving any data.  The primary difference
 between these functions and a <code class="docutils literal notranslate"><span class="pre">Test</span></code> is that the <code class="docutils literal notranslate"><span class="pre">setup</span></code> and <code class="docutils literal notranslate"><span class="pre">teardown</span></code> functions
@@ -119,9 +120,9 @@ method makes it fairly easy to modularize and develop each function and <code cl
 efficiently.</p>
 </section>
 <section id="develop-individual-tests">
-<h2>Develop Individual Tests<a class="headerlink" href="#develop-individual-tests" title="Permalink to this headline">¶</a></h2>
+<h2>Develop Individual Tests<a class="headerlink" href="#develop-individual-tests" title="Permalink to this heading">¶</a></h2>
 <section id="communications-test">
-<h3>Communications Test<a class="headerlink" href="#communications-test" title="Permalink to this headline">¶</a></h3>
+<h3>Communications Test<a class="headerlink" href="#communications-test" title="Permalink to this heading">¶</a></h3>
 <p>Within <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code>, import <code class="docutils literal notranslate"><span class="pre">mats.Test</span></code> and subclass our custom tests.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
@@ -211,7 +212,7 @@ criteria applied, but a <code class="docutils literal notranslate"><span class="
 </div>
 </section>
 <section id="flow-test">
-<span id="id1"></span><h3>Flow Test<a class="headerlink" href="#flow-test" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3>Flow Test<a class="headerlink" href="#flow-test" title="Permalink to this heading">¶</a></h3>
 <p>The development of the flow test will proceed similarly to the previous test.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
@@ -245,7 +246,7 @@ criteria applied, but a <code class="docutils literal notranslate"><span class="
 pass/fail criteria to the results of the execution step.</p>
 </section>
 <section id="complete-test-definition">
-<h3>Complete Test Definition<a class="headerlink" href="#complete-test-definition" title="Permalink to this headline">¶</a></h3>
+<h3>Complete Test Definition<a class="headerlink" href="#complete-test-definition" title="Permalink to this heading">¶</a></h3>
 <p>Finally, we have our complete test definition!</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
@@ -284,7 +285,7 @@ pass/fail criteria to the results of the execution step.</p>
 </section>
 </section>
 <section id="create-test-sequence">
-<h2>Create Test Sequence<a class="headerlink" href="#create-test-sequence" title="Permalink to this headline">¶</a></h2>
+<h2>Create Test Sequence<a class="headerlink" href="#create-test-sequence" title="Permalink to this heading">¶</a></h2>
 <p>Up to this point, we have created some tests using the framework, but we haven’t
 actually done anything with them.  It would be wise to creat the <code class="docutils literal notranslate"><span class="pre">TestSequence</span></code>
 instance earlier than this point in most development processes; however, we have
@@ -299,7 +300,7 @@ chosen the order in order to better organize the presentation.</p>
 </span></pre></div>
 </div>
 <section id="allocate-hardware">
-<h3>Allocate Hardware<a class="headerlink" href="#allocate-hardware" title="Permalink to this headline">¶</a></h3>
+<h3>Allocate Hardware<a class="headerlink" href="#allocate-hardware" title="Permalink to this heading">¶</a></h3>
 <p>Allocate some hardware within <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
 <span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
@@ -386,7 +387,7 @@ for the test sequence:</p>
 </section>
 </section>
 <section id="save-the-data">
-<h2>Save the Data<a class="headerlink" href="#save-the-data" title="Permalink to this headline">¶</a></h2>
+<h2>Save the Data<a class="headerlink" href="#save-the-data" title="Permalink to this heading">¶</a></h2>
 <p>At this point, we run the test and collect the data, but do not save it anywhere.
 There are a couple of options for saving.  The first - and easiest - is to use the
 built-in <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code>, which creates the most common formats of csv and csv-like
@@ -496,7 +497,7 @@ manager objects to extend the functionality of the archiving process.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -513,7 +514,7 @@ manager objects to extend the functionality of the archiving process.</p>
       &copy;2019, Jason R. Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
