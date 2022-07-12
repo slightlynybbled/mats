@@ -319,3 +319,30 @@ def test_Test_adding_extra_data(bracketed_Test):
 
     assert t.is_passing is True
     assert t.saved_data['a'] == 1.0
+
+
+def test_Test_significant_figures():
+    class T(mats.Test):
+        def __init__(self):
+            super().__init__('test', significant_figures=4)
+
+        def execute(self, is_passing):
+            return 12345678
+
+    test = T()
+    test._execute(True)
+    assert test.value == 12350000
+
+
+def test_Test_significant_figures_string():
+    """ if passed a string, then the significant figures should not alter it """
+    class T(mats.Test):
+        def __init__(self):
+            super().__init__('test', significant_figures=4)
+
+        def execute(self, is_passing):
+            return '12345678'
+
+    test = T()
+    test._execute(True)
+    assert test.value == '12345678'

@@ -117,7 +117,7 @@ class Test:
 
         # execute the test and perform appropriate rounding
         value = self.execute(is_passing=is_passing)
-        if value is not None:
+        if isinstance(value, Number):
             try:
                 value = round(value, self._significant_figures)
             except ValueError:
