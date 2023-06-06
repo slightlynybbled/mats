@@ -10,9 +10,15 @@ from mats.test import Test
 
 class ArchiveManager:
     """
-    Manages the data so that it is stored safely without overriding previously saved data.
+    The default data manager that saves data in a text format which is very flexible, \
+    yet maintains simplicity and compatibility with analysis tools such as pandas.
 
-    :param path: a string containing the path to the data
+    :param path: a string or `Path` containing the path to the data file
+    :param fname: data file name
+    :param delimiter: the data delimiter
+    :param data_format: an integer that determines which data format
+    :param preamble: a string that may be appended to the beginning of a data file
+    :param loglevel: the logging level
     """
 
     def __init__(

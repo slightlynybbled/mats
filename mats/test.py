@@ -31,7 +31,7 @@ class Test:
         min_value: Optional[Number] = None,
         max_value: Optional[Number] = None,
         pass_if: Optional[Union[str, bool, int]] = None,
-        significant_figures=4,
+        significant_figures: int = 4,
         loglevel=logging.INFO,
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -82,7 +82,7 @@ class Test:
         """
         self.aborted = True
 
-    def _setup(self, is_passing):
+    def _setup(self, is_passing: bool):
         """
         Pre-execution method used for logging and housekeeping.
 
@@ -100,7 +100,7 @@ class Test:
         self.setup(is_passing=is_passing)
         self.status = "running" if not self.aborted else "aborted"
 
-    def _execute(self, is_passing):
+    def _execute(self, is_passing: bool):
         """
         Pre-execution method used for logging and housekeeping.
 
@@ -168,7 +168,7 @@ class Test:
 
         return self.value
 
-    def _teardown(self, is_passing):
+    def _teardown(self, is_passing: bool):
         """
         Pre-execution method used for logging and housekeeping.
 
@@ -211,7 +211,7 @@ class Test:
         """
         self._test_is_passing = False
 
-    def setup(self, is_passing):
+    def setup(self, is_passing: bool):
         """
         Abstract method intended to be overridden by subclass
 
@@ -221,7 +221,7 @@ class Test:
         """
         pass
 
-    def execute(self, is_passing):
+    def execute(self, is_passing: bool):
         """
         Abstract method intended to be overridden by subclass
 
@@ -231,7 +231,7 @@ class Test:
         """
         raise NotImplementedError
 
-    def teardown(self, is_passing):
+    def teardown(self, is_passing: bool):
         """
         Abstract method intended to be overridden by subclass
 

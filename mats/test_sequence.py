@@ -4,7 +4,7 @@ import logging
 from threading import Thread
 import traceback
 from time import sleep
-from typing import List, Optional
+from typing import Optional
 
 from mats.test import Test
 from mats.archiving import ArchiveManager
@@ -52,7 +52,7 @@ class TestSequence:
 
     def __init__(
         self,
-        sequence: List[Test],
+        sequence: list[Test],
         archive_manager: Optional[ArchiveManager] = None,
         auto_run: Optional[int] = None,
         callback: Optional[callable] = None,
@@ -129,7 +129,7 @@ class TestSequence:
         raise KeyError(f'test "{test_element}" does not appear to be defined')
 
     @property
-    def tests(self):
+    def tests(self) -> list[Test]:
         """
         Returns instances of all tests contained within the ``TestSequence``
 
@@ -138,7 +138,7 @@ class TestSequence:
         return [test for test in self._sequence]
 
     @property
-    def test_names(self):
+    def test_names(self) -> list[str]:
         """
         Returns the names of the tests contained within the ``TestSequence``
 
@@ -147,7 +147,7 @@ class TestSequence:
         return [test.moniker for test in self._sequence]
 
     @property
-    def ready(self):
+    def ready(self) -> bool:
         """
         Returns True if the test sequence is ready for another go at it, \
         False if not
@@ -157,7 +157,7 @@ class TestSequence:
         return "ready" in self._state
 
     @property
-    def is_passing(self):
+    def is_passing(self) -> bool:
         """
         Returns True if the test sequence is currently passing, else False
 
@@ -166,7 +166,7 @@ class TestSequence:
         return self._test_data.get("pass")
 
     @property
-    def is_aborted(self):
+    def is_aborted(self) -> bool:
         """
         Returns True if the test sequence has been aborted, else False
 
@@ -175,7 +175,7 @@ class TestSequence:
         return "abort" in self._state
 
     @property
-    def failed_tests(self):
+    def failed_tests(self) -> list[str]:
         """
         Return a list of the tests which failed.
 
@@ -184,7 +184,7 @@ class TestSequence:
         return self._test_data.get("failed")
 
     @property
-    def progress(self):
+    def progress(self) -> tuple[int, int]:
         """
         Returns a tuple containing (current_test_number, total_tests) in \
         order to give an indication of the progress of the test sequence.
@@ -197,7 +197,7 @@ class TestSequence:
         )
 
     @property
-    def in_progress(self):
+    def in_progress(self) -> bool:
         """
         Returns True if the test sequence is currently in progress, else False.
 
@@ -214,7 +214,7 @@ class TestSequence:
             self._on_close()
 
     @staticmethod
-    def __validate_sequence(sequence: List[Test]):
+    def __validate_sequence(sequence: list[Test]):
         moniker_set = set([t.moniker for t in sequence])
 
         if len(moniker_set) != len(sequence):
