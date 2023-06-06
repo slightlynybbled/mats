@@ -3,18 +3,25 @@ import logging
 from os import remove
 from pathlib import Path
 from shutil import copy
-from typing import List
+from typing import Optional
 
 from mats.test import Test
 
 
 class ArchiveManager:
+    """
+    Manages the data so that it is stored safely without overriding previously saved data.
+
+    :param path: a string containing the path to the data
+    """
+
     def __init__(
         self,
-        path=".",
-        fname="data.txt",
-        delimiter="\t",
+        path: str | Path = ".",
+        fname: str = "data.txt",
+        delimiter: str = "\t",
         data_format: int = 0,
+        preamble: Optional[str] = None,
         loglevel=logging.INFO,
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
@@ -24,13 +31,14 @@ class ArchiveManager:
         self._path = Path(path)
         self._delimiter = delimiter
         self._format = data_format
+        self._preamble = preamble
 
     def aggregate(
         self,
         datetime: datetime,
         is_passing: bool,
-        failed: List["str"],
-        tests: List[Test],
+        failed: list[str],
+        tests: list[Test],
     ):
         """
         Collects data set from provided information and from the tests \
@@ -127,7 +135,10 @@ class ArchiveManager:
 
                 heading_string += header + ":" + ",".join(heading_fragments) + "\n"
 
-        header_string = heading_string + f"\n{self._delimiter.join(headers)}\n"
+        preamble = '' if not self._preamble else f'{self._preamble}\n'
+        header_string = preamble \
+                        + heading_string \
+                        + f"\n{self._delimiter.join(headers)}\n"
 
         data = []
         for _, value in point.items():
@@ -172,7 +183,10 @@ class ArchiveManager:
                 if "max" in criteria.keys():
                     header_string += f"{header} <=\t"
 
-        header_string = header_string.strip() + "\n"
+        preamble = '' if not self._preamble else f'{self._preamble}\n\n'
+        header_string = preamble \
+                        + header_string.strip() \
+                        + "\n"
 
         data = []
         for header, value in point.items():

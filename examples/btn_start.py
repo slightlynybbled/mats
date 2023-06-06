@@ -125,7 +125,7 @@ if __name__ == '__main__':
     ts = TestSequence(setup=lambda: setup(),
                       teardown=lambda: teardown(),
                       sequence=sequence,
-                      archive_manager=ArchiveManager(data_format=1),
+                      archive_manager=ArchiveManager(data_format=1, preamble='some preamble text'),
                       callback=lambda data: test_complete_callback(data, 'my string!'),
                       loglevel=logging.DEBUG)
 
