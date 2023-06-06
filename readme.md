@@ -39,6 +39,6 @@ identically.
 ## Contribution Guidelines
 
 Contribution guidelines are outlined in the 
-[documentation](https://mats.readthedocs.io/en/latest/pages/contribution_guidelines.html).
+[documentation](https://slightlynybbled.github.io/mats/pages/contribution_guidelines.html).
 
 Please read before contributing!
