@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Contribution Guidelines &#8212; Manufacturing Automated Test System  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="GUI" href="gui.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -31,9 +33,9 @@
           <div class="body" role="main">
             
   <section id="contribution-guidelines">
-<h1>Contribution Guidelines<a class="headerlink" href="#contribution-guidelines" title="Permalink to this heading">¶</a></h1>
+<h1>Contribution Guidelines<a class="headerlink" href="#contribution-guidelines" title="Link to this heading">¶</a></h1>
 <section id="guidelines-for-new-issues">
-<h2>Guidelines for new Issues<a class="headerlink" href="#guidelines-for-new-issues" title="Permalink to this heading">¶</a></h2>
+<h2>Guidelines for new Issues<a class="headerlink" href="#guidelines-for-new-issues" title="Link to this heading">¶</a></h2>
 <p>There are a several types of issues.  The most common are bug fixes, but some
 will be oriented toward feature requests.</p>
 <p>New bugfix issues should contain a full description of how to repeat the
@@ -45,50 +47,56 @@ to be the <cite>pytest</cite> or the <cite>django</cite> of manufacturing test a
 a large feature set.</p>
 </section>
 <section id="guidelines-for-pull-requests">
-<h2>Guidelines for Pull Requests<a class="headerlink" href="#guidelines-for-pull-requests" title="Permalink to this heading">¶</a></h2>
+<h2>Guidelines for Pull Requests<a class="headerlink" href="#guidelines-for-pull-requests" title="Link to this heading">¶</a></h2>
 <p>I am not a full-time project maintainer.  I’m a dude with a job.  That means
 that pull requests have to be relatively self-contained in order to make the
 cut.  Having said that, I don’t think that the bar is too high in this
 instance.</p>
 <p>It is advised to create a pull request against one or more issues which are
 already documented.  The risk of simply adding features is that your cool
-new whiz-bang feature is simply not a part of the author’s vision for the
+new whiz-bang feature is simply not a part of the maintainer’s vision for the
 project… meaning that you just did a bunch of work for nothing.  Neither
 of us wants that.</p>
 <p>New pull requests shall:</p>
 <ul class="simple">
 <li><p>have an explanation of the feature or bugfix that they are implementing (preferabley with an issue number to refer to)</p></li>
 <li><p>have some test coverage for that feature/bugfix</p></li>
-<li><p>be <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a> compliant as defined by <a class="reference external" href="http://flake8.pycqa.org/en/latest/">flake8</a> test</p></li>
+<li><p>be <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a> compliant</p></li>
 </ul>
 </section>
-<section id="executing-automated-testing">
-<h2>Executing Automated Testing<a class="headerlink" href="#executing-automated-testing" title="Permalink to this heading">¶</a></h2>
-<p>The packages required in order to execute the automated testing can be found
-in the <cite>test_requirements.txt</cite> file at the base of the
-<a class="reference external" href="https://github.com/slightlynybbled/mats">github repository</a>.  As of this
-writing, the test coverage is at 96% and any new functionality will be required
-to be backed up by testing.</p>
-<p>To get set up for testing, fork the repository to your user.  You may then
-clone the github repository, install all requirements, install the repository
-in <code class="docutils literal notranslate"><span class="pre">develop</span></code> mode:</p>
+<section id="environment-prerequisites">
+<h2>Environment &amp; Prerequisites<a class="headerlink" href="#environment-prerequisites" title="Link to this heading">¶</a></h2>
+<p>This project is maintained using the <a class="reference external" href="https://docs.astral.sh/uv/">uv toolset</a>.  As
+a result, most of the commands you will see below use the UV toolset to get things
+done consistently and easily.</p>
+<p>Most of this guide assumes that you have forked the repository in github and have
+cloned to your local machine.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$&gt; git clone https://github.com/&lt;your_user_name&gt;/mats
-$&gt; pip install -r test_requirements.txt
-$&gt; pip install -r requirements.txt
-$&gt; python setup.py develop
 </pre></div>
 </div>
-<p>Run all tests using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; py.test tests/
+</section>
+<section id="executing-automated-testing">
+<h2>Executing Automated Testing<a class="headerlink" href="#executing-automated-testing" title="Link to this heading">¶</a></h2>
+<p>This project uses <a class="reference external" href="https://docs.pytest.org/en/stable/">pytest</a> for automated testing.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; uv run pytest test
 </pre></div>
 </div>
 <p>Then run the style checker using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; flake8 mats
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; ruff check --fix
 </pre></div>
 </div>
 </section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<p>To build the documentation, navigate to the documents directory and execute sphinx:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; cd docs
+$docs/&gt; uv run sphinx-build -b html . _build
+</pre></div>
+</div>
+<p>The documentation will be located in <cite>docs/_build</cite> as a web page.</p>
+</section>
 <section id="future-development">
-<h2>Future Development<a class="headerlink" href="#future-development" title="Permalink to this heading">¶</a></h2>
+<h2>Future Development<a class="headerlink" href="#future-development" title="Link to this heading">¶</a></h2>
 <p>Features that I foresee:</p>
 <blockquote>
 <div><ul class="simple">
@@ -103,7 +111,7 @@ $&gt; python setup.py develop
 <li><p>Qt-based GUI</p></li>
 </ul>
 </div></blockquote>
-<p>Have <a class="reference external" href="https://github.com/slightlynybbled/mats/issues">others</a>?</p>
+<p>Have <a class="reference external" href="https://github.com/slightlynybbled/mats/issues">other requests</a>?</p>
 </section>
 </section>
 
@@ -112,11 +120,11 @@ $&gt; python setup.py develop
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="../index.html">
-    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    <img class="logo" src="../_static/logo.png" alt="Logo" />
     
   </a>
 </p>
@@ -128,7 +136,16 @@ $&gt; python setup.py develop
 
 
 
-<h3>Navigation</h3>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
@@ -140,7 +157,9 @@ $&gt; python setup.py develop
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contribution Guidelines</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#guidelines-for-new-issues">Guidelines for new Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#guidelines-for-pull-requests">Guidelines for Pull Requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-prerequisites">Environment &amp; Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#executing-automated-testing">Executing Automated Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#future-development">Future Development</a></li>
 </ul>
 </li>
@@ -154,16 +173,6 @@ $&gt; python setup.py develop
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -177,11 +186,11 @@ $&gt; python setup.py develop
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Jason R. Jones.
+      &#169;2019, Jason R. Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../_sources/pages/contribution_guidelines.rst.txt"
