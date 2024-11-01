@@ -55,7 +55,7 @@ Executing Automated Testing
 
 This project uses `pytest <https://docs.pytest.org/en/stable/>`_ for automated testing.::
 
-    $> uv run pytest
+    $> uv run pytest test
 
 
 Then run the style checker using::
