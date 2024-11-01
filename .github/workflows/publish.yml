@@ -39,8 +39,5 @@ jobs:
           branch: gh-pages
           folder: gh-pages
 
-      - name: Publish distribution 📦 to PyPI
-        if: startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish distribution 📦 to Test PyPI with UV
+        run: uv publish --token ${{ secrets.PYPI_API_TOKEN }}
