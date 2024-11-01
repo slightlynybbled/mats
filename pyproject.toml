@@ -2,18 +2,30 @@
 name = "mats"
 version = "0.74.0"
 description = "Manufacturing Automated Test System, a framework for building device testing quickly and consistently"
-authors = ["Jason R. Jones <slightlynybbled@gmail.com>"]
-license = "MIT"
-readme = "README.md"
+authors = [
+    {name = "Jason R. Jones", email = "slightlynybbled@gmail.com"},
+]
+readme = {file = "readme.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
 dependencies = [
     "coloredlogs>=15.0.0",
     "sigfig>=1.3"
 ]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Manufacturing",
+    "Natural Language :: English",
+]
 
 [build-system]
 requires = ["setuptools > 75.0.0"]
 build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/slightlynybbled/mats"
 
 [tool.uv]
 dev-dependencies = [
@@ -24,6 +36,9 @@ dev-dependencies = [
     "pytest-cov",
     "pytest-xvfb",
     "ruff",
-    "Sphinx", "twine"
+    'setuptools',
+    "Sphinx",
+    "twine"
 ]
+package = true
 
