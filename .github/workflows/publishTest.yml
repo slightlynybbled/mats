@@ -40,6 +40,4 @@ jobs:
 #          repository-url: https://test.pypi.org/legacy/
 
       - name: Publish distribution 📦 to Test PyPI with UV
-        run: uv publish
-        with:
-          token: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: uv publish --username ${{ secrets.TEST_PYPI_API_TOKEN }}
