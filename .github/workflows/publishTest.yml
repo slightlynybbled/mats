@@ -33,8 +33,11 @@ jobs:
           cd docs/
           uv run sphinx-build -b html . _build
 
-      - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
+#      - name: Publish distribution 📦 to Test PyPI
+#        uses: pypa/gh-action-pypi-publish@release/v1
+#        with:
+#          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+#          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish distribution 📦 to Test PyPI with UV
+        run: uv publish --token ${{ secrets.TEST_PYPI_API_TOKEN }}
