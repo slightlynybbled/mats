@@ -25,7 +25,8 @@ requires = ["setuptools > 75.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project.urls]
-Homepage = "https://github.com/slightlynybbled/mats"
+Documentation = "https://slightlynybbled.github.io/mats/"
+Repository = "https://github.com/slightlynybbled/mats"
 
 [tool.uv]
 dev-dependencies = [
