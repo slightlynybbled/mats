@@ -26,7 +26,7 @@ instance.
 
 It is advised to create a pull request against one or more issues which are
 already documented.  The risk of simply adding features is that your cool
-new whiz-bang feature is simply not a part of the author's vision for the
+new whiz-bang feature is simply not a part of the maintainer's vision for the
 project... meaning that you just did a bunch of work for nothing.  Neither
 of us wants that.
 
@@ -34,35 +34,43 @@ New pull requests shall:
 
 * have an explanation of the feature or bugfix that they are implementing (preferabley with an issue number to refer to)
 * have some test coverage for that feature/bugfix
-* be `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_ compliant as defined by `flake8 <http://flake8.pycqa.org/en/latest/>`_ test
+* be `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_ compliant
 
-Executing Automated Testing
+Environment & Prerequisites
 ---------------------------
 
-The packages required in order to execute the automated testing can be found
-in the `test_requirements.txt` file at the base of the
-`github repository <https://github.com/slightlynybbled/mats>`_.  As of this
-writing, the test coverage is at 96% and any new functionality will be required
-to be backed up by testing.
+This project is maintained using the `uv toolset <https://docs.astral.sh/uv/>`_.  As
+a result, most of the commands you will see below use the UV toolset to get things
+done consistently and easily.
 
-To get set up for testing, fork the repository to your user.  You may then
-clone the github repository, install all requirements, install the repository
-in ``develop`` mode:
+Most of this guide assumes that you have forked the repository in github and have
+cloned to your local machine.
 
 .. code-block:: text
 
     $> git clone https://github.com/<your_user_name>/mats
-    $> pip install -r test_requirements.txt
-    $> pip install -r requirements.txt
-    $> python setup.py develop
 
-Run all tests using::
+Executing Automated Testing
+---------------------------
 
-    $> py.test tests/
+This project uses `pytest <https://docs.pytest.org/en/stable/>`_ for automated testing.::
+
+    $> uv run pytest
+
 
 Then run the style checker using::
 
-    $> flake8 mats
+    $> ruff check --fix
+
+Documentation
+-------------
+
+To build the documentation, navigate to the documents directory and execute sphinx::
+
+    $> cd docs
+    $docs/> uv run sphinx-build -b html . _build
+
+The documentation will be located in `docs/_build` as a web page.
 
 Future Development
 ------------------
@@ -74,4 +82,4 @@ Features that I foresee:
     * excel
  * Qt-based GUI
 
-Have `others <https://github.com/slightlynybbled/mats/issues>`_?
+Have `other requests <https://github.com/slightlynybbled/mats/issues>`_?
