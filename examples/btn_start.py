@@ -13,7 +13,7 @@ import tkinter as tk
 
 import coloredlogs
 
-from mats import Test, TestSequence, ArchiveManager
+from mats import Test, TestSequence, ArchiveManager, __version__
 from mats.tkwidgets import MatsFrame
 
 
@@ -130,6 +130,7 @@ if __name__ == '__main__':
                       loglevel=logging.DEBUG)
 
     window = tk.Tk()
+    window.title(f'MATS {__version__}')
 
     tkate_frame = MatsFrame(window, ts, vertical=True)
     tkate_frame.grid(sticky='news')

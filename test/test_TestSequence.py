@@ -2,14 +2,12 @@
 Automated test suite for the Automated Test Environment.  This file focuses
 on testing the ``TestSequence`` class.
 """
-from datetime import datetime
 from os import path, remove
 from time import sleep
 
 import pytest
 
 import mats
-# from test import root
 
 
 test_counter = 0  # use this to keep track of some test execution counts

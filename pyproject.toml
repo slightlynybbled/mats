@@ -1,6 +1,6 @@
 [project]
 name = "mats"
-version = "0.74.0"
+version = "0.74.1"
 description = "Manufacturing Automated Test System, a framework for building device testing quickly and consistently"
 authors = [
     {name = "Jason R. Jones", email = "slightlynybbled@gmail.com"},

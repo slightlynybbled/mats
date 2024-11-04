@@ -1,4 +1,3 @@
-from decimal import Decimal
 import logging
 from numbers import Number
 from typing import Optional, Union

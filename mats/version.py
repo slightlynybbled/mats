@@ -1,1 +1,3 @@
-__version__ = "0.74.0"
+import importlib.metadata
+
+__version__ = importlib.metadata.version("mats")
