@@ -45,7 +45,7 @@ class Test:
             criteria["max"] = max_value
 
         self.moniker = moniker
-        self.__criteria = criteria if criteria else None
+        self._criteria = criteria if criteria else None
         self._significant_figures = significant_figures
 
         self._test_is_passing = None
@@ -71,7 +71,7 @@ class Test:
 
         :return: test criteria as a `dict`
         """
-        return self.__criteria
+        return self._criteria
 
     def abort(self):
         """
@@ -123,44 +123,44 @@ class Test:
                 self._logger.debug(f'could not apply significant digits to "{value}"')
         self.value = value
 
-        if self.__criteria is not None:
-            if self.__criteria.get("pass_if") is not None:
-                if self.value != self.__criteria["pass_if"]:
+        if self._criteria is not None:
+            if self._criteria.get("pass_if") is not None:
+                if self.value != self._criteria["pass_if"]:
                     self._logger.warning(
                         f'"{self.value}" != pass_if requirement '
-                        f'"{self.__criteria["pass_if"]}", failing'
+                        f'"{self._criteria["pass_if"]}", failing'
                     )
                     self.fail()
                 else:
                     self._logger.info(
                         f'"{self.value}" == pass_if requirement '
-                        f'"{self.__criteria["pass_if"]}"'
+                        f'"{self._criteria["pass_if"]}"'
                     )
 
-            if self.__criteria.get("min") is not None:
-                if self.value < self.__criteria["min"]:
+            if self._criteria.get("min") is not None:
+                if self.value < self._criteria["min"]:
                     self._logger.warning(
                         f'"{self.value}" is below the minimum '
-                        f'"{self.__criteria["min"]}", failing'
+                        f'"{self._criteria["min"]}", failing'
                     )
                     self.fail()
                 else:
                     self._logger.info(
                         f'"{self.value}" is above the minimum '
-                        f'"{self.__criteria["min"]}"'
+                        f'"{self._criteria["min"]}"'
                     )
 
-            if self.__criteria.get("max") is not None:
-                if self.value > self.__criteria["max"]:
+            if self._criteria.get("max") is not None:
+                if self.value > self._criteria["max"]:
                     self._logger.warning(
                         f'"{self.value}" is above the maximum '
-                        f'"{self.__criteria["max"]}"'
+                        f'"{self._criteria["max"]}"'
                     )
                     self.fail()
                 else:
                     self._logger.info(
                         f'"{self.value}" is below the maximum '
-                        f'"{self.__criteria["max"]}"'
+                        f'"{self._criteria["max"]}"'
                     )
 
         self.status = "running" if not self.aborted else "aborted"

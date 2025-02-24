@@ -152,7 +152,10 @@ class _TestLabel(Label):
 
         self._test = test
 
-        criteria = self._test.criteria
+        try:
+            criteria = self._test.criteria
+        except AttributeError:
+            criteria = None
         criteria_list = []
         criteria_string = ""
         if criteria is not None:
