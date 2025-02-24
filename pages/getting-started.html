@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Getting Started &#8212; Manufacturing Automated Test System  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
@@ -100,16 +100,16 @@ do not save data.</p>
 funciton will turn the power supply off.  If there is a critical error during the test,
 the <code class="docutils literal notranslate"><span class="pre">teardown()</span></code> function will be executed, making it especially convenient for test
 environments in which the safe must end in a guaranteed safe condition.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
 
-<span class="k">def</span> <span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">set_voltage</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
     <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># allow power to stabilize</span>
 
-<span class="k">def</span> <span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
    <span class="n">psu</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
@@ -123,32 +123,32 @@ efficiently.</p>
 <section id="communications-test">
 <h3>Communications Test<a class="headerlink" href="#communications-test" title="Link to this heading">¶</a></h3>
 <p>Within <code class="docutils literal notranslate"><span class="pre">automated_tests.py</span></code>, import <code class="docutils literal notranslate"><span class="pre">mats.Test</span></code> and subclass our custom tests.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
-</span> <span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="hll"> <span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">Test</span>
+</span> <span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
 
- <span class="k">def</span> <span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+ <span class="k">def</span><span class="w"> </span><span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
      <span class="n">psu</span><span class="o">.</span><span class="n">set_voltage</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
      <span class="n">psu</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
      <span class="n">psu</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
      <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># allow power to stabilize</span>
 
- <span class="k">def</span> <span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+ <span class="k">def</span><span class="w"> </span><span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
      <span class="n">psu</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
      <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="hll"> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-</span><span class="hll">     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="hll"> <span class="k">class</span><span class="w"> </span><span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+</span><span class="hll">     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">)</span>
 </span><span class="hll">
-</span><span class="hll">     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+</span><span class="hll">     <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
 </span><span class="hll">         <span class="k">return</span> <span class="kc">None</span>
 </span>
-<span class="hll"> <span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-</span><span class="hll">     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="hll"> <span class="k">class</span><span class="w"> </span><span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+</span><span class="hll">     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
 </span><span class="hll">
-</span><span class="hll">     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+</span><span class="hll">     <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
 </span><span class="hll">         <span class="k">return</span> <span class="kc">None</span>
 </span></pre></div>
 </div>
@@ -167,31 +167,31 @@ cases, the device will be instantiated already, in which case it might be more
 appropriate to import the instance of the class rather than the class itself.  In most
 cases, it is worth it to externally allocate hardware and execute the test by passing
 the class instance.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
-<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
-<span class="hll"><span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">Test</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="hll"><span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 </span><span class="o">...</span>
 </pre></div>
 </div>
 <p>Next, we will store an instance of the hardware within the <code class="docutils literal notranslate"><span class="pre">CommunicationTest</span></code>
 and so that we can utilize it during development.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-<span class="hll">     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span><span class="w"> </span><span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+<span class="hll">     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
 </span>         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">)</span>
 <span class="hll">         <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
 </span>
-     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
          <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 </div>
 <p>Now, it is time to acquire a bit of data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span><span class="w"> </span><span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
          <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">)</span>
          <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
 
-     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
 <span class="hll">         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">is_communicating</span>
 </span></pre></div>
 </div>
@@ -200,12 +200,12 @@ criteria applied, but a <code class="docutils literal notranslate"><span class="
 <code class="docutils literal notranslate"><span class="pre">communications</span></code> header in the data file.</p>
 <p>In order to apply criteria, we will use the <code class="docutils literal notranslate"><span class="pre">pass_if</span></code> parameter of
 <code class="docutils literal notranslate"><span class="pre">Test.__init__()</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span><span class="w"> </span><span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
 <span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">,</span> <span class="n">pass_if</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span>         <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
 
-     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">is_communicating</span>
 </pre></div>
 </div>
@@ -213,31 +213,31 @@ criteria applied, but a <code class="docutils literal notranslate"><span class="
 <section id="flow-test">
 <span id="id1"></span><h3>Flow Test<a class="headerlink" href="#flow-test" title="Link to this heading">¶</a></h3>
 <p>The development of the flow test will proceed similarly to the previous test.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
-<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
-<span class="hll"><span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">daq</span>
-</span><span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">Test</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="hll"><span class="kn">from</span><span class="w"> </span><span class="nn">daq</span><span class="w"> </span><span class="kn">import</span> <span class="n">daq</span>
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 
 <span class="o">...</span>
 
-<span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
        <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span> <span class="o">=</span> <span class="n">daq</span>
 
-   <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
 <span class="hll">       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span><span class="o">.</span><span class="n">flow</span>
 </span></pre></div>
 </div>
 <p>Next, we will apply minimum and maximum pass/fail criteria to the test:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span><span class="w"> </span><span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
 <span class="hll">         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">,</span>
 </span><span class="hll">                          <span class="n">min_value</span><span class="o">=</span><span class="mf">5.8</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">6.2</span><span class="p">)</span>
 </span>         <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span> <span class="o">=</span> <span class="n">daq</span>
 
-     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+     <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span><span class="o">.</span><span class="n">flow</span>
 </pre></div>
 </div>
@@ -247,37 +247,37 @@ pass/fail criteria to the results of the execution step.</p>
 <section id="complete-test-definition">
 <h3>Complete Test Definition<a class="headerlink" href="#complete-test-definition" title="Link to this heading">¶</a></h3>
 <p>Finally, we have our complete test definition!</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">Test</span>
-<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
-<span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">daq</span>
-<span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">Test</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">daq</span><span class="w"> </span><span class="kn">import</span> <span class="n">daq</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 
-<span class="k">def</span> <span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">set_voltage</span><span class="p">(</span><span class="mf">12.0</span><span class="p">)</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
     <span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># allow power to stabilize</span>
 
-<span class="k">def</span> <span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">teardown_hardware</span><span class="p">(</span><span class="n">psu</span><span class="p">:</span> <span class="n">PowerSupply</span><span class="p">):</span>
     <span class="n">psu</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
     <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CommunicationTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;communications&#39;</span><span class="p">,</span> <span class="n">pass_if</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
 
-    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="o">.</span><span class="n">is_communicating</span>
 
-<span class="k">class</span> <span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FlowTest</span><span class="p">(</span><span class="n">Test</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daq</span><span class="p">:</span> <span class="n">Daq</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moniker</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">,</span>
                          <span class="n">min_value</span><span class="o">=</span><span class="mf">5.8</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">6.2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span> <span class="o">=</span> <span class="n">daq</span>
 
-    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_passing</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_daq</span><span class="o">.</span><span class="n">flow</span>
 </pre></div>
 </div>
@@ -301,9 +301,9 @@ chosen the order in order to better organize the presentation.</p>
 <section id="allocate-hardware">
 <h3>Allocate Hardware<a class="headerlink" href="#allocate-hardware" title="Link to this heading">¶</a></h3>
 <p>Allocate some hardware within <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
-<span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
-<span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">daq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Daq</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 
 <span class="c1"># allocate the hardware</span>
 <span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
@@ -313,12 +313,12 @@ chosen the order in order to better organize the presentation.</p>
 </div>
 <p>Within <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>, we will import our <code class="docutils literal notranslate"><span class="pre">mats.TestSequence()</span></code> along with
 the <code class="docutils literal notranslate"><span class="pre">CommunicationsTest()</span></code> and <code class="docutils literal notranslate"><span class="pre">FlowTest()</span></code> that we previously defined:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">TestSequence</span>
-</span><span class="hll"> <span class="kn">from</span> <span class="nn">automated_tests</span> <span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestSequence</span>
+</span><span class="hll"> <span class="kn">from</span><span class="w"> </span><span class="nn">automated_tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
 </span><span class="hll">     <span class="n">setup_hardware</span><span class="p">,</span> <span class="n">teardown_hardware</span>
-</span> <span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
- <span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
- <span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+</span> <span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+ <span class="kn">from</span><span class="w"> </span><span class="nn">daq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Daq</span>
+ <span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 
  <span class="c1"># allocate the hardware</span>
  <span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
@@ -353,12 +353,12 @@ for the test sequence:</p>
 </div>
 <p>The test will run to completion and output log data to the terminal.</p>
 <p>The final full form of <code class="docutils literal notranslate"><span class="pre">test_sequence.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">TestSequence</span>
-<span class="kn">from</span> <span class="nn">automated_tests</span> <span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestSequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">automated_tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
     <span class="n">setup_hardware</span><span class="p">,</span> <span class="n">teardown_hardware</span>
-<span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
-<span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
-<span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">daq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Daq</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 
 <span class="c1"># allocate the hardware</span>
 <span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
@@ -395,12 +395,12 @@ detection in order to keep file headers separated as the test evolves over the l
 of the project.</p>
 <p>The most basic implementation of the <code class="docutils literal notranslate"><span class="pre">ArchiveManager</span></code> can be easily added to the
 sequence:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span> <span class="nn">mats</span> <span class="kn">import</span> <span class="n">TestSequence</span><span class="p">,</span> <span class="n">ArchiveManager</span>
-</span> <span class="kn">from</span> <span class="nn">automated_tests</span> <span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span><span class="w"> </span><span class="nn">mats</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestSequence</span><span class="p">,</span> <span class="n">ArchiveManager</span>
+</span> <span class="kn">from</span><span class="w"> </span><span class="nn">automated_tests</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlowTest</span><span class="p">,</span> <span class="n">CommunicationsTest</span><span class="p">,</span>\
      <span class="n">setup_hardware</span><span class="p">,</span> <span class="n">teardown_hardware</span>
- <span class="kn">from</span> <span class="nn">power_supply</span> <span class="kn">import</span> <span class="n">PowerSupply</span>
- <span class="kn">from</span> <span class="nn">daq</span> <span class="kn">import</span> <span class="n">Daq</span>
- <span class="kn">from</span> <span class="nn">device</span> <span class="kn">import</span> <span class="n">Device</span>
+ <span class="kn">from</span><span class="w"> </span><span class="nn">power_supply</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerSupply</span>
+ <span class="kn">from</span><span class="w"> </span><span class="nn">daq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Daq</span>
+ <span class="kn">from</span><span class="w"> </span><span class="nn">device</span><span class="w"> </span><span class="kn">import</span> <span class="n">Device</span>
 
  <span class="c1"># allocate the hardware</span>
  <span class="n">psu</span> <span class="o">=</span> <span class="n">PowerSupply</span><span class="p">()</span>
@@ -512,7 +512,7 @@ manager objects to extend the functionality of the archiving process.</p>
       &#169;2019, Jason R. Jones.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.1</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
