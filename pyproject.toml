@@ -43,3 +43,7 @@ dev-dependencies = [
 ]
 package = true
 
+[tool.pytest.ini_options]
+testpaths = [
+    "test",
+]
