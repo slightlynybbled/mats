@@ -213,7 +213,7 @@ class _TestLabel(Label):
 
         value = self._test.value
         if isinstance(value, float):
-            value_str = f"{value}"
+            value_str = f"{value:.4g}"
         else:
             try:
                 value_str = f"{value.magnitude}"
