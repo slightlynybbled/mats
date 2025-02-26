@@ -41,7 +41,6 @@ class MatsFrame(Frame):
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
-        self._string_length_warning_issued = False
 
         self._parent = parent
         super().__init__(self._parent)
@@ -219,13 +218,10 @@ class _TestLabel(Label):
         if value_str and len(value_str) <= max_length:
             label_text = f"{self._label_text}\n({value_str.strip()})"
         else:
-            if not self._string_length_warning_issued:
-                self._logger.info(
-                    "the value string length is greater than "
-                    f"{max_length} and, thus, will not be shown on the GUI"
-                )
-            else:
-                self._string_length_warning_issued = True
+            self._logger.debug(
+                "the value string length is greater than "
+                f"{max_length} and, thus, will not be shown on the GUI"
+            )
             label_text = self._label_text
 
         self.config(background=color, text=label_text)
