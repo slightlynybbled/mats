@@ -122,6 +122,7 @@ class MatsFrame(Frame):
             relief=_relief, padx=_label_padding, pady=_label_padding
         )
 
+        self._string_length_warning_issued = False
         self._update()
 
     def _update(self):
@@ -218,10 +219,13 @@ class _TestLabel(Label):
         if value_str and len(value_str) <= max_length:
             label_text = f"{self._label_text}\n({value_str.strip()})"
         else:
-            self._logger.info(
-                "the value string length is greater than "
-                f"{max_length} and, thus, will not be shown on the GUI"
-            )
+            if not self._string_length_warning_issued:
+                self._logger.info(
+                    "the value string length is greater than "
+                    f"{max_length} and, thus, will not be shown on the GUI"
+                )
+            else:
+                self._string_length_warning_issued = True
             label_text = self._label_text
 
         self.config(background=color, text=label_text)
