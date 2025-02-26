@@ -37,11 +37,13 @@ class MatsFrame(Frame):
         start_btn: bool = True,
         abort_btn: bool = True,
         wrap: int = 6,
+        max_length: int = 12,
         loglevel=logging.INFO,
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
+        self._max_length = max_length
         self._parent = parent
         super().__init__(self._parent)
 
@@ -214,7 +216,7 @@ class _TestLabel(Label):
             except AttributeError:
                 value_str = f"{value}"
 
-        max_length = 12
+        max_length = self._max_length
         if value_str and len(value_str) <= max_length:
             label_text = f"{self._label_text}\n({value_str.strip()})"
         else:
