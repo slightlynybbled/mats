@@ -86,7 +86,9 @@ class MatsFrame(Frame):
         for test in self._sequence.tests:
             self._test_status_frames.append(
                 _TestLabel(
-                    status_frame, test, loglevel=self._logger.getEffectiveLevel()
+                    status_frame, test,
+                    max_length=self._max_length,
+                    loglevel=self._logger.getEffectiveLevel()
                 )
             )
 
@@ -145,10 +147,12 @@ class _TestLabel(Label):
     A single instance of a test label frame.
     """
 
-    def __init__(self, parent, test: Test, loglevel=logging.INFO):
+    def __init__(self, parent, test: Test, max_length: int = 12,
+                 loglevel=logging.INFO):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
 
+        self._max_length = max_length
         self._parent = parent
         super().__init__(self._parent)
 
