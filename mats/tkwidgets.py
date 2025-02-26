@@ -216,7 +216,7 @@ class _TestLabel(Label):
             value_str = f"{value:.4g}"
         else:
             try:
-                value_str = f"{value.magnitude}"
+                value_str = f"{value.magnitude:.4g}"
             except AttributeError:
                 value_str = f"{value}"
 
