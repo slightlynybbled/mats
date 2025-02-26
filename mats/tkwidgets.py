@@ -41,6 +41,7 @@ class MatsFrame(Frame):
     ):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.setLevel(loglevel)
+        self._string_length_warning_issued = False
 
         self._parent = parent
         super().__init__(self._parent)
@@ -122,7 +123,6 @@ class MatsFrame(Frame):
             relief=_relief, padx=_label_padding, pady=_label_padding
         )
 
-        self._string_length_warning_issued = False
         self._update()
 
     def _update(self):
